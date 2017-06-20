@@ -1,0 +1,112 @@
+#==========================================
+# Project configs
+#==========================================
+project:
+
+  # To change in your project!
+  repositoryUrl: https://bitbucket.org/villemontreal/TODO
+
+  # To change in your project!
+  # Leave empty if no such discussion URL exists
+  discussionUrl: https://villemontreal.hipchat.com/chat/room/TODO
+
+  # To change in your project!
+  maintainers:
+    - name: Jane Doe
+      email: jane.doe@ville.montreal.qc.ca
+    - name: John Doe
+      email: john.doe@ville.montreal.qc.ca
+
+#==========================================
+# Logging configs
+#==========================================
+logging:
+  # If the path starts with a ".", it is considered to be relative
+  # to the root of the project.
+  dir: ./log
+  level: info
+  humanReadableInConsole: false
+  addStackTraceToErrorMessagesInDev: false
+  logSource: false
+  logRotateFilesNbr: 30
+  logRotateThresholdMB: 100
+  logRotateMaxTotalSizeMB: 1000
+
+#==========================================
+# Server configs
+#==========================================
+server:
+  port: 12345
+  swaggerEditorAlonePort: 12346
+
+#==========================================
+# Debug configs
+#==========================================
+debug:
+  host: 0.0.0.0
+  port: 5858
+
+#==========================================
+# API configs
+# *Public* informations to access the API.
+#==========================================
+api:
+  scheme: https
+  host: TODO
+  port: 443
+  endpointTypeRoots:
+    api: /api
+    documentation: /documentation
+    diagnostics: /diagnostics
+  domainPath: /TODO
+
+#==========================================
+# Routing configs
+#==========================================
+routing:
+  caseSensitive: false
+  maxRequestSizeMb: 50
+  routes:
+    # Those routes will be prefixed with "/documentation" + the domainPath
+    openAPI:
+      specsFile: /v1/specification
+      ui: /v1/ui
+      editor: /v1/editor
+    readme:
+      route: /v1/readme
+    # Those routes will be prefixed with "/diagnostics" + the domainPath
+    diagnostics:
+      ping: /v1/ping
+      info: /v1/info
+
+#==========================================
+# Templating Engine
+#==========================================
+templatingEngine:
+  enableCache: true
+
+#==========================================
+# Open API configs
+#==========================================
+openApi:
+  # Note that "true" won't work on the "production"
+  # environment...
+  exposeSwaggerEditor: false
+
+#==========================================
+# Data Sources configs
+#==========================================
+dataSources:
+  mongodb:
+    connectString: mongodb://localhost/nhlPoolApp
+  
+#==========================================
+# Acces nhl API
+#==========================================
+nhlApi:
+  nbPlayersLimit: 350
+  responseEncoding: utf8
+  httpOptions:
+    host: www.mysportsfeeds.com
+    port: 443
+    method: GET

@@ -1,0 +1,15 @@
+{
+    "disableCodeGen": true,
+    "autocompleteExtension": {},
+    "useBackendForStorage": true,
+    "backendEndpoint": "[will be dynamically added]",
+    "backendHelathCheckTimeout": 5000,
+    "useYamlBackend": true,
+    "disableFileMenu": true,
+    "headerBranding": false,
+    "disableNewUserIntro": true,
+    "enableTryIt": false,
+    "brandingCssClass": "",
+    "schemaUrl": "",
+    "importProxyUrl": ""
+}

@@ -1,0 +1,103 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch the application",
+            "preLaunchTask": "tsc",
+            "program": "${workspaceRoot}/src/start.js",
+            "cwd": "${workspaceRoot}",
+            "outFiles": [],
+            "sourceMaps": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "timeout": 20000
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Local debugger",
+            "port": 5858,
+            "outFiles": [],
+            "sourceMaps": true,
+            "restart": true,
+            "internalConsoleOptions": "neverOpen",
+            "timeout": 5000
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Docker debugger",
+            "address": "192.168.99.100",
+            "port": 5858,
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": "/mtl/app",
+            "outFiles": [],
+            "sourceMaps": true,
+            "restart": true,
+            "internalConsoleOptions": "neverOpen",
+            "timeout": 5000
+        },
+        //==========================================
+        // This configuration allows you to debug
+        // a Gulp task.
+        // Simply set a breakpoint in the task you
+        // want to debug, change the "args" property
+        // in the following configuration to target it
+        // and start debugging by selecting this configuration
+        // in the "Debug" window of VSCode.
+        //==========================================
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug a Gulp task",
+            "preLaunchTask": "tsc",
+            "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+            "args": [
+                "test", // The task to debug
+                "--nc" // We already ran the compilation as a "preLaunchTask"!
+            ],
+            "cwd": "${workspaceRoot}",
+            "env": {
+                "ide": "true"
+            },
+            "sourceMaps": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "timeout": 10000
+        },
+        //==========================================
+        // This configuration allows you to debug
+        // a specific test file
+        //==========================================
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug a test file",
+            "preLaunchTask": "tsc",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "${workspaceRoot}/src/repositories/serviceRequestRepository.test.js", // The path to the test file (the .js)!
+                "--no-timeouts"
+            ],
+            "cwd": "${workspaceRoot}",
+            "env": {
+                "ide": "true"
+            },
+            "sourceMaps": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "timeout": 10000
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug the 'src/test.ts' file",
+            "preLaunchTask": "tsc",
+            "program": "${workspaceRoot}/src/test.js",
+            "cwd": "${workspaceRoot}",
+            "outFiles": [],
+            "sourceMaps": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "timeout": 20000
+        }
+    ]
+}

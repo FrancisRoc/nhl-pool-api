@@ -1,0 +1,30 @@
+#==========================================
+# Allows common configurations, wathever
+# the editor.
+#
+# http://EditorConfig.org
+#==========================================
+root = true
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+charset = utf-8
+
+# Spaces at the end of a line are meaningful in a
+# .md file.
+[*.md]
+trim_trailing_whitespace = false
+
+# "npm install" can't be configured to use
+# 4 spaces instead of 2!
+# @see https://github.com/npm/npm/issues/5694
+[package.json]
+indent_size = 2
+
+# 2 spaces seems to be the accepted indentation
+# for yaml files.
+[*.{yaml,yml}]
+indent_size = 2

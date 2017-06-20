@@ -1,0 +1,21 @@
+config:
+  target: "${SCHEME}://${HOST}:${PORT}"
+  phases:
+    - duration: 60
+      arrivalRate: 20
+scenarios:
+  - name: "Simple GET without db access"
+    flow:
+    - get:
+        url: "/test/v1/upper/juju"
+  - name: "Save users in a local SQLite database tests"
+    flow:
+    - post:
+        url: "/test/v1/users"
+        headers:
+          "content-type": "application/json"
+        json:
+            name: "Stromgol"
+            email: "test@example.com"
+  
+

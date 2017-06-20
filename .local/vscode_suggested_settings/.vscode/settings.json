@@ -1,0 +1,32 @@
+//==========================================
+// Project settings
+//==========================================
+{
+    //==========================================
+    // Hide the ".js" and ".js.map" files generated
+    // from the ".ts" files.
+    //==========================================
+    "files.exclude": {
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.map": true
+    },
+    //==========================================
+    // Uses the TypeScript version installed
+    // in the project instead of the one bundled
+    // with VSCode.
+    //==========================================
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    //==========================================
+    // Newlines standardized to "\n".
+    //==========================================
+    "files.eol": "\n",
+    //==========================================
+    // Indentation standardized to 4 spaces.
+    //==========================================
+    "editor.tabSize": 4,
+    //"editor.detectIndentation": false,
+    "editor.detectIndentation": true,
+    "editor.insertSpaces": true
+}

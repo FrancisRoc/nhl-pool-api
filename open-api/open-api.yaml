@@ -1,0 +1,487 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Gabarit Node API
+  license:
+    name: MIT
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /v1/players/stats/goals:
+    get:
+      summary: Get goals stat of all nhl players
+      operationId: goalStat
+      tags:
+        - goals
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/GoalStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/assists:
+    get:
+      summary: Get assists stat of all nhl players
+      operationId: assistStat
+      tags:
+        - assists
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/AssistStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/points:
+    get:
+      summary: Get points stat of all nhl players
+      operationId: pointStat
+      tags:
+        - points
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/PointStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/plusMinus:
+    get:
+      summary: Get +/- stat of all nhl players
+      operationId: plusMinusStat
+      tags:
+        - +/-
+        - plusMinus
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/PlusMinusStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/penalityMin:
+    get:
+      summary: Get penality minutes stat of all nhl players
+      operationId: penalityMinStat
+      tags:
+        - PIM
+        - penalityMin
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/PenalityMinStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/powerplayGoals:
+    get:
+      summary: Get powerplay goals stat of all nhl players
+      operationId: powerplayGoalStat
+      tags:
+        - PPG
+        - powerplayGoal
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/PowerplayGoalStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/shorthandedGoals:
+    get:
+      summary: Get shorthanded goals stat of all nhl players
+      operationId: shorthandedGoalStat
+      tags:
+        - SHG
+        - shorthandedGoal
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/ShorthandedGoalStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/powerplayPoints:
+    get:
+      summary: Get powerplay points stat of all nhl players
+      operationId: powerplayPointStat
+      tags:
+        - PPP
+        - powerplayPoint
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/PowerplayPointStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/shorthandedPoints:
+    get:
+      summary: Get shorthanded points stat of all nhl players
+      operationId: shorthandedPointStat
+      tags:
+        - SHP
+        - shorthandedPoint
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/ShorthandedPointStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/hits:
+    get:
+      summary: Get hits stat of all nhl players
+      operationId: hitStat
+      tags:
+        - hit
+        - stat
+        - player
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/HitStatResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/stats/player/{id}/{year}:
+    get:
+      summary: Get player info of player player with requested id
+      operationId: player
+      tags:
+        - infos
+        - allStats
+        - player
+      parameters:
+        - id: id
+          in: path
+          required: true
+          description: The id of requested player stats.
+          type: string
+        - year: year
+          in: path
+          required: true
+          description: The year of requested player stats.
+          type: string
+      responses:
+        '200':
+          description: Success response
+          schema:
+            $ref: '#/definitions/PlayerInfosResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+definitions:
+  GoalStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - goals
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      goals:
+        type: number
+  AssistStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - assists
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      assists:
+        type: number
+  PointStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - points
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      points:
+        type: number
+  PlusMinusStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - plusMinus
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      plusMinus:
+        type: number
+  PenalityMinStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - penalityMin
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      penalityMin:
+        type: number
+  PowerplayGoalStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - powerplayGoals
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      powerplayGoals:
+        type: number
+  ShorthandedGoalStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - shorthandedGoals
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      shorthandedGoals:
+        type: number
+  PowerplayPointStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - powerplayPoints
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      powerplayPoints:
+        type: number
+  ShorthandedPointStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - shorthandedPoints
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      shorthandedPoints:
+        type: number
+  HitStatResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - hits
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      hits:
+        type: number
+  PlayerInfosResult:
+    required:
+      - id
+      - lastName
+      - firstName
+      - team
+      - gamesPlayed
+      - hits
+    properties:
+      id:
+        type: string
+      lastName:
+        type: string
+      firstName:
+        type: string
+      team:
+        type: string
+      gamesPlayed:
+        type: number
+      hits:
+        type: number
+  ErrorResponse:
+    required:
+      - error
+    properties:
+      error:
+        $ref: '#/definitions/ApiError'
+  ApiError:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      target:
+        type: string
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/ApiError'
+      innererror:
+        $ref: '#/definitions/ApiInnerError'
+  ApiInnerError:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      innererror:
+        $ref: '#/definitions/ApiInnerError'
+    additionalProperties:
+      type: string
+host: 'localhost:12345'
+schemes:
+  - http
+basePath: /api/nhl/poolApp

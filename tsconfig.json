@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "sourceMap": true,
+        "newLine": "LF",
+        "charset": "utf8",
+        "pretty": true,
+        "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "alwaysStrict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noEmitOnError": true,
+        "skipLibCheck": true
+    }
+}

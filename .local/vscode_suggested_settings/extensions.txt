@@ -1,0 +1,10 @@
+//==========================================
+// VSCode suggested extensions.
+//
+// Press "CTRL-P" and enter the commands
+// following the arrows...
+//==========================================
+
+TSLint --> ext install tslint
+EditorConfig --> ext install EditorConfig
+

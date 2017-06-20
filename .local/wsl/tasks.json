@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "command": "./.local/wsl/compile.sh",
+    "isShellCommand": true,
+    "suppressTaskName": true,
+    "tasks": [
+        {
+            "taskName": "tsc",
+            "args": [],
+            "isBuildCommand": true,
+            "problemMatcher": "$tsc"
+        }
+    ]
+}

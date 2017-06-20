@@ -1,0 +1,19 @@
+logging:
+  level: debug
+  humanReadableInConsole: true
+  addStackTraceToErrorMessagesInDev: true
+  logSource: true
+
+api:
+  scheme: http
+  host: localhost
+  port: 12345
+  domainPath: /nhl/poolApp
+
+openApi:
+  exposeSwaggerEditor: true
+
+templatingEngine:
+  enableCache: false
+
+
