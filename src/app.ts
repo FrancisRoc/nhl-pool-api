@@ -259,7 +259,7 @@ async function initComponents() {
 }
 
 function loadPlayersStats() {
-    loadPlayersStatsService.loadAllPlayersStats();
+    //loadPlayersStatsService.loadAllPlayersStats();
 }
 
 /**
