@@ -98,7 +98,7 @@ openApi:
 #==========================================
 dataSources:
   mongodb:
-    connectString: mongodb://localhost/nhlPoolApp
+    connectString: mongodb://dev:dev@ds133162.mlab.com:33162/nhlpoolhelper
   
 #==========================================
 # Acces nhl API
