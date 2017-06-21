@@ -481,7 +481,7 @@ definitions:
         $ref: '#/definitions/ApiInnerError'
     additionalProperties:
       type: string
-host: 'localhost:12345'
+host: 'https://nhlpoolhelperfrank.herokuapp.com'
 schemes:
   - http
 basePath: /api/nhl/poolApp

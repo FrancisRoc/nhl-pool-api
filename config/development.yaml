@@ -6,8 +6,8 @@ logging:
 
 api:
   scheme: http
-  host: localhost
-  port: 12345
+  host: https://nhlpoolhelperfrank.herokuapp.com
+  port: 8080
   domainPath: /nhl/poolApp
 
 openApi:
