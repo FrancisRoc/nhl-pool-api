@@ -367,7 +367,7 @@ function getUnlistedRoutes(): IHandlerRoute[] {
         // development. They are a quick way for a developer
         // to get informations about the current project.
         //==========================================
-        { method: HttpMethods.GET, path: "/v1/players/stats/goals", handler: playersStatsController.getGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/goals", handler: playersStatsController.getGoalStat, endpointType: EndpointTypes.NONE },
         { method: HttpMethods.GET, path: "/", handler: playersStatsController.index, endpointType: EndpointTypes.NONE },
         { method: HttpMethods.GET, path: "/open-api", handler: playersStatsController.openAPI, endpointType: EndpointTypes.NONE },
         { method: HttpMethods.GET, path: "/health", handler: playersStatsController.health, endpointType: EndpointTypes.NONE },
