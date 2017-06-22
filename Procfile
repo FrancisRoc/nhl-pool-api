@@ -1,1 +1,1 @@
-web: node src/start.js
+web: node_modules/.bin/gulp start
