@@ -52,13 +52,13 @@ debug:
 #==========================================
 api:
   scheme: https
-  host: TODO
+  host: nhlpoolhelperapi.herokuapp.com
   port: 443
   endpointTypeRoots:
     api: /api
     documentation: /documentation
     diagnostics: /diagnostics
-  domainPath: /TODO
+  domainPath: /nhl/poolApp
 
 #==========================================
 # Routing configs
