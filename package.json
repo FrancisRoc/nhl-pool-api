@@ -14,7 +14,8 @@
     "debug": "node_modules/.bin/gulp debug",
     "editor": "node_modules/.bin/gulp editor",
     "validate": "node_modules/.bin/gulp validate",
-    "tslint": "node_modules/.bin/gulp tslint"
+    "tslint": "node_modules/.bin/gulp tslint",
+    "postinstall": "./node_modules/.bin/gulp build"
   },
   "keywords": [
     "API",
