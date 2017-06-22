@@ -55,8 +55,7 @@ export async function startServer() {
     await new Promise(function (resolve, reject) {
 
         try {
-            let port = process.env.PORT || 8080;
-            app.listen(port, function () {
+            app.listen(configs.server.port, function () {
 
                 logger.info(`Server started on port ${configs.server.port}`);
                 logger.info(`Project root : ${configs.root}`);
