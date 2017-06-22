@@ -99,6 +99,7 @@ class PlayersStatsController {
      * Serve players stats ordered with goal stat
      */
     public async getGoalStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        console.log("GOALS STATS endpoint call");
         let result = await servePlayersStatsService.getPlayersOrderedByGoalStat();
         res.send(result);
     }
