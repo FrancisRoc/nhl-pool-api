@@ -96,7 +96,7 @@ export async function createApp(apiRoutes: IHandlerRoute[]): Promise<express.Exp
     // to get informations about the current project.
     //==========================================
     let devPublicPathRoot = utils.createPublicFullPath("/public", EndpointTypes.NONE);
-    app.use(devPublicPathRoot, express.static("html/public"));
+    app.use(process.env.PUBLIC_PATH, express.static("html/public"));
 
     //==========================================
     // Enable CORS
