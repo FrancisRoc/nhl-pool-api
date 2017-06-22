@@ -483,5 +483,5 @@ definitions:
       type: string
 host: 'nhlpoolhelperfrank.herokuapp.com'
 schemes:
-  - https
+  - http
 basePath: /api/nhl/poolApp
