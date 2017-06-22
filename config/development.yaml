@@ -5,8 +5,8 @@ logging:
   logSource: true
 
 api:
-  scheme: http
-  host: https://nhlpoolhelperfrank.herokuapp.com
+  scheme: https
+  host: nhlpoolhelperfrank.herokuapp.com
   port: 8080
   domainPath: /nhl/poolApp
 
