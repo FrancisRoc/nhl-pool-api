@@ -6,6 +6,7 @@
 //==========================================
 
 import { IHandlerRoute, HttpMethods } from "./models/core/route";
+import { EndpointTypes } from "../config/constants";
 import { playersStatsController } from "./controllers/core/playersStatsController"
 
 import { createLogger } from "./utils/logger";
@@ -39,17 +40,17 @@ export function getAPIRoutes(): IHandlerRoute[] {
         // file is not in sync with the current "routes.ts" file, we
         // have to add this dummy route... Simply remove it!
         //==========================================
-        { method: HttpMethods.GET, path: "/v1/players/stats/goals", handler: playersStatsController.getGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/assists", handler: playersStatsController.getAssistStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/points", handler: playersStatsController.getPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus", handler: playersStatsController.getPlusMinusStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin", handler: playersStatsController.getPenalityMinStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayGoals", handler: playersStatsController.getPowerplayGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals", handler: playersStatsController.getShorthandedGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints", handler: playersStatsController.getPowerplayPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints", handler: playersStatsController.getShorthandedPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/hits", handler: playersStatsController.getHitStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: playersStatsController.getPlayerInfos },
+        { method: HttpMethods.GET, path: "/v1/players/stats/goals", handler: playersStatsController.getGoalStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/assists", handler: playersStatsController.getAssistStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/points", handler: playersStatsController.getPointStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus", handler: playersStatsController.getPlusMinusStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin", handler: playersStatsController.getPenalityMinStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayGoals", handler: playersStatsController.getPowerplayGoalStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals", handler: playersStatsController.getShorthandedGoalStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints", handler: playersStatsController.getPowerplayPointStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints", handler: playersStatsController.getShorthandedPointStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/hits", handler: playersStatsController.getHitStat, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: playersStatsController.getPlayerInfos, endpointType: EndpointTypes.NONE },
         
     ];
 }
