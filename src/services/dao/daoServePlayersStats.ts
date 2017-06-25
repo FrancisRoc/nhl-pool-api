@@ -4,6 +4,8 @@ import { LogLevel } from "../../utils/logLevel";
 import { configs } from "../../../config/configs";
 var MongoClient = require("mongodb").MongoClient;
 const util = require("util");
+
+import * as Player from "../../models/playerInfoModel/playerInfos";
 import * as express from "express";
 
 let logger = createLogger("daoServePlayersStats");
@@ -64,7 +66,7 @@ export interface IDaoServePlayersStats {
      * @param playerId: Id to request this player infos
      * @param year: Year of the wanted stats
      */
-    getPlayerInfos(playerId: string, year: number): Promise<{}>
+    getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo>
 }
 
 class DaoServePlayersStats implements IDaoServePlayersStats {
@@ -120,9 +122,9 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
         return JSON.stringify(result);
     }
 
-    public async getPlayerInfos(playerId: string, year: number): Promise<{}> {
-        let result = await this.findPlayerInfosQuery(playerId, year);
-        return JSON.stringify(result);
+    public async getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo> {
+        let result: Player.PlayerInfo = <Player.PlayerInfo> await this.findPlayerInfosQuery(playerId, year);
+        return result;
     }
 
     private async findOrderedByGoalsStatQuery(): Promise<{}> {
@@ -208,6 +210,7 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
     private async findPlayerInfosQuery(playerId: string, year: number): Promise<{}> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('AllStats' + year).find({ "player.ID": playerId }).toArray(function(err, docs) {
+                
                 resolve(docs);
             });
         });

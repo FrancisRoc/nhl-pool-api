@@ -1,6 +1,7 @@
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
 import { daoServePlayersStats } from "./dao/daoServePlayersStats"
+import * as Player from "../models/playerInfoModel/playerInfos";
 import * as express from "express";
 
 export interface IServePlayersStatsService {
@@ -59,7 +60,7 @@ export interface IServePlayersStatsService {
      * @param playerId: Id to request this player infos
      * @param year: Year of the wanted stats
      */
-    getPlayerInfos(playerId: string, year: number): Promise<{}>
+    getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo>
 }
 
 class ServePlayersStatsService implements IServePlayersStatsService {
@@ -106,7 +107,7 @@ class ServePlayersStatsService implements IServePlayersStatsService {
         return await daoServePlayersStats.getPlayersOrderedByHitStat();
     }
 
-    public async getPlayerInfos(playerId: string, year: number): Promise<{}> {
+    public async getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo> {
         return await daoServePlayersStats.getPlayerInfos(playerId, year);
     }
 }

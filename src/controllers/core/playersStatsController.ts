@@ -1,13 +1,15 @@
-import { constants, EndpointTypes } from "../../../config/constants";
-import { configs } from "../../../config/configs";
-import { createLogger } from "../../utils/logger";
-import { LogLevel } from "../../utils/logLevel";
+import { servePlayersStatsService } from "../../services/servePlayersStatsService";
 import { IDiagnosticsInfo } from "../../models/core/DiagnosticsInfo";
-let autobind = require("autobind-decorator");
-import * as express from "express";
-import * as HttpStatusCodes from "http-status-codes";
+import { constants, EndpointTypes } from "../../../config/constants";
+import { createLogger } from "../../utils/logger";
+import { configs } from "../../../config/configs";
+import { LogLevel } from "../../utils/logLevel";
 import { utils } from "../../utils/utils";
-import { servePlayersStatsService } from "../../services/servePlayersStatsService"
+
+let autobind = require("autobind-decorator");
+import * as Player from "../../models/playerInfoModel/playerInfos";
+import * as HttpStatusCodes from "http-status-codes";
+import * as express from "express";
 
 let logger = createLogger("playerStatsController");
 let util = require('util');
@@ -182,7 +184,7 @@ class PlayersStatsController {
     public async getPlayerInfos(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let playerId = req.params.id;
         let year = req.params.year;
-        let result = await servePlayersStatsService.getPlayerInfos(playerId, year);
+        let result: Player.PlayerInfo = await servePlayersStatsService.getPlayerInfos(playerId, year);
         res.send(result);
     }
 

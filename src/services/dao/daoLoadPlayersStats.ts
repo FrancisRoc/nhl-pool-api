@@ -173,7 +173,8 @@ class DaoPlayersStats implements IDaoPlayersStats {
                     faceoffs: faceoffs,
                     faceoffPercent: faceoffPercent,
                 }
-            }
+            },
+            year: year,
         }
 
         let db = dbConnectionService.getConnection();

@@ -52,4 +52,5 @@ export interface PlayerInfo {
     player: Player;
     team: Team;
     stats: Stats;
+    year: number;
 }
