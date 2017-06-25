@@ -194,12 +194,12 @@ paths:
         - allStats
         - player
       parameters:
-        - id: id
+        - name: id
           in: path
           required: true
           description: The id of requested player stats.
           type: string
-        - year: year
+        - name: year
           in: path
           required: true
           description: The year of requested player stats.
@@ -209,6 +209,26 @@ paths:
           description: Success response
           schema:
             $ref: '#/definitions/PlayerInfosResult'
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/players/draft/{id}:
+    delete:
+      summary: Delete player with id in nhlPooling collection
+      operationId: deletePlayerById
+      tags:
+        - delete
+        - player
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of requested player stats.
+          type: string
+      responses:
+        '200':
+          description: Success response
         default:
           description: Error response
           schema:
@@ -484,4 +504,5 @@ definitions:
 host: 'nhlpoolhelperfrank.herokuapp.com'
 schemes:
   - http
-basePath: /api/nhl/poolApp
+basePath: /nhl/poolApp
+
