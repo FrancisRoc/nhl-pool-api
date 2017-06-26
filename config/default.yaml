@@ -4,18 +4,16 @@
 project:
 
   # To change in your project!
-  repositoryUrl: https://bitbucket.org/villemontreal/TODO
+  repositoryUrl: https://github.com/FrancisRoc/nhl-pool-api
 
   # To change in your project!
   # Leave empty if no such discussion URL exists
-  discussionUrl: https://villemontreal.hipchat.com/chat/room/TODO
+  discussionUrl: TODO
 
   # To change in your project!
   maintainers:
-    - name: Jane Doe
-      email: jane.doe@ville.montreal.qc.ca
-    - name: John Doe
-      email: john.doe@ville.montreal.qc.ca
+    - name: Francis Rochon
+      email: francis.rochon99@gmail.com
 
 #==========================================
 # Logging configs

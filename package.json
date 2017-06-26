@@ -1,7 +1,7 @@
 {
-  "name": "my-node-api",
+  "name": "nhl-pool-helper",
   "version": "1.0.0",
-  "description": "My Node API project",
+  "description": "Application to help realize hockey pools",
   "main": "src/start.js",
   "scripts": {
     "start": "node_modules/.bin/gulp start",

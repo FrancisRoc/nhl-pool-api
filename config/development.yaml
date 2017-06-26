@@ -7,7 +7,7 @@ logging:
 api:
   scheme: https
   host: nhlpoolhelperapi.herokuapp.com
-  port: 8080
+  port: 443
   domainPath: /nhl/poolApp
 
 openApi:

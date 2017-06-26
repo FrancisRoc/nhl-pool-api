@@ -10793,7 +10793,6 @@ ul.comptes li {
 /* Fin BORDURE ARRONDIS OU PAS */
 /*Rosace et titre*/
 a.hdr-rosace {
-  background-image: url("../images/rosace-vdm-32-x-32.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
   width: 60px;
@@ -11366,7 +11365,6 @@ fieldset[disabled] .btn-default-pes.active {
     height: 80px;
   }
   a.hdr-rosace {
-    background-image: url("../images/rosace-vdm-40-x-40.png");
     background-position: 20px 20px;
     background-repeat: no-repeat;
     width: 80px;
