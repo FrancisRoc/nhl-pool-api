@@ -1,3 +1,17 @@
 #==========================================
 # Add configurations to override here...
 #==========================================
+
+#==========================================
+# API configs
+# *Public* informations to access the API.
+#==========================================
+api:
+  scheme: https
+  host: nhlpoolhelperapi.herokuapp.com
+  port: 443
+  endpointTypeRoots:
+    api: /api
+    documentation: /documentation
+    diagnostics: /diagnostics
+  domainPath: /nhl/poolApp
