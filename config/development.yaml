@@ -6,8 +6,12 @@ logging:
 
 api:
   scheme: https
-  host: localhost
-  port: 12345
+  host: nhlpoolhelperapi.herokuapp.com
+  port: 443
+  endpointTypeRoots:
+    api: /api
+    documentation: /documentation
+    diagnostics: /diagnostics
   domainPath: /nhl/poolApp
 
 openApi:
