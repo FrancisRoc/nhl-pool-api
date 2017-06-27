@@ -50,8 +50,8 @@ debug:
 #==========================================
 api:
   scheme: https
-  host: nhlpoolhelperapi.herokuapp.com
-  port: 443
+  host: localhost
+  port: 12345
   endpointTypeRoots:
     api: /api
     documentation: /documentation
