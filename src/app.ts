@@ -10,7 +10,7 @@ import { utils } from "./utils/utils";
 import { LogLevel } from "./utils/logLevel";
 import { errorController } from "./controllers/core/errorController";
 import { createError } from "./models/core/apiError";
-import { playersStatsController } from "./controllers/core/playersStatsController";
+import { devController } from "./controllers/core/devController";
 import { IHandlerRoute, HttpMethods } from "./models/core/route";
 import { configureOpenApi } from "../open-api/openApiConfigurer";
 import { validateApp } from "./utils/appValidator";
@@ -367,11 +367,11 @@ function getUnlistedRoutes(): IHandlerRoute[] {
         // development. They are a quick way for a developer
         // to get informations about the current project.
         //==========================================
-        { method: HttpMethods.GET, path: "/", handler: playersStatsController.index, endpointType: EndpointTypes.NONE },
-        { method: HttpMethods.GET, path: "/open-api", handler: playersStatsController.openAPI, endpointType: EndpointTypes.NONE },
-        { method: HttpMethods.GET, path: "/health", handler: playersStatsController.health, endpointType: EndpointTypes.NONE },
-        { method: HttpMethods.GET, path: "/metrics", handler: playersStatsController.metrics, endpointType: EndpointTypes.NONE },
-        { method: HttpMethods.GET, path: "/readme", handler: playersStatsController.readme, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/", handler: devController.index, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/open-api", handler: devController.openAPI, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/health", handler: devController.health, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/metrics", handler: devController.metrics, endpointType: EndpointTypes.NONE },
+        { method: HttpMethods.GET, path: "/readme", handler: devController.readme, endpointType: EndpointTypes.NONE },
 
     ];
 
