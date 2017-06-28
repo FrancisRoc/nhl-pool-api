@@ -8,6 +8,7 @@
 import { IHandlerRoute, HttpMethods } from "./models/core/route";
 import { servePlayersStatsController } from "./controllers/servePlayersStatsController";
 import { draftPlayerController } from "./controllers/draftPlayerController";
+import { accountController } from "./controllers/accountController";
 import { createLogger } from "./utils/logger";
 
 let logger = createLogger("routes");
@@ -51,6 +52,9 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.GET, path: "/v1/players/stats/hits", handler: servePlayersStatsController.getHitStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: servePlayersStatsController.getPlayerInfos },
         
-        { method: HttpMethods.DELETE, path: "/v1/players/draft/:id", handler: draftPlayerController.draft },        
+        { method: HttpMethods.DELETE, path: "/v1/players/draft/:id", handler: draftPlayerController.draft },
+
+        { method: HttpMethods.POST, path: "/v1/account/login", handler: accountController.login },  
+        { method: HttpMethods.POST, path: "/v1/account/signup", handler: accountController.createAccount },  
     ];
 }

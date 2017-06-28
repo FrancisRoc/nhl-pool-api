@@ -25,6 +25,10 @@ import * as fs from "fs";
 import * as _ from "lodash";
 import * as handlerbars from "express-handlebars";
 
+let passport = require('passport');
+let flash = require('connect-flash');
+let session = require('express-session');
+
 let logger = createLogger("app");
 
 /**
@@ -87,6 +91,12 @@ export async function createApp(apiRoutes: IHandlerRoute[]): Promise<express.Exp
     if (configs.templatingEngine.enableCache) {
         app.enable("view cache");
     }
+
+    // required for passport
+    app.use(session({ secret: 'test' })); // session secret
+    app.use(passport.initialize());
+    app.use(passport.session()); // persistent login sessions
+    app.use(flash()); // use connect-flash for flash messages stored in session
 
     //==========================================
     // Static dev public files, under "/public".

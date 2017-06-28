@@ -233,6 +233,45 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /v1/account/login:
+    post:
+      summary: Login to account
+      operationId: login
+      tags:
+        - login
+      parameters:
+        - name: userInfos
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/account/signup:
+    post:
+      summary: Create new account
+      operationId: createAccount
+      tags:
+        - createAccount
+        - newUser
+      parameters:
+        - name: userInfos
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
 definitions:
   GoalStatResult:
     required:
