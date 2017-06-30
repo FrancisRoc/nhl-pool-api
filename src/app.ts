@@ -42,7 +42,8 @@ const authCheck = jwt({
     // This is the identifier we set when we created the API
     audience: 'nhl-pool-helper-api',
     issuer: "https://nhlpoolhelper.auth0.com/",
-    algorithms: ['RS256']
+    algorithms: ['RS256'],
+    leeway: 30
 });
 
 /**
