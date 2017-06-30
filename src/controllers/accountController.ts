@@ -2,7 +2,6 @@
 import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { AccountInfosDto } from "../models/user/accountInfosDto";
 import { constants, EndpointTypes } from "../../config/constants";
-import { LocalStrategyInfo } from "passport-local";
 import { createLogger } from "../utils/logger";
 import { configs } from "../../config/configs";
 import { LogLevel } from "../utils/logLevel";
@@ -23,7 +22,7 @@ let util = require('util');
  */
 @autobind
 class AccountController {
-    public async login(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+    public async authentification(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         res.send();
     }
 

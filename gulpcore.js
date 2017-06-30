@@ -131,10 +131,6 @@ gulp.task("exit", function () {
 // Tests - Features
 //==========================================
 gulp.task("test-features", function () {
-    //==========================================
-    // Flag that we are currently running tests.
-    //==========================================
-    process.env.gulpTesting = true;
     return gulp.src("tests/features/*").pipe(cucumber({}));
 });
 //==========================================
@@ -143,10 +139,6 @@ gulp.task("test-features", function () {
 //==========================================
 gulp.task("test-load", function () {
     return __awaiter(this, void 0, void 0, function* () {
-        //==========================================
-        // Flag that we are currently running tests.
-        //==========================================
-        process.env.gulpTesting = true;
         //==========================================
         // Starts the server
         //==========================================
@@ -227,10 +219,6 @@ gulp.task("test", function () {
 //==========================================
 gulp.task("test-units", function () {
     return __awaiter(this, void 0, void 0, function* () {
-        //==========================================
-        // Flag that we are currently running tests.
-        //==========================================
-        process.env.gulpTesting = true;
         try {
             yield utils_1.utils.execPromisified("node", [`${configs_1.configs.root}/node_modules/mocha/bin/_mocha`, `${configs_1.configs.root}/src/**/*.test.js`, `${configs_1.configs.root}/tests/**/*.test.js`]);
             console.log("All unit/Integration tests done.");

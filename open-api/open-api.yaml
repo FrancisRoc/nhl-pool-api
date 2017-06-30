@@ -233,18 +233,21 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /v1/account/login:
+  /v1/account/authentification:
     post:
-      summary: Login to account
-      operationId: login
+      summary: authentification to account
+      operationId: authentification
       tags:
-        - login
+        - authentification
       parameters:
-        - name: userInfos
-          in: body
+        - name: authorization
+          in: header
+          description: token to be passed as a header
           required: true
-          schema:
-            $ref: '#/definitions/ErrorResponse'
+          type: array
+          items:
+            type: integer
+            format: int64
       responses:
         '200':
           description: Success response
@@ -544,4 +547,5 @@ host: 'nhlpoolhelperfrank.herokuapp.com'
 schemes:
   - http
 basePath: /nhl/poolApp
+
 

@@ -130,11 +130,6 @@ gulp.task("exit", function () {
 //==========================================
 gulp.task("test-features", function () {
 
-    //==========================================
-    // Flag that we are currently running tests.
-    //==========================================
-    process.env.gulpTesting = true;
-
     return gulp.src("tests/features/*").pipe(cucumber({
     }));
 });
@@ -145,11 +140,6 @@ gulp.task("test-features", function () {
 
 //==========================================
 gulp.task("test-load", async function () {
-
-    //==========================================
-    // Flag that we are currently running tests.
-    //==========================================
-    process.env.gulpTesting = true;
 
     //==========================================
     // Starts the server
@@ -241,11 +231,6 @@ gulp.task("test", async function () {
 // "src" and the "tests" folders.
 //==========================================
 gulp.task("test-units", async function () {
-
-    //==========================================
-    // Flag that we are currently running tests.
-    //==========================================
-    process.env.gulpTesting = true;
 
     try {
         await utils.execPromisified("node", [`${configs.root}/node_modules/mocha/bin/_mocha`, `${configs.root}/src/**/*.test.js`, `${configs.root}/tests/**/*.test.js`]);
