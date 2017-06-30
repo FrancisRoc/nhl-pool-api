@@ -25,11 +25,25 @@ import * as fs from "fs";
 import * as _ from "lodash";
 import * as handlerbars from "express-handlebars";
 
-let passport = require('passport');
-let flash = require('connect-flash');
-let session = require('express-session');
+// Import the required dependencies for auth0
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
 
 let logger = createLogger("app");
+
+// We are going to implement a JWT middleware that will ensure the validity of our token. We'll require each protected route to have a valid access_token sent in the Authorization header
+const authCheck = jwt({
+  secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: "https://nhlpoolhelper.auth0.com/.well-known/jwks.json"
+    }),
+    // This is the identifier we set when we created the API
+    audience: 'nhl-pool-helper-api',
+    issuer: "https://nhlpoolhelper.auth0.com/",
+    algorithms: ['RS256']
+});
 
 /**
  * Creates an application object.
@@ -92,11 +106,8 @@ export async function createApp(apiRoutes: IHandlerRoute[]): Promise<express.Exp
         app.enable("view cache");
     }
 
-    // required for passport
-    app.use(session({ secret: 'test' })); // session secret
-    app.use(passport.initialize());
-    app.use(passport.session()); // persistent login sessions
-    app.use(flash()); // use connect-flash for flash messages stored in session
+    // required for auth0
+    app.use(authCheck);
 
     //==========================================
     // Static dev public files, under "/public".

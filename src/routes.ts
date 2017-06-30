@@ -11,24 +11,6 @@ import { draftPlayerController } from "./controllers/draftPlayerController";
 import { accountController } from "./controllers/accountController";
 import { createLogger } from "./utils/logger";
 
-// Import the required dependencies
-const jwt = require('express-jwt');
-const jwks = require('jwks-rsa');
-
-// We are going to implement a JWT middleware that will ensure the validity of our token. We'll require each protected route to have a valid access_token sent in the Authorization header
-const authCheck = jwt({
-  secret: jwks.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: "https://nhlpoolhelper.auth0.com/.well-known/jwks.json"
-    }),
-    // This is the identifier we set when we created the API
-    audience: 'https://nhlpoolhelperapi.herokuapp.com/',
-    issuer: "https://nhlpoolhelper.auth0.com/",
-    algorithms: ['RS256']
-});
-
 let logger = createLogger("routes");
 
 /**
@@ -72,7 +54,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
         
         { method: HttpMethods.DELETE, path: "/v1/players/draft/:id", handler: draftPlayerController.draft },
 
-        { method: HttpMethods.POST, path: "/v1/account/login", handler: accountController.login, middlewares: authCheck },  
+        { method: HttpMethods.POST, path: "/v1/account/login", handler: accountController.login },  
         { method: HttpMethods.POST, path: "/v1/account/signup", handler: accountController.createAccount },  
     ];
 }
