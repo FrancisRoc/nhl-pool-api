@@ -12,9 +12,16 @@ output
 
 /node_modules
 
-/src/**/*.js
-
-/src/**/*.map
+src/**/*.js
+src/**/*.map
+config/*.js
+config/*.map
+open-api/*.js
+open-api/*.map
+test-data/**/*.js
+test-data/**/*.map
+test/**/*.js
+test/**/*.map
 
 /log
 
