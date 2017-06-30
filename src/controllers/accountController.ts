@@ -15,6 +15,7 @@ import * as passport from "passport";
 import * as express from "express";
 
 let logger = createLogger("accountController");
+let jwtDecode = require('jwt-decode');
 let util = require('util');
 
 /**
@@ -23,6 +24,15 @@ let util = require('util');
 @autobind
 class AccountController {
     public async authentification(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let authHeader = req.header('Authorization');
+        let parts: string[] = authHeader.trim().split(' ');
+        let token = parts[1];
+
+        logger.debug("Token to decode: " + token);
+
+        let decoded = jwtDecode(token);
+        logger.debug(decoded);
+
         res.send();
     }
 

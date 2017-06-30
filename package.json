@@ -83,6 +83,7 @@
     "http-status-codes": "1.0.6",
     "js-yaml": "3.7.0",
     "jwks-rsa": "^1.2.0",
+    "jwt-decode": "2.2.0",
     "knex": "0.12.6",
     "lodash": "4.17.4",
     "marked": "0.3.6",

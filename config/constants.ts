@@ -67,9 +67,23 @@ export class Constants {
                 "GENERIC_ERROR": "serverError",
                 "NOT_FOUND": "notFound",
                 "INVALID_PARAMETER": "invalidParameter",
-                "INVALID_JSON_BODY": "invalidJsonBody"
+                "INVALID_JSON_BODY": "invalidJsonBody",
 
-                
+                "INVALID_HEADER": "invalidHeader",
+                "INVALID_AUTHORIZATION_HEADER": "invalidAuthorizationHeader",
+                "INVALID_JWT": "invalidJWT",
+                "UNAUTHORIZED_ACCESS": "unauthorizedAccess",
+
+                // Value Code
+                "NULL_VALUE": "nullValue",
+                "INVALID_VALUE": "invalidValue",
+                "INVALID_EMAIL_VALUE": "invalidEmailValue",
+
+                // Can't execute request (wrong id per example)
+                "INVALID_REQUEST": 'invalidRequest',
+
+                // Connection invalid
+                "INVALID_CONNECTION": 'invalidConnection',
             }
         };
     }

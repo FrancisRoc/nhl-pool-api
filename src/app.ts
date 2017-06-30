@@ -108,7 +108,7 @@ export async function createApp(apiRoutes: IHandlerRoute[]): Promise<express.Exp
     }
 
     // required for auth0
-    app.use(authCheck);
+    //app.use(authCheck);
 
     //==========================================
     // Static dev public files, under "/public".
@@ -266,7 +266,7 @@ async function initComponents() {
         fs.mkdirSync(configs.testDataDir);
     }
 
-    dbConnectionService.connect();
+    //dbConnectionService.connect();
 
     //==========================================
     // Manages program interuption
@@ -276,7 +276,7 @@ async function initComponents() {
         dbConnectionService.release()
 
         logger.debug("Killing process... Press Enter to continu");
-        process.exit(1); 
+        process.exit(1);
     });
 }
 
