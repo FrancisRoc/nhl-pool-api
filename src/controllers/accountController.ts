@@ -25,15 +25,31 @@ let util = require('util');
 class AccountController {
     public async authentification(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let authHeader = req.header('Authorization');
+        console.log("Header for auth0: " + authHeader);
+
         let parts: string[] = authHeader.trim().split(' ');
-        let token = parts[1];
+        let token = parts[1];   // Get id-token without Bearer
 
-        logger.debug("Token to decode: " + token);
+        let decodedBody = jwtDecode(token);
+        logger.debug(decodedBody);
 
-        let decoded = jwtDecode(token);
-        logger.debug(decoded);
+        // Differentiate connection types
+        let accountInfo: IAccountInfos;
+        if (decodedBody.sub.indexOf('google-oauth2') > -1) {
+            //Google auth
+            accountInfo = {
+                "name": decodedBody.name,
+                "nickname": decodedBody.nickname,
+                "email": decodedBody.nickname + "@gmail.com",
+                "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
+            }
+            logger.debug("Extracted user infos: " + util.inspect(accountInfo, false, null));
+            //Send data to database
+            //TODO
+        }
 
-        res.send();
+        //Send user to application
+        res.send(accountInfo);
     }
 
     public async createAccount(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -41,16 +57,16 @@ class AccountController {
 
         //Encapsulate user account creation in DTO
         //TODO
-        let accountInfo: IAccountInfos = {
+        /*let accountInfo: IAccountInfos = {
             "firstName": "test",
             "lastName": "test",
             "email": "test",
             "dateOfBirth": new Date(),
             "userName": "test",
             "password": "test"
-        }
+        }*/
 
-        let accountInfosDto: AccountInfosDto = new AccountInfosDto(accountInfo);
+        //let accountInfosDto: AccountInfosDto = new AccountInfosDto(accountInfo);
         //Call service to create account in mongodb
     }
 }

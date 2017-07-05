@@ -1,12 +1,9 @@
 import { IAccountInfos } from "./accountInfosInterface";
 
 export class AccountInfosDto {
-    private firstName: string;
-    private lastName: string;
+    private name: string;
+    private nickname: string;
     private email: string;
-    private dateOfBirth: Date;
-    private userName: string;
-    private password: string;
     private userId: number;
 
     constructor(accountInfos: IAccountInfos) {

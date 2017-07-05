@@ -1,8 +1,6 @@
 export interface IAccountInfos {
-    firstName: string;
-    lastName: string;
+    name: string;
+    nickname: string;
     email: string;
-    dateOfBirth: Date;
-    userName: string;
-    password: string;
+    userId: string;
 }
