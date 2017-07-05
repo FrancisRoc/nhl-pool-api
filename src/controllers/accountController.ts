@@ -43,11 +43,29 @@ class AccountController {
                 "email": decodedBody.nickname + "@gmail.com",
                 "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
             }
-            logger.debug("Extracted user infos: " + util.inspect(accountInfo, false, null));
-            //Send data to database
-            //TODO
+        } else if (decodedBody.sub.indexOf('facebook') > -1) {
+            //Facebook auth
+            accountInfo = {
+                "name": decodedBody.name,
+                "nickname": decodedBody.nickname,
+                "email": "",
+                "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
+            }
+        } else if (decodedBody.sub.indexOf('auth0') > -1) {
+            //OAuth auth
+            accountInfo = {
+                "name": decodedBody.nickname,
+                "nickname": decodedBody.nickname,
+                "email": decodedBody.name,
+                "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
+            }
+
         }
 
+        //Send data to mongo if not exist. Else retrive data from mongo
+        //TODO
+
+        logger.debug("Extracted user infos: " + util.inspect(accountInfo, false, null));
         //Send user to application
         res.send(accountInfo);
     }
