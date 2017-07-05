@@ -15,3 +15,7 @@ api:
     documentation: /documentation
     diagnostics: /diagnostics
   domainPath: /nhl/poolApp
+
+dataSources:
+  mongodb:
+    connectString: mongodb://dev:dev@ds133162.mlab.com:33162/nhlpoolhelper

@@ -17,6 +17,10 @@ api:
 openApi:
   exposeSwaggerEditor: true
 
+dataSources:
+  mongodb:
+    connectString: mongodb://localhost:27017/nhlPoolApp
+
 templatingEngine:
   enableCache: false
 

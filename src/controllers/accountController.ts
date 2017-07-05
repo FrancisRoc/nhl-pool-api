@@ -1,4 +1,6 @@
 //import { draftPlayerService } from "../services/TODO";
+import { accountService } from "../services/authentification/accountService";
+
 import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { AccountInfosDto } from "../models/user/accountInfosDto";
 import { constants, EndpointTypes } from "../../config/constants";
@@ -63,7 +65,11 @@ class AccountController {
         }
 
         //Send data to mongo if not exist. Else retrive data from mongo
-        //TODO
+        if (!accountService.verifyUser(accountInfo.userId)) {
+            //Create an account
+            logger.debug("Signup, creating user in database...");
+            //accountService.createAccount(accountInfo);
+        }
 
         logger.debug("Extracted user infos: " + util.inspect(accountInfo, false, null));
         //Send user to application
