@@ -4,17 +4,17 @@ export class AccountInfosDto {
     private name: string;
     private nickname: string;
     private email: string;
-    private userId: number;
+    private _id: string;
 
     constructor(accountInfos: IAccountInfos) {
-        Object.apply(this, accountInfos);
+        Object.assign(this, accountInfos);
     }
 
-    setUserId(userId: number): void {
-        this.userId = userId;
+    setUserId(userId: string): void {
+        this._id = userId;
     }
 
-    getUserId(): number {
-        return this.userId;
+    getUserId(): string {
+        return this._id;
     }
 }

@@ -10,21 +10,21 @@ export interface IAccountService {
      * Verify if user has an account
      * @param userId: user identifiant
      */
-    verifyUser(userId: string): Promise<boolean>
+    verifyUser(userId: string): Promise<AccountInfosDto>
 
     /**
      * Create user account
      * @param userInfos: user informations
      */
-    createAccount(userInfos: AccountInfosDto): Promise<boolean>
+    createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto>
 }
 
 class AccountService implements IAccountService {
-    public async verifyUser(userId: string): Promise<boolean> {
+    public async verifyUser(userId: string): Promise<AccountInfosDto> {
         return daoAccount.verifyUser(userId);
     }
 
-    public async createAccount(userInfos: AccountInfosDto): Promise<boolean> {
+    public async createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto> {
         return daoAccount.createAccount(userInfos);
     }
 }

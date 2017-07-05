@@ -27,7 +27,6 @@ let util = require('util');
 class AccountController {
     public async authentification(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let authHeader = req.header('Authorization');
-        console.log("Header for auth0: " + authHeader);
 
         let parts: string[] = authHeader.trim().split(' ');
         let token = parts[1];   // Get id-token without Bearer
@@ -35,6 +34,30 @@ class AccountController {
         let decodedBody = jwtDecode(token);
         logger.debug(decodedBody);
 
+        //Send data to mongo if not exist. Else retrive data from mongo
+        logger.debug("Verify user called");
+        let userId: string = decodedBody.sub.split('|')[1];
+        let accountInfo: AccountInfosDto = await accountService.verifyUser(userId);
+
+        if (!accountInfo.getUserId()) {
+            //Create an account
+            logger.debug("User doesn't exist. Signup, creating user in database...");
+            let dto = new AccountInfosDto(this.extractUserAccountInfos(decodedBody));
+            accountInfo = await accountService.createAccount(dto);
+        }
+
+        if (accountInfo == null) {
+            res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR);
+            res.send();
+            return;
+        }
+
+        //Send user to application
+        res.status(HttpStatusCodes.ACCEPTED);
+        res.send(accountInfo);
+    }
+
+    private extractUserAccountInfos(decodedBody: any): IAccountInfos {
         // Differentiate connection types
         let accountInfo: IAccountInfos;
         if (decodedBody.sub.indexOf('google-oauth2') > -1) {
@@ -43,7 +66,7 @@ class AccountController {
                 "name": decodedBody.name,
                 "nickname": decodedBody.nickname,
                 "email": decodedBody.nickname + "@gmail.com",
-                "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
+                "_id": decodedBody.sub.split('|')[1]         //Substring unique id in sub
             }
         } else if (decodedBody.sub.indexOf('facebook') > -1) {
             //Facebook auth
@@ -51,7 +74,7 @@ class AccountController {
                 "name": decodedBody.name,
                 "nickname": decodedBody.nickname,
                 "email": "",
-                "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
+                "_id": decodedBody.sub.split('|')[1]         //Substring unique id in sub
             }
         } else if (decodedBody.sub.indexOf('auth0') > -1) {
             //OAuth auth
@@ -59,21 +82,10 @@ class AccountController {
                 "name": decodedBody.nickname,
                 "nickname": decodedBody.nickname,
                 "email": decodedBody.name,
-                "userId": decodedBody.sub.split('|')[1]         //Substring unique id in sub
+                "_id": decodedBody.sub.split('|')[1]         //Substring unique id in sub
             }
-
         }
-
-        //Send data to mongo if not exist. Else retrive data from mongo
-        if (!accountService.verifyUser(accountInfo.userId)) {
-            //Create an account
-            logger.debug("Signup, creating user in database...");
-            //accountService.createAccount(accountInfo);
-        }
-
-        logger.debug("Extracted user infos: " + util.inspect(accountInfo, false, null));
-        //Send user to application
-        res.send(accountInfo);
+        return accountInfo
     }
 
     public async createAccount(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
