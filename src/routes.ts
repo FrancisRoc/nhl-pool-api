@@ -54,7 +54,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
 
         { method: HttpMethods.DELETE, path: "/v1/players/draft/:id", handler: draftPlayerController.draft },
 
-        { method: HttpMethods.POST, path: "/v1/users/authentificate", handler: accountController.authentificate },
+        { method: HttpMethods.POST, path: "/v1/users/authenticate", handler: accountController.authenticate },
         { method: HttpMethods.POST, path: "/v1/users/register", handler: accountController.register },
         { method: HttpMethods.GET, path: "/v1/users", handler: accountController.getAll },
         { method: HttpMethods.GET, path: "/v1/users/current", handler: accountController.getCurrent },

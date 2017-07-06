@@ -30,7 +30,7 @@ export interface IDaoAccount {
      * @param username: user identifiant
      * @param password: user password
      */
-    authentificate(username: string, password: string): Promise<{}>
+    authenticate(username: string, password: string): Promise<{}>
 
     /**
      * Create user account in db
@@ -55,13 +55,13 @@ class DaoAccount implements IDaoAccount {
         });
     }
 
-    public async authentificate(username: string, password: string): Promise<{}> {
-        let userInfos = await this.authetificateQuery(username, password);
+    public async authenticate(username: string, password: string): Promise<{}> {
+        let userInfos = await this.authenticateQuery(username, password);
         logger.debug("User found: " + util.inspect(userInfos, false, null));
         return userInfos;
     }
 
-    private async authetificateQuery(username: string, password: string): Promise<{}> {
+    private async authenticateQuery(username: string, password: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('Users').find({ username: username }).limit(1).toArray(function (err, docs) {
                 if (err) {

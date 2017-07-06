@@ -88,8 +88,8 @@ class AccountController {
         return accountInfo
     }
 
-    public async authentificate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let user = await accountService.authentificate(req.body.username, req.body.password);
+    public async authenticate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let user = await accountService.authenticate(req.body.username, req.body.password);
 
         if (user) {
             res.status(HttpStatusCodes.OK);

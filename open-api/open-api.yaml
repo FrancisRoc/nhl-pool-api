@@ -233,7 +233,7 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /v1/users/authentificate:
+  /v1/users/authenticate:
     post:
       summary: authentification to account
       operationId: authentification

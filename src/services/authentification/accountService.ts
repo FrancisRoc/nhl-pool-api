@@ -23,7 +23,7 @@ export interface IAccountService {
      * @param username: user identifiant
      * @param password: user password
      */
-    authentificate(username: string, password: string): Promise<{}>
+    authenticate(username: string, password: string): Promise<{}>
 
     /**
      * Create user account
@@ -41,8 +41,8 @@ class AccountService implements IAccountService {
         return daoAccount.createAccount(userInfos);
     }
 
-    public async authentificate(username: string, password: string): Promise<{}> {
-        return daoAccount.authentificate(username, password);
+    public async authenticate(username: string, password: string): Promise<{}> {
+        return daoAccount.authenticate(username, password);
     }
 
     public async create(userInfos: any): Promise<void> {
