@@ -88,45 +88,46 @@ class DaoAccount implements IDaoAccount {
 
     public async create(userInfos: any): Promise<void> {
         logger.debug("Dao create account called");
-        await this.createQuery(userInfos);
+        let userExist: boolean = <boolean>await this.verifyExistingUserQuery(userInfos);
+
+        if (!userExist) {
+            await this.createUser(userInfos);
+        }
     }
 
-    private async createQuery(userInfos: any): Promise<{}> {
+    private async verifyExistingUserQuery(userInfos: any): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Users').find({ username: userInfos.username }).limit(1, function (err, user) {
+            dbConnectionService.getConnection().collection('Users').findOne({ username: userInfos.username }, function (err, user) {
                 if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
 
+                logger.debug("User found in database: " + util.inspect(user, false, null));
                 if (user) {
                     logger.debug("Username " + userInfos.username + " is already taken");
                     return reject();
-                } else {
-                    let created:boolean = this.createUser(userInfos);
-                    if (created) {
-                        return resolve();
-                    } else {
-                        return reject();
-                    }
                 }
-            }.bind(this));
+                return resolve(false);
+            });
         });
     }
 
-    private createUser(userInfos: any): boolean {
-        // set user object to userParam without the cleartext password
-        var user = _.omit(userInfos, 'password');
+    private async createUser(userInfos: any): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            logger.debug("User not found in data. Create new user: " + util.inspect(userInfos, false, null));
 
-        // add hashed password to user object
-        user.hash = bcrypt.hashSync(userInfos.password, 10);
+            // set user object to userParam without the cleartext password
+            var user = _.omit(userInfos, 'password');
+            // add hashed password to user object
+            user.hash = bcrypt.hashSync(userInfos.password, 10);
 
-        dbConnectionService.getConnection().collection('Users').insert(user, function (err, doc) {
-            if (err) {
-                return false;
-            }
-            return true;
+            dbConnectionService.getConnection().collection('Users').insert(user, function (err, doc) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                return resolve();
+            });
         });
-        return false;
     }
 
     public async createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto> {
