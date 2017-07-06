@@ -233,7 +233,7 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /v1/account/authentification:
+  /v1/users/authentificate:
     post:
       summary: authentification to account
       operationId: authentification
@@ -255,19 +255,57 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /v1/account/signup:
+  /v1/users/register:
     post:
-      summary: Create new account
-      operationId: createAccount
+      summary: register new user
+      operationId: register
       tags:
-        - createAccount
-        - newUser
-      parameters:
-        - name: userInfos
-          in: body
-          required: true
+        - register
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /v1/users:
+    get:
+      summary: get all users
+      operationId: getAll
+      tags:
+        - getAllUsers
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/users/current:
+    get:
+      summary: get current user
+      operationId: getCurrent
+      tags:
+        - getCurrentUser
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /v1/users/{id}:
+    delete:
+      summary: delete user
+      operationId: deleteUser
+      tags:
+        - deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of user to delete
+          type: string
       responses:
         '200':
           description: Success response

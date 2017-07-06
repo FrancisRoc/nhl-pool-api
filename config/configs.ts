@@ -61,6 +61,7 @@ export class Configs {
     private _openApiRoutesSwaggerEditor: string;
 
     private _dataSourcesMongodbConnectString: string;
+    private _dataSourcesMongodbSecret: string;
 
     private _nhlApiNbPlayersLimit: number;
     private _nhlApiResponseEncoding: string;
@@ -152,6 +153,7 @@ export class Configs {
         this._templatingEngineEnableCache = <boolean>config.get("templatingEngine.enableCache");
 
         this._dataSourcesMongodbConnectString = <string>config.get("dataSources.mongodb.connectString");
+        this._dataSourcesMongodbSecret = <string>config.get("dataSources.mongodb.secret");
 
         this._nhlApiNbPlayersLimit = <number>config.get("nhlApi.nbPlayersLimit");
         this._nhlApiResponseEncoding = <string>config.get("nhlApi.responseEncoding");
@@ -461,6 +463,7 @@ export class Configs {
         return {
             "mongodb": {
                 "connectString": this._dataSourcesMongodbConnectString,
+                "secret": this._dataSourcesMongodbSecret,
             }
         };
     }

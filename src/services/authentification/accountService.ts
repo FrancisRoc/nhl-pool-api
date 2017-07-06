@@ -17,6 +17,19 @@ export interface IAccountService {
      * @param userInfos: user informations
      */
     createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto>
+
+    /**
+     * Verify if user has an account
+     * @param username: user identifiant
+     * @param password: user password
+     */
+    authentificate(username: string, password: string): Promise<{}>
+
+    /**
+     * Create user account
+     * @param userInfos: user informations
+     */
+    create(userInfos: any): Promise<void>
 }
 
 class AccountService implements IAccountService {
@@ -26,6 +39,14 @@ class AccountService implements IAccountService {
 
     public async createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto> {
         return daoAccount.createAccount(userInfos);
+    }
+
+    public async authentificate(username: string, password: string): Promise<{}> {
+        return daoAccount.authentificate(username, password);
+    }
+
+    public async create(userInfos: any): Promise<void> {
+        return daoAccount.create(userInfos);
     }
 }
 export let accountService: AccountService = new AccountService();

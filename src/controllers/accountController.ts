@@ -88,22 +88,34 @@ class AccountController {
         return accountInfo
     }
 
-    public async createAccount(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let jsonBody: JSON = ps.parse(req.body);
+    public async authentificate(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let user = await accountService.authentificate(req.body.username, req.body.password);
 
-        //Encapsulate user account creation in DTO
-        //TODO
-        /*let accountInfo: IAccountInfos = {
-            "firstName": "test",
-            "lastName": "test",
-            "email": "test",
-            "dateOfBirth": new Date(),
-            "userName": "test",
-            "password": "test"
-        }*/
+        if (user) {
+            res.status(HttpStatusCodes.OK);
+            res.send(user);
+        } else {
+            res.status(HttpStatusCodes.BAD_REQUEST);
+            res.send("Username or password is incorrect");
+        }
+    }
 
-        //let accountInfosDto: AccountInfosDto = new AccountInfosDto(accountInfo);
-        //Call service to create account in mongodb
+    public async register(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        await accountService.create(req.body);
+        res.status(HttpStatusCodes.OK);
+        res.send();
+    }
+
+    public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        res.send();
+    }
+
+    public async getCurrent(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        res.send();
+    }
+
+    public async _delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        res.send();
     }
 }
 export let accountController: AccountController = new AccountController();
