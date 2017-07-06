@@ -40,6 +40,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
         // file is not in sync with the current "routes.ts" file, we
         // have to add this dummy route... Simply remove it!
         //==========================================
+
         { method: HttpMethods.GET, path: "/v1/players/stats/goals", handler: servePlayersStatsController.getGoalStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/assists", handler: servePlayersStatsController.getAssistStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/points", handler: servePlayersStatsController.getPointStat },
