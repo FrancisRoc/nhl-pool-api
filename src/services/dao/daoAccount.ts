@@ -37,6 +37,11 @@ export interface IDaoAccount {
      * @param userInfos: user informations
      */
     create(userInfos: any): Promise<void>
+
+    /**
+     * Get all username stored in database
+     */
+    getAll(nameFragment?: string): Promise<AccountInfosDto[]>
 }
 
 class DaoAccount implements IDaoAccount {
@@ -74,8 +79,7 @@ class DaoAccount implements IDaoAccount {
                     return resolve({
                         _id: user._id,
                         username: user.username,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
+                        name: user.name,
                         token: jwt.sign({ sub: user._id }, configs.dataSources.mongodb.secret)
                     });
                 } else {
@@ -146,6 +150,55 @@ class DaoAccount implements IDaoAccount {
                 if (result) {
                     logger.debug("User created: " + util.inspect(result.ops[0], false, null));
                     return resolve(userInfos);
+                }
+            });
+        });
+    }
+
+    public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
+        logger.debug("Dao get all users called");
+
+        let users: IAccountInfos[] = [];
+        if (nameFragment) {
+            users = <IAccountInfos[]> await this.getAllFilteredQuery(nameFragment);
+        } else {
+            users = <IAccountInfos[]> await this.getAllQuery();
+        }
+        
+        let usersDto: AccountInfosDto[] = [];
+        for (let i = 0; i < users.length; i++) {
+            usersDto.push(new AccountInfosDto(users[i]));
+        }
+
+        return usersDto;
+    }
+
+    private async getAllQuery(): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('Users').find({}).toArray(function(error, docs) {
+                if (error) {
+                    return reject(error);
+                }
+
+                if (docs) {
+                    logger.debug("Users returned: " + util.inspect(docs, false, null));
+                    return resolve(docs);
+                }
+            });
+        });
+    }
+
+    private async getAllFilteredQuery(nameFragment: string): Promise<{}> {
+        logger.debug("getAllFilteredQuery called");
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('Users').find({ name: { $regex: new RegExp(nameFragment), $options: 'i' } }).toArray(function(error, docs) {
+                if (error) {
+                    return reject(error);
+                }
+
+                if (docs) {
+                    logger.debug("Users returned: " + util.inspect(docs, false, null));
+                    return resolve(docs);
                 }
             });
         });

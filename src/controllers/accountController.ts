@@ -107,7 +107,15 @@ class AccountController {
     }
 
     public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        res.send();
+        let nameFragment = req.query["name"];
+        let users: AccountInfosDto[]
+        if (nameFragment) {
+            users = await accountService.getAll(nameFragment);
+        } else {
+            users = await accountService.getAll();
+        }
+        res.status(HttpStatusCodes.OK);        
+        res.send(users);
     }
 
     public async getCurrent(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {

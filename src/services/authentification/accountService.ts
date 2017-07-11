@@ -30,6 +30,11 @@ export interface IAccountService {
      * @param userInfos: user informations
      */
     create(userInfos: any): Promise<void>
+
+    /**
+     * Get all username 
+     */
+    getAll(nameFragment?: string): Promise<AccountInfosDto[]>
 }
 
 class AccountService implements IAccountService {
@@ -47,6 +52,10 @@ class AccountService implements IAccountService {
 
     public async create(userInfos: any): Promise<void> {
         return daoAccount.create(userInfos);
+    }
+
+    public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
+        return daoAccount.getAll(nameFragment);
     }
 }
 export let accountService: AccountService = new AccountService();
