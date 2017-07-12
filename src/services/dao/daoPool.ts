@@ -20,7 +20,7 @@ export interface IDaoPool {
     /**
      * Get all pools stored in database
      */
-    //getAll(nameFragment?: string): Promise<AccountInfosDto[]>
+    getAll(): Promise<IPoolResponse[]>
 }
 
 class DaoPool implements IDaoPool {
@@ -63,28 +63,14 @@ class DaoPool implements IDaoPool {
         });
     }
 
-    /*public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
-        logger.debug("Dao get all users called");
-
-        let users: IAccountInfos[] = [];
-        if (nameFragment) {
-            users = <IAccountInfos[]> await this.getAllFilteredQuery(nameFragment);
-        } else {
-            //TODO get ordered by pool name
-            users = <IAccountInfos[]> await this.getAllQuery();
-        }
-
-        let usersDto: AccountInfosDto[] = [];
-        for (let i = 0; i < users.length; i++) {
-            usersDto.push(new AccountInfosDto(users[i]));
-        }
-
-        return usersDto;
+    public async getAll(): Promise<IPoolResponse[]> {
+        logger.debug("Dao get all pools called");
+        return <IPoolResponse[]> await this.getAllQuery();
     }
 
     private async getAllQuery(): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Users').find({}).toArray(function(error, docs) {
+            dbConnectionService.getConnection().collection('Pools').find({}).toArray(function(error, docs) {
                 if (error) {
                     return reject(error);
                 }
@@ -96,6 +82,6 @@ class DaoPool implements IDaoPool {
             });
         });
     }
-*/
+
 }
 export let daoPool: IDaoPool = new DaoPool();

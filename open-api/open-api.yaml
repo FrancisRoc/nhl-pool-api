@@ -326,6 +326,19 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /v1/pools/getAll:
+    get:
+      summary: Get all pool registered in database
+      operationId: getAllPools
+      tags:
+        - Get all pools
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
 definitions:
   GoalStatResult:
     required:

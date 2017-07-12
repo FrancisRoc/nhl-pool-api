@@ -16,9 +16,9 @@ export interface IPoolService {
     create(poolInfos: IPoolRequest): Promise<IPoolResponse>
 
     /**
-     * Get all username
+     * Get all pools
      */
-    //getAll(nameFragment?: string): Promise<AccountInfosDto[]>
+    getAll(): Promise<IPoolResponse[]>
 }
 
 class PoolService implements IPoolService {
@@ -37,8 +37,8 @@ class PoolService implements IPoolService {
         return daoPool.create(poolWithMembersInfos);
     }
 
-    /*public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
-        return daoAccount.getAll(nameFragment);
-    }*/
+    public async getAll(): Promise<IPoolResponse[]> {
+        return daoPool.getAll();
+    }
 }
 export let poolService: PoolService = new PoolService();

@@ -33,16 +33,10 @@ class PoolController {
         res.send(poolCreated);
     }
 
-    /*public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let nameFragment = req.query["name"];
-        let users: AccountInfosDto[]
-        if (nameFragment) {
-            users = await accountService.getAll(nameFragment);
-        } else {
-            users = await accountService.getAll();
-        }
+    public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let pools: IPoolResponse[] = await poolService.getAll();
         res.status(HttpStatusCodes.OK);
-        res.send(users);
-    }*/
+        res.send(pools);
+    }
 }
 export let poolController: PoolController = new PoolController();
