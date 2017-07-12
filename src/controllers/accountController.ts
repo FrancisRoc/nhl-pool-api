@@ -119,10 +119,12 @@ class AccountController {
     }
 
     public async getCurrent(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        //TODO?
         res.send();
     }
 
     public async _delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        //TODO?
         res.send();
     }
 }

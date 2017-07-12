@@ -9,6 +9,7 @@ import { IHandlerRoute, HttpMethods } from "./models/core/route";
 import { servePlayersStatsController } from "./controllers/servePlayersStatsController";
 import { draftPlayerController } from "./controllers/draftPlayerController";
 import { accountController } from "./controllers/accountController";
+import { poolController } from "./controllers/poolController";
 import { createLogger } from "./utils/logger";
 
 let logger = createLogger("routes");
@@ -59,5 +60,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.GET, path: "/v1/users", handler: accountController.getAll },
         { method: HttpMethods.GET, path: "/v1/users/current", handler: accountController.getCurrent },
         { method: HttpMethods.DELETE, path: "/v1/users/:id", handler: accountController._delete },
+
+        { method: HttpMethods.POST, path: "/v1/pools/create", handler: poolController.create },
     ];
 }
