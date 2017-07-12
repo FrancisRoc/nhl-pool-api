@@ -1,10 +1,10 @@
 import { IAccountInfos } from '../user/accountInfosInterface';
 
 /**
- * A Pool.
+ * A Pool informations returned to frontend.
  */
-export interface IPool {
-    _id: string;
+export interface IPoolResponse {
+    _id?: string;
     name: string;
     members: IAccountInfos[];
 }

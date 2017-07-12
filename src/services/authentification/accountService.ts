@@ -1,4 +1,5 @@
 import { AccountInfosDto } from "../../models/user/accountInfosDto";
+import { IAccountInfos } from "../../models/user/accountInfosInterface";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -8,15 +9,9 @@ import * as express from "express";
 export interface IAccountService {
     /**
      * Verify if user has an account
-     * @param userId: user identifiant
+     * @param username: user identifiant
      */
-    verifyUser(userId: string): Promise<AccountInfosDto>
-
-    /**
-     * Create user account
-     * @param userInfos: user informations
-     */
-    createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto>
+    getUser(username: string): Promise<IAccountInfos>
 
     /**
      * Verify if user has an account
@@ -32,18 +27,14 @@ export interface IAccountService {
     create(userInfos: any): Promise<void>
 
     /**
-     * Get all username 
+     * Get all username
      */
     getAll(nameFragment?: string): Promise<AccountInfosDto[]>
 }
 
 class AccountService implements IAccountService {
-    public async verifyUser(userId: string): Promise<AccountInfosDto> {
-        return daoAccount.verifyUser(userId);
-    }
-
-    public async createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto> {
-        return daoAccount.createAccount(userInfos);
+    public async getUser(username: string): Promise<IAccountInfos> {
+        return daoAccount.getUser(username);
     }
 
     public async authenticate(username: string, password: string): Promise<{}> {

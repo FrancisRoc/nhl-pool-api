@@ -1,4 +1,6 @@
 import { poolService } from "../services/poolService";
+import { IPoolRequest } from "../models/pool/poolRequest";
+import { IPoolResponse } from "../models/pool/poolResponse";
 
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
@@ -21,9 +23,14 @@ let util = require('util');
 @autobind
 class PoolController {
     public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        await poolService.create(req.body);
+        // Create pool informations interface
+        logger.debug("Create pool endpoint called");
+        let poolInfos: IPoolRequest = req.body;
+
+        logger.debug("Pool informations: " + util.inspect(poolInfos, false, null));
+        let poolCreated: IPoolResponse = await poolService.create(poolInfos);
         res.status(HttpStatusCodes.OK);
-        res.send();
+        res.send(poolCreated);
     }
 
     /*public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
@@ -34,7 +41,7 @@ class PoolController {
         } else {
             users = await accountService.getAll();
         }
-        res.status(HttpStatusCodes.OK);        
+        res.status(HttpStatusCodes.OK);
         res.send(users);
     }*/
 }

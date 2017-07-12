@@ -15,9 +15,9 @@ let logger = createLogger("daoAccount");
 export interface IDaoAccount {
     /**
      * Verify if user has an account with find request in mongo
-     * @param userId: user identifiant
+     * @param username: user identifiant
      */
-    verifyUser(userId: string): Promise<AccountInfosDto>
+    getUser(username: string): Promise<IAccountInfos>
 
     /**
      * Create user account in db
@@ -45,16 +45,15 @@ export interface IDaoAccount {
 }
 
 class DaoAccount implements IDaoAccount {
-    public async verifyUser(userId: string): Promise<AccountInfosDto> {
-        let accountInfos: IAccountInfos = <IAccountInfos>await this.verifyUserQuery(userId);
-        let userInfos: AccountInfosDto = new AccountInfosDto(accountInfos);
-        logger.debug("User found: " + util.inspect(userInfos, false, null));
-        return userInfos;
+    public async getUser(username: string): Promise<IAccountInfos> {
+        let user: IAccountInfos = <IAccountInfos>await this.verifyUserQuery(username);
+        logger.debug("User found: " + util.inspect(user, false, null));
+        return user;
     }
 
-    private async verifyUserQuery(userId: string): Promise<{}> {
+    private async verifyUserQuery(username: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Users').find({ _id: userId }).limit(1).toArray(function (err, docs) {
+            dbConnectionService.getConnection().collection('Users').find({ username: username }, { _id: 1, name: 1, username: 1 }).limit(1).toArray(function (err, docs) {
                 resolve(docs[0]);
             });
         });
@@ -164,7 +163,7 @@ class DaoAccount implements IDaoAccount {
         } else {
             users = <IAccountInfos[]> await this.getAllQuery();
         }
-        
+
         let usersDto: AccountInfosDto[] = [];
         for (let i = 0; i < users.length; i++) {
             usersDto.push(new AccountInfosDto(users[i]));

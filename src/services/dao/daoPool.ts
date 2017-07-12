@@ -1,6 +1,7 @@
 import { dbConnectionService } from "../dbConnectionService";
 import { IAccountInfos } from "../../models/user/accountInfosInterface";
-import { IPool } from "../../models/pool/pool";
+import { IPoolRequest } from "../../models/pool/poolRequest";
+import { IPoolResponse } from "../../models/pool/poolResponse";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -14,7 +15,7 @@ export interface IDaoPool {
      * Create pool in mongodb
      * @param poolInfos: pool informations (name, members)
      */
-    create(poolInfos: IPool): Promise<IPool>
+    create(poolInfos: IPoolResponse): Promise<IPoolResponse>
 
     /**
      * Get all pools stored in database
@@ -23,12 +24,33 @@ export interface IDaoPool {
 }
 
 class DaoPool implements IDaoPool {
-    public async create(poolInfos: IPool): Promise<IPool> {
+    public async create(poolInfos: IPoolResponse): Promise<IPoolResponse> {
         logger.debug("Dao create pool called");
-        return <IPool> await this.createPoolQuery(poolInfos);
+        let poolExist: boolean = <boolean> await this.verifyExistingPoolQuery(poolInfos.name);
+
+        if (!poolExist) {
+            return <IPoolResponse> await this.createPoolQuery(poolInfos);
+        }
     }
 
-    private async createPoolQuery(poolInfos: IPool): Promise<{}> {
+    private async verifyExistingPoolQuery(poolName: string): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('Pools').findOne({ name: poolName }, function (err, pool) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+
+                logger.debug("Pool found in database: " + util.inspect(pool, false, null));
+                if (pool) {
+                    logger.debug("Username " + pool.name + " is already taken");
+                    return reject(new Error("Pool already exists"));
+                }
+                return resolve(false);
+            });
+        });
+    }
+
+    private async createPoolQuery(poolInfos: IPoolResponse): Promise<{}> {
         return new Promise(function (resolve, reject) {
             logger.debug("Create new pool: " + util.inspect(poolInfos, false, null));
 
@@ -36,7 +58,7 @@ class DaoPool implements IDaoPool {
                 if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
-                return resolve(doc);
+                return resolve(doc.ops[0]);
             });
         });
     }
@@ -51,7 +73,7 @@ class DaoPool implements IDaoPool {
             //TODO get ordered by pool name
             users = <IAccountInfos[]> await this.getAllQuery();
         }
-        
+
         let usersDto: AccountInfosDto[] = [];
         for (let i = 0; i < users.length; i++) {
             usersDto.push(new AccountInfosDto(users[i]));
