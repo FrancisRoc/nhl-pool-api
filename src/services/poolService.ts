@@ -17,8 +17,9 @@ export interface IPoolService {
 
     /**
      * Get all pools
+     * @param: memberId: member to get all pools
      */
-    getAll(): Promise<IPoolResponse[]>
+    getAll(memberId: string): Promise<IPoolResponse[]>
 }
 
 class PoolService implements IPoolService {
@@ -34,11 +35,15 @@ class PoolService implements IPoolService {
             members: membersInfos
         }
 
-        return daoPool.create(poolWithMembersInfos);
+        let pool: IPoolResponse = <IPoolResponse> await daoPool.create(poolWithMembersInfos);
+
+        // Add pool id to all members
+        await daoPool.addUsersToPool(pool._id, pool.members);
+        return pool;
     }
 
-    public async getAll(): Promise<IPoolResponse[]> {
-        return daoPool.getAll();
+    public async getAll(memberId: string): Promise<IPoolResponse[]> {
+        return await daoPool.getAll(memberId);
     }
 }
 export let poolService: PoolService = new PoolService();

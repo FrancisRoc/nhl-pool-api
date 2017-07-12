@@ -9,6 +9,7 @@ import { configs } from "../../../config/configs";
 
 let util = require("util");
 let logger = createLogger("daoPool");
+let ObjectId = require('mongodb').ObjectId;
 
 export interface IDaoPool {
     /**
@@ -19,17 +20,25 @@ export interface IDaoPool {
 
     /**
      * Get all pools stored in database
+     * @param: memberId: member to get all pools
      */
-    getAll(): Promise<IPoolResponse[]>
+    getAll(memberId: string): Promise<IPoolResponse[]>
+
+    /**
+     * Associate all members of a pool to its id
+     * @param: poolId: pool id
+     * @param: members: members to associate with pool id
+     */
+    addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void>
 }
 
 class DaoPool implements IDaoPool {
     public async create(poolInfos: IPoolResponse): Promise<IPoolResponse> {
         logger.debug("Dao create pool called");
-        let poolExist: boolean = <boolean> await this.verifyExistingPoolQuery(poolInfos.name);
+        let poolExist: boolean = <boolean>await this.verifyExistingPoolQuery(poolInfos.name);
 
         if (!poolExist) {
-            return <IPoolResponse> await this.createPoolQuery(poolInfos);
+            return <IPoolResponse>await this.createPoolQuery(poolInfos);
         }
     }
 
@@ -63,22 +72,67 @@ class DaoPool implements IDaoPool {
         });
     }
 
-    public async getAll(): Promise<IPoolResponse[]> {
-        logger.debug("Dao get all pools called");
-        return <IPoolResponse[]> await this.getAllQuery();
+    public async getAll(memberId: string): Promise<IPoolResponse[]> {
+        logger.debug("Dao get all pools called with member id: " + memberId);
+        let poolsId: any[] = <any[]> await this.getAllQuery(memberId);
+
+        let pools: IPoolResponse[] = []
+        for (let i = 0; i < poolsId.length; i++) {
+            let pool: IPoolResponse = <IPoolResponse> await this.getPoolQuery(poolsId[i].poolId);
+            pools.push(pool);
+        }
+        return pools;
     }
 
-    private async getAllQuery(): Promise<{}> {
+    private async getAllQuery(memberId: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Pools').find({}).toArray(function(error, docs) {
+            dbConnectionService.getConnection().collection('MemberPools').find({ memberId: new ObjectId(memberId) }, { _id: 0, poolId: 1 }).toArray(function (error, docs) {
                 if (error) {
                     return reject(error);
                 }
 
                 if (docs) {
-                    logger.debug("Users returned: " + util.inspect(docs, false, null));
+                    logger.debug("Pools id returned: " + util.inspect(docs, false, null));
                     return resolve(docs);
                 }
+            });
+        });
+    }
+
+    private async getPoolQuery(poolId: any): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            logger.debug("Get pool by id called with id: " + poolId);
+            dbConnectionService.getConnection().collection('Pools').findOne({ _id: poolId }, function (error, pool) {
+                if (error) {
+                    return reject(error);
+                }
+
+                if (pool) {
+                    logger.debug("Pools returned: " + util.inspect(pool, false, null));
+                    return resolve(pool);
+                }
+            });
+        });
+    }
+
+    public async addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void> {
+        for (let i = 0; i < members.length; i++) {
+            await this.addUsersToPoolQuery(poolId, members[i]._id);
+        }
+    }
+
+    private async addUsersToPoolQuery(poolId: string, memberId: string): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            let association = {
+                memberId: memberId,
+                poolId: poolId
+            }
+
+            dbConnectionService.getConnection().collection('MemberPools').insert(association, function (err, doc) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                return resolve();
             });
         });
     }
