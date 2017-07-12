@@ -34,7 +34,9 @@ class PoolController {
     }
 
     public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let pools: IPoolResponse[] = await poolService.getAll();
+        let memberId: string = req.params["memberId"];
+        logger.debug("Get all pools for member: " + memberId);
+        let pools: IPoolResponse[] = await poolService.getAll(memberId);
         res.status(HttpStatusCodes.OK);
         res.send(pools);
     }

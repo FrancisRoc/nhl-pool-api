@@ -326,7 +326,7 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /v1/pools/getAll:
+  /v1/pools/getAll/{memberId}:
     get:
       summary: Get all pool registered in database
       operationId: getAllPools
