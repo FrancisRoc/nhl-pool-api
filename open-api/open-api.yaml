@@ -339,6 +339,19 @@ paths:
           description: Error response
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /v1/pools/{id}/members:
+    post:
+      summary: Add members to pool id in parameter
+      operationId: addPoolMembers
+      tags:
+        - Add pool members
+      responses:
+        '200':
+          description: Success response
+        default:
+          description: Error response
+          schema:
+            $ref: '#/definitions/ErrorResponse'
 definitions:
   GoalStatResult:
     required:

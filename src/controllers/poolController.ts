@@ -1,6 +1,7 @@
 import { poolService } from "../services/poolService";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
+import { IAccountInfos } from "../models/user/accountInfosInterface";
 
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
@@ -39,6 +40,15 @@ class PoolController {
         let pools: IPoolResponse[] = await poolService.getAll(memberId);
         res.status(HttpStatusCodes.OK);
         res.send(pools);
+    }
+
+    public async updateMembers(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let poolId: string = req.param["id"];
+        let members: IAccountInfos[] = req.body;
+
+        await poolService.updateMembers(poolId, members);
+
+        res.send();
     }
 }
 export let poolController: PoolController = new PoolController();

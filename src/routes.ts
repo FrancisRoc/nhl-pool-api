@@ -63,5 +63,6 @@ export function getAPIRoutes(): IHandlerRoute[] {
 
         { method: HttpMethods.POST, path: "/v1/pools/create", handler: poolController.create },
         { method: HttpMethods.GET, path: "/v1/pools/getAll/:memberId", handler: poolController.getAll },
+        { method: HttpMethods.POST, path: "/v1/pools/:id/members", handler: poolController.updateMembers },
     ];
 }
