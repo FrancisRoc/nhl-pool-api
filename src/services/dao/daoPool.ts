@@ -30,6 +30,13 @@ export interface IDaoPool {
      * @param: members: members to associate with pool id
      */
     addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void>
+
+    /**
+     * Add members to pool id
+     * @param: poolId: pool id
+     * @param: members: members to add to pool
+     */
+    updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void>
 }
 
 class DaoPool implements IDaoPool {
@@ -123,6 +130,7 @@ class DaoPool implements IDaoPool {
 
     private async addUsersToPoolQuery(poolId: string, memberId: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
+            logger.debug("associate member id " + memberId + " with pool id " + poolId);
             let association = {
                 memberId: memberId,
                 poolId: poolId
@@ -137,5 +145,24 @@ class DaoPool implements IDaoPool {
         });
     }
 
+    public async updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void> {
+        logger.debug("Add users to pool dao called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
+        for (let i = 0; i < members.length; i++) {
+            await this.updatePoolMembersQuery(poolId, members[i]);
+        }
+    }
+
+    private async updatePoolMembersQuery(poolId: string, member: IAccountInfos): Promise<{}> {
+        logger.debug("Update member " + util.inspect(member, false, null) + " in pool " + poolId);
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member } }, function(err, doc) {
+                if(err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                logger.debug("update members successful");
+                return resolve()
+            });
+         });
+    }
 }
 export let daoPool: IDaoPool = new DaoPool();

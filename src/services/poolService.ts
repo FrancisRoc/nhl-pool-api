@@ -20,6 +20,13 @@ export interface IPoolService {
      * @param: memberId: member to get all pools
      */
     getAll(memberId: string): Promise<IPoolResponse[]>
+
+    /**
+     * Update pool members associated with pool id
+     * @param: poolId: id of pool to update members
+     * @param: members to add to pool
+     */
+    updateMembers(poolId: string, members: IAccountInfos[]): Promise<void>
 }
 
 class PoolService implements IPoolService {
@@ -44,6 +51,11 @@ class PoolService implements IPoolService {
 
     public async getAll(memberId: string): Promise<IPoolResponse[]> {
         return await daoPool.getAll(memberId);
+    }
+
+    public async updateMembers(poolId: string, members: IAccountInfos[]): Promise<void> {
+        await daoPool.addUsersToPool(poolId, members);
+        await daoPool.updatePoolMembers(poolId, members);
     }
 }
 export let poolService: PoolService = new PoolService();
