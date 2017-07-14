@@ -55,6 +55,7 @@ class PoolService implements IPoolService {
 
     public async updateMembers(poolId: string, members: IAccountInfos[]): Promise<void> {
         await daoPool.addUsersToPool(poolId, members);
+        await daoPool.updatePoolMembers(poolId, members);
     }
 }
 export let poolService: PoolService = new PoolService();
