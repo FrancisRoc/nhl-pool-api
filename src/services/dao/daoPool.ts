@@ -116,6 +116,8 @@ class DaoPool implements IDaoPool {
     }
 
     public async addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void> {
+        console.log(members.length);
+        logger.debug("Add users to pool dao called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
         for (let i = 0; i < members.length; i++) {
             await this.addUsersToPoolQuery(poolId, members[i]._id);
         }
@@ -123,6 +125,7 @@ class DaoPool implements IDaoPool {
 
     private async addUsersToPoolQuery(poolId: string, memberId: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
+            logger.debug("associate member id " + memberId + " with pool id " + poolId);
             let association = {
                 memberId: memberId,
                 poolId: poolId

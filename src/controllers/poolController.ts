@@ -43,8 +43,10 @@ class PoolController {
     }
 
     public async updateMembers(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let poolId: string = req.param["id"];
+        let poolId: string = req.params["id"];
         let members: IAccountInfos[] = req.body;
+
+        logger.debug("addMembers endpoint called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
 
         await poolService.updateMembers(poolId, members);
 
