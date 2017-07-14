@@ -126,6 +126,13 @@ export async function createApp(apiRoutes: IHandlerRoute[]): Promise<express.Exp
     // For fine grain configuration, have a look
     // at https://github.com/expressjs/cors
     //==========================================
+    app.use(function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+        res.header('access-Control-Allow-Origin', '*');
+        next();
+    });
+
     app.use(cors());
 
     //==========================================
