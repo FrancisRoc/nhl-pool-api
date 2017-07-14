@@ -124,6 +124,7 @@ class DaoPool implements IDaoPool {
 
     public async addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void> {
         for (let i = 0; i < members.length; i++) {
+            logger.debug("Add member: " + util.inspect(members[i], false, null));
             await this.addUsersToPoolQuery(poolId, members[i]._id);
         }
     }
@@ -133,7 +134,7 @@ class DaoPool implements IDaoPool {
             logger.debug("associate member id " + memberId + " with pool id " + poolId);
             let association = {
                 memberId: memberId,
-                poolId: poolId
+                poolId: new ObjectId(poolId)
             }
 
             dbConnectionService.getConnection().collection('MemberPools').insert(association, function (err, doc) {
@@ -155,7 +156,7 @@ class DaoPool implements IDaoPool {
     private async updatePoolMembersQuery(poolId: string, member: IAccountInfos): Promise<{}> {
         logger.debug("Update member " + util.inspect(member, false, null) + " in pool " + poolId);
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member._id } }, function(err, doc) {
+            dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member } }, function(err, doc) {
                 if(err) {
                     return reject(err.name + ': ' + err.message);
                 }

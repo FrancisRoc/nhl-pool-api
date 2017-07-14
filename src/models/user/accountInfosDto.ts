@@ -1,10 +1,9 @@
 import { IAccountInfos } from "./accountInfosInterface";
 
 export class AccountInfosDto {
-    private name: string;
-    private nickname: string;
-    private email: string;
     private _id: string;
+    private name: string;
+    private username: string;
 
     constructor(accountInfos: IAccountInfos) {
         Object.assign(this, accountInfos);

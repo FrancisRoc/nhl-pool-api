@@ -8,6 +8,8 @@ import { accountService } from "./authentification/accountService";
 import { daoPool } from "./dao/daoPool";
 import * as express from "express";
 
+let util = require('util');
+
 export interface IPoolService {
     /**
      * Create pool
@@ -56,7 +58,8 @@ class PoolService implements IPoolService {
     public async updateMembers(poolId: string, members: IAccountInfos[]): Promise<void> {
         let membersInfos: IAccountInfos[] = [];
         for (let i = 0; i < members.length; i++) {
-            let singleMemberInfo: IAccountInfos = await accountService.getUser(members[i].nickname);
+            console.log("TODO REMOVE. MEMBERS: " + util.inspect(members[i], false, null));
+            let singleMemberInfo: IAccountInfos = await accountService.getUser(members[i].username);
             membersInfos.push(singleMemberInfo);
         }
 
