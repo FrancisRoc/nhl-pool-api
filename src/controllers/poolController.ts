@@ -54,6 +54,15 @@ class PoolController {
         res.send();
     }
 
+    public async importantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let poolId: string = req.params["poolId"];
+        logger.debug("importantStats endpoint called");
+
+        let result: IImportantStats[] = await poolService.getImportantStats(poolId);
+        //TODO handle errors
+        res.send(result);
+    }
+
     public async saveImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let poolId: string = req.params["poolId"];
         let importantStats: IImportantStats[] = req.body;

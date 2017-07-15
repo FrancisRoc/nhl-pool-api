@@ -32,11 +32,17 @@ export interface IPoolService {
     updateMembers(poolId: string, members: IAccountInfos[]): Promise<void>
 
     /**
-     * Update pool members associated with pool id
+     * Save pool important stats
      * @param: poolId: id of pool to save important stats
      * @param: important stats for the pool
      */
     saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void>
+
+    /**
+     * Get pool important stats
+     * @param: poolId: id of pool to save important stats
+     */
+    getImportantStats(poolId: string): Promise<IImportantStats[]>
 }
 
 class PoolService implements IPoolService {
@@ -77,6 +83,10 @@ class PoolService implements IPoolService {
 
     public async saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void> {
         await daoPool.saveImportantStats(poolId, importantStats);
+    }
+
+    public async getImportantStats(poolId: string): Promise<IImportantStats[]> {
+        return await daoPool.getImportantStats(poolId);
     }
 }
 export let poolService: PoolService = new PoolService();

@@ -365,6 +365,24 @@ paths:
             schema:
               $ref: '#/definitions/ErrorResponse'
     /v1/pools/{poolId}/stats:
+      get:
+        summary: Get important pool stats selected by user
+        operationId: getPoolImportantStats
+        tags:
+          - Get important pool stats
+        parameters:
+          - in: path
+            name: poolId
+            type: string
+            required: true
+            description: Pool id to get all important stats for this pool
+        responses:
+          '200':
+            description: Success response
+          default:
+            description: Error response
+            schema:
+              $ref: '#/definitions/ErrorResponse'
       post:
         summary: Add important pool stats selected by user (admin user only -> futur feature)
         operationId: savePoolImportantStats
@@ -388,6 +406,12 @@ paths:
         operationId: updatePoolImportantStats
         tags:
           - Update pool important stats
+        parameters:
+          - in: path
+            name: poolId
+            type: string
+            required: true
+            description: Pool id to get all important stats for this pool
         responses:
           '200':
             description: Success response

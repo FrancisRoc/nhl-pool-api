@@ -40,11 +40,17 @@ export interface IDaoPool {
     updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void>
 
     /**
-     * Update pool members associated with pool id in database
+     * Save pool important stats in database
      * @param: poolId: id of pool to save important stats
      * @param: important stats for the pool
      */
     saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void>
+
+    /**
+     * Get pool important stats in database for pool id
+     * @param: poolId: id of pool to save important stats
+     */
+    getImportantStats(poolId: string): Promise<IImportantStats[]>
 }
 
 class DaoPool implements IDaoPool {
@@ -187,6 +193,23 @@ class DaoPool implements IDaoPool {
                 }
                 logger.debug("save important stats successful");
                 return resolve()
+            });
+         });
+    }
+
+    public async getImportantStats(poolId: string): Promise<IImportantStats[]> {
+        logger.debug("Get pool important stats for pool " + poolId);
+        return <IImportantStats[]> await this.getImportantStatsQuery(poolId);
+    }
+
+    private async getImportantStatsQuery(poolId: string): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').findOne({ _id: new ObjectId(poolId) }, function(err, doc) {
+                if(err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                logger.debug("get important stats successful");
+                return resolve(doc)
             });
          });
     }
