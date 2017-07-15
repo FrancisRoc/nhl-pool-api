@@ -2,6 +2,7 @@ import { dbConnectionService } from "../dbConnectionService";
 import { IAccountInfos } from "../../models/user/accountInfosInterface";
 import { IPoolRequest } from "../../models/pool/poolRequest";
 import { IPoolResponse } from "../../models/pool/poolResponse";
+import { IImportantStats } from "../../models/pool/importantStats";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -37,6 +38,13 @@ export interface IDaoPool {
      * @param: members: members to add to pool
      */
     updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void>
+
+    /**
+     * Update pool members associated with pool id in database
+     * @param: poolId: id of pool to save important stats
+     * @param: important stats for the pool
+     */
+    saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void>
 }
 
 class DaoPool implements IDaoPool {
@@ -161,6 +169,23 @@ class DaoPool implements IDaoPool {
                     return reject(err.name + ': ' + err.message);
                 }
                 logger.debug("update members successful");
+                return resolve()
+            });
+         });
+    }
+
+    public async saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void> {
+        logger.debug("Save pool important stats " + util.inspect(importantStats, false, null) + " in pool " + poolId);
+        this.saveImportantStats(poolId, importantStats);
+    }
+
+    private async saveImportantStatsQuery(poolId: string, importantStats: IImportantStats[]): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').insert(importantStats, function(err, doc) {
+                if(err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                logger.debug("save important stats successful");
                 return resolve()
             });
          });

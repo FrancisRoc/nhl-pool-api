@@ -2,6 +2,7 @@ import { poolService } from "../services/poolService";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IAccountInfos } from "../models/user/accountInfosInterface";
+import { IImportantStats } from "../models/pool/importantStats";
 
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
@@ -49,6 +50,27 @@ class PoolController {
         logger.debug("addMembers endpoint called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
 
         await poolService.updateMembers(poolId, members);
+
+        res.send();
+    }
+
+    public async saveImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let poolId: string = req.params["poolId"];
+        let importantStats: IImportantStats[] = req.body;
+        logger.debug("saveImportantStats endpoint called with: " + util.inspect(importantStats, false, null));
+
+        await poolService.saveImportantStats(poolId, importantStats);
+
+        res.send();
+    }
+
+    public async updateImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        /*let poolId: string = req.params["id"];
+        let members: IAccountInfos[] = req.body;
+
+        logger.debug("addMembers endpoint called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
+
+        await poolService.updateMembers(poolId, members);*/
 
         res.send();
     }

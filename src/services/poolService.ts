@@ -1,6 +1,7 @@
 import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
+import { IImportantStats } from "../models/pool/importantStats";
 
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
@@ -29,6 +30,13 @@ export interface IPoolService {
      * @param: members to add to pool
      */
     updateMembers(poolId: string, members: IAccountInfos[]): Promise<void>
+
+    /**
+     * Update pool members associated with pool id
+     * @param: poolId: id of pool to save important stats
+     * @param: important stats for the pool
+     */
+    saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void>
 }
 
 class PoolService implements IPoolService {
@@ -65,6 +73,10 @@ class PoolService implements IPoolService {
 
         await daoPool.addUsersToPool(poolId, membersInfos);
         await daoPool.updatePoolMembers(poolId, membersInfos);
+    }
+
+    public async saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void> {
+        await daoPool.saveImportantStats(poolId, importantStats);
     }
 }
 export let poolService: PoolService = new PoolService();
