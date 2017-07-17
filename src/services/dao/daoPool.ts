@@ -3,6 +3,7 @@ import { IAccountInfos } from "../../models/user/accountInfosInterface";
 import { IPoolRequest } from "../../models/pool/poolRequest";
 import { IPoolResponse } from "../../models/pool/poolResponse";
 import { IImportantStats } from "../../models/pool/importantStats";
+import { PoolStatsSelected } from "../../models/pool/poolStatsSelected";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -182,12 +183,16 @@ class DaoPool implements IDaoPool {
 
     public async saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void> {
         logger.debug("Save pool important stats " + util.inspect(importantStats, false, null) + " in pool " + poolId);
-        this.saveImportantStats(poolId, importantStats);
+        this.saveImportantStatsQuery(poolId, importantStats);
     }
 
     private async saveImportantStatsQuery(poolId: string, importantStats: IImportantStats[]): Promise<{}> {
+        let poolStatsSelected: PoolStatsSelected = {
+            _id: new ObjectId(poolId),
+            importantStats: importantStats
+        }
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('PoolsImportantStats').insert(importantStats, function(err, doc) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').insert(poolStatsSelected, function(err, doc) {
                 if(err) {
                     return reject(err.name + ': ' + err.message);
                 }
@@ -208,7 +213,7 @@ class DaoPool implements IDaoPool {
                 if(err) {
                     return reject(err.name + ': ' + err.message);
                 }
-                logger.debug("get important stats successful");
+                logger.debug("get important stats successful: " + util.inspect(doc, false, null));
                 return resolve(doc)
             });
          });
