@@ -41,20 +41,20 @@ export function getAPIRoutes(): IHandlerRoute[] {
         // file is not in sync with the current "routes.ts" file, we
         // have to add this dummy route... Simply remove it!
         //==========================================
+        { method: HttpMethods.DELETE, path: "/v1/players/draft/:userId/:poolId/:playerId", handler: draftPlayerController.draft },
 
-        { method: HttpMethods.GET, path: "/v1/players/stats/goals", handler: servePlayersStatsController.getGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/assists", handler: servePlayersStatsController.getAssistStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/points", handler: servePlayersStatsController.getPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus", handler: servePlayersStatsController.getPlusMinusStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin", handler: servePlayersStatsController.getPenalityMinStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayGoals", handler: servePlayersStatsController.getPowerplayGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals", handler: servePlayersStatsController.getShorthandedGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints", handler: servePlayersStatsController.getPowerplayPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints", handler: servePlayersStatsController.getShorthandedPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/hits", handler: servePlayersStatsController.getHitStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/goals/:poolId", handler: servePlayersStatsController.getGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/assists/:poolId", handler: servePlayersStatsController.getAssistStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/points/:poolId", handler: servePlayersStatsController.getPointStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus/:poolId", handler: servePlayersStatsController.getPlusMinusStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin/:poolId", handler: servePlayersStatsController.getPenalityMinStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayGoals/:poolId", handler: servePlayersStatsController.getPowerplayGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals/:poolId", handler: servePlayersStatsController.getShorthandedGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints/:poolId", handler: servePlayersStatsController.getPowerplayPointStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints/:poolId", handler: servePlayersStatsController.getShorthandedPointStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/hits/:poolId", handler: servePlayersStatsController.getHitStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: servePlayersStatsController.getPlayerInfos },
 
-        { method: HttpMethods.DELETE, path: "/v1/players/draft/:id", handler: draftPlayerController.draft },
 
         { method: HttpMethods.POST, path: "/v1/users/authenticate", handler: accountController.authenticate },
         { method: HttpMethods.POST, path: "/v1/users/register", handler: accountController.register },
@@ -63,9 +63,9 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.DELETE, path: "/v1/users/:id", handler: accountController._delete },
 
         { method: HttpMethods.POST, path: "/v1/pools/create", handler: poolController.create },
-        { method: HttpMethods.GET, path: "/v1/pools/:poolId/stats", handler: poolController.importantStats },        
+        { method: HttpMethods.GET, path: "/v1/pools/:poolId/stats", handler: poolController.importantStats },
         { method: HttpMethods.POST, path: "/v1/pools/:poolId/stats", handler: poolController.saveImportantStats },
-        { method: HttpMethods.PUT, path: "/v1/pools/:poolId/stats", handler: poolController.updateImportantStats },        
+        { method: HttpMethods.PUT, path: "/v1/pools/:poolId/stats", handler: poolController.updateImportantStats },
         { method: HttpMethods.GET, path: "/v1/pools/getAll/:memberId", handler: poolController.getAll },
         { method: HttpMethods.POST, path: "/v1/pools/:id/members", handler: poolController.updateMembers },
     ];

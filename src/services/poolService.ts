@@ -62,6 +62,10 @@ class PoolService implements IPoolService {
 
         // Add pool id to all members
         await daoPool.addUsersToPool(pool._id, pool.members);
+
+        // Create mongo collection with players id for drafting purpose
+        await daoPool.createPlayerPool(pool._id);
+
         return pool;
     }
 

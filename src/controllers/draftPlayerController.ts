@@ -1,4 +1,4 @@
-import { draftPlayerService } from "../services/draftPlayerServive";
+import { draftPlayerService } from "../services/draftPlayerService";
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
 import { configs } from "../../config/configs";
@@ -18,11 +18,12 @@ let util = require('util');
 @autobind
 class DraftPlayerController {
     public async draft(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let userId: number = 0; //TODO
-        let playerId: number = req.params.id;
+        let userId: string = req.params.userId;
+        let poolId: string = req.params.poolId;
+        let playerId: string = req.params.playerId;
 
-        await draftPlayerService.draftPlayer(playerId, userId);
-        
+        await draftPlayerService.draftPlayer(userId, poolId, playerId);
+
         res.status(HttpStatusCodes.OK);
         res.send();
     }

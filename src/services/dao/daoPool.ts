@@ -21,6 +21,13 @@ export interface IDaoPool {
     create(poolInfos: IPoolResponse): Promise<IPoolResponse>
 
     /**
+     * Create pool of players id in mongo to be able to make
+     * drafting in each pool created
+     * @param poolId: pool id to identify collection
+     */
+    createPlayerPool(poolId: string): Promise<void>
+
+    /**
      * Get all pools stored in database
      * @param: memberId: member to get all pools
      */
@@ -90,6 +97,42 @@ class DaoPool implements IDaoPool {
                     return reject(err.name + ': ' + err.message);
                 }
                 return resolve(doc.ops[0]);
+            });
+        });
+    }
+
+    public async createPlayerPool(poolId: string): Promise<void> {
+        logger.debug("Dao create players pool called");
+
+        // Get all players id
+        let playersIds: string[] = <string[]> await this.getPlayersIds();
+        await this.createPlayersPoolQuery(poolId, playersIds);
+    }
+
+    private async getPlayersIds(): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('AllStats2017').find({}, { "player.ID": 1 }).map(player => player.player.ID).toArray(function (error, docs) {
+                if (error) {
+                    return reject(error);
+                }
+
+                if (docs) {
+                    return resolve(docs);
+                }
+            });
+        });
+    }
+
+    private async createPlayersPoolQuery(poolId: string, playersIds: string[]): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PlayersPooling').insert({ _id: new ObjectId(poolId), playersId: playersIds }, function (error, doc) {
+                if (error) {
+                    return reject(error);
+                }
+
+                if (doc) {
+                    return resolve();
+                }
             });
         });
     }

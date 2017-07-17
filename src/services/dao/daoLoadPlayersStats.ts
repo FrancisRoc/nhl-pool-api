@@ -185,15 +185,15 @@ class DaoPlayersStats implements IDaoPlayersStats {
 
         let currentYear: number = new Date().getFullYear();
         //Stats for AllStatsPooling need to be up to date
-        if (year === currentYear) {
-            db.collection("AllStatsPooling").insert(playerInfos, null, function (error, results) { 
+        /*if (year === currentYear) {
+            db.collection("AllStatsPooling").insert(playerInfos, null, function (error, results) {
             if (error) {
                 throw error;
             }
         });
-        }
+        }*/
 
-        db.collection("AllStats" + year).insert(playerInfos, null, function (error, results) { 
+        db.collection("AllStats" + year).insert(playerInfos, null, function (error, results) {
             if (error) {
                 throw error;
             }

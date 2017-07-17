@@ -9,7 +9,7 @@ consumes:
 produces:
   - application/json
 paths:
-    /v1/players/stats/goals:
+    /v1/players/stats/goals/{poolId}:
       get:
         summary: Get goals stat of all nhl players
         operationId: goalStat
@@ -17,6 +17,12 @@ paths:
           - goals
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -26,7 +32,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/assists:
+    /v1/players/stats/assists/{poolId}:
       get:
         summary: Get assists stat of all nhl players
         operationId: assistStat
@@ -34,6 +40,12 @@ paths:
           - assists
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -43,7 +55,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/points:
+    /v1/players/stats/points/{poolId}:
       get:
         summary: Get points stat of all nhl players
         operationId: pointStat
@@ -51,6 +63,12 @@ paths:
           - points
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -60,7 +78,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/plusMinus:
+    /v1/players/stats/plusMinus/{poolId}:
       get:
         summary: Get +/- stat of all nhl players
         operationId: plusMinusStat
@@ -69,6 +87,12 @@ paths:
           - plusMinus
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -78,7 +102,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/penalityMin:
+    /v1/players/stats/penalityMin/{poolId}:
       get:
         summary: Get penality minutes stat of all nhl players
         operationId: penalityMinStat
@@ -87,6 +111,12 @@ paths:
           - penalityMin
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -96,7 +126,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/powerplayGoals:
+    /v1/players/stats/powerplayGoals/{poolId}:
       get:
         summary: Get powerplay goals stat of all nhl players
         operationId: powerplayGoalStat
@@ -105,6 +135,12 @@ paths:
           - powerplayGoal
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -114,7 +150,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/shorthandedGoals:
+    /v1/players/stats/shorthandedGoals/{poolId}:
       get:
         summary: Get shorthanded goals stat of all nhl players
         operationId: shorthandedGoalStat
@@ -123,6 +159,12 @@ paths:
           - shorthandedGoal
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -132,7 +174,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/powerplayPoints:
+    /v1/players/stats/powerplayPoints/{poolId}:
       get:
         summary: Get powerplay points stat of all nhl players
         operationId: powerplayPointStat
@@ -141,6 +183,12 @@ paths:
           - powerplayPoint
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -150,7 +198,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/shorthandedPoints:
+    /v1/players/stats/shorthandedPoints/{poolId}:
       get:
         summary: Get shorthanded points stat of all nhl players
         operationId: shorthandedPointStat
@@ -159,6 +207,12 @@ paths:
           - shorthandedPoint
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -168,7 +222,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/hits:
+    /v1/players/stats/hits/{poolId}:
       get:
         summary: Get hits stat of all nhl players
         operationId: hitStat
@@ -176,6 +230,12 @@ paths:
           - hit
           - stat
           - player
+        parameters:
+          - name: poolId
+            in: path
+            required: true
+            description: The id of requested pool player stats.
+            type: string
         responses:
           '200':
             description: Success response
@@ -213,7 +273,7 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
-    /v1/players/draft/{id}:
+    /v1/players/draft/{userId}/{poolId}/{playerId}:
       delete:
         summary: Delete player with id in nhlPooling collection
         operationId: deletePlayerById
@@ -221,7 +281,17 @@ paths:
           - delete
           - player
         parameters:
-          - name: id
+          - name: userId
+            in: path
+            required: true
+            description: The id of user who selected player.
+            type: string
+          - name: poolId
+            in: path
+            required: true
+            description: The id of pool to select player.
+            type: string
+          - name: playerId
             in: path
             required: true
             description: The id of requested player stats.

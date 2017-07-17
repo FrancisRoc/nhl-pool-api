@@ -8,52 +8,52 @@ export interface IServePlayersStatsService {
     /**
      * Request to find players stats ordered with goal stat to mongodb
      */
-    getPlayersOrderedByGoalStat(): Promise<{}>;
+    getPlayersOrderedByGoalStat(poolId: string): Promise<{}>;
 
     /**
      * Request to find players stats ordered with assist stat to mongodb
      */
-    getPlayersOrderedByAssistStat(): Promise<{}>
+    getPlayersOrderedByAssistStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with point stat to mongodb
      */
-    getPlayersOrderedByPointStat(): Promise<{}>
+    getPlayersOrderedByPointStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with +/- stat to mongodb
      */
-    getPlayersOrderedByPlusMinusStat(): Promise<{}>
+    getPlayersOrderedByPlusMinusStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with penality min stat to mongodb
      */
-    getPlayersOrderedByPenalityMinStat(): Promise<{}>
+    getPlayersOrderedByPenalityMinStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with powerplay goal stat to mongodb
      */
-    getPlayersOrderedByPowerplayGoalStat(): Promise<{}>
+    getPlayersOrderedByPowerplayGoalStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with shorthanded goal stat to mongodb
      */
-    getPlayersOrderedByShorthandedGoalStat(): Promise<{}>
+    getPlayersOrderedByShorthandedGoalStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with powerplay point to mongodb
      */
-    getPlayersOrderedByPowerplayPointStat(): Promise<{}>
+    getPlayersOrderedByPowerplayPointStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with shorthanded point stat to mongodb
      */
-    getPlayersOrderedByShorthandedPointStat(): Promise<{}>
+    getPlayersOrderedByShorthandedPointStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players stats ordered with hit stat to mongodb
      */
-    getPlayersOrderedByHitStat(): Promise<{}>
+    getPlayersOrderedByHitStat(poolId: string): Promise<{}>
 
     /**
      * Request to find players hit stat to mongodb
@@ -67,44 +67,44 @@ class ServePlayersStatsService implements IServePlayersStatsService {
     /**
      * Call API to get goal stat of all nhl players
      */
-    public async getPlayersOrderedByGoalStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByGoalStat();
+    public async getPlayersOrderedByGoalStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByGoalStat(poolId);
     }
 
-    public async getPlayersOrderedByAssistStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByAssistStat();
+    public async getPlayersOrderedByAssistStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByAssistStat(poolId);
     }
 
-    public async getPlayersOrderedByPointStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByPointStat();
+    public async getPlayersOrderedByPointStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByPointStat(poolId);
     }
 
-    public async getPlayersOrderedByPlusMinusStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByPlusMinusStat();
+    public async getPlayersOrderedByPlusMinusStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByPlusMinusStat(poolId);
     }
 
-    public async getPlayersOrderedByPenalityMinStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByPenalityMinStat();
+    public async getPlayersOrderedByPenalityMinStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByPenalityMinStat(poolId);
     }
 
-    public async getPlayersOrderedByPowerplayGoalStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByPowerplayGoalStat();
+    public async getPlayersOrderedByPowerplayGoalStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByPowerplayGoalStat(poolId);
     }
 
-    public async getPlayersOrderedByShorthandedGoalStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByShorthandedGoalStat();
+    public async getPlayersOrderedByShorthandedGoalStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByShorthandedGoalStat(poolId);
     }
 
-    public async getPlayersOrderedByPowerplayPointStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByPowerplayPointStat();
+    public async getPlayersOrderedByPowerplayPointStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByPowerplayPointStat(poolId);
     }
 
-    public async getPlayersOrderedByShorthandedPointStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByShorthandedPointStat();
+    public async getPlayersOrderedByShorthandedPointStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByShorthandedPointStat(poolId);
     }
 
-    public async getPlayersOrderedByHitStat(): Promise<{}> {
-        return await daoServePlayersStats.getPlayersOrderedByHitStat();
+    public async getPlayersOrderedByHitStat(poolId: string): Promise<{}> {
+        return await daoServePlayersStats.getPlayersOrderedByHitStat(poolId);
     }
 
     public async getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo> {

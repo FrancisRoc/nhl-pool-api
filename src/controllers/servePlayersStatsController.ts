@@ -22,8 +22,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with goal stat
      */
     public async getGoalStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        console.log("GOALS STATS endpoint call");
-        let result = await servePlayersStatsService.getPlayersOrderedByGoalStat();
+        console.log("getGoalStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByGoalStat(poolId);
         res.send(result);
     }
 
@@ -31,7 +32,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with assist stat
      */
     public async getAssistStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByAssistStat();
+        console.log("getAssistStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByAssistStat(poolId);
         res.send(result);
     }
 
@@ -39,7 +42,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with point stat
      */
     public async getPointStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByPointStat();
+        console.log("getPointStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByPointStat(poolId);
         res.send(result);
     }
 
@@ -47,7 +52,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with +/- stat
      */
     public async getPlusMinusStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByPlusMinusStat();
+        console.log("getPlusMinusStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByPlusMinusStat(poolId);
         res.send(result);
     }
 
@@ -55,7 +62,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with penality minutes stat
      */
     public async getPenalityMinStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByPenalityMinStat();
+        console.log("getPenalityMinStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByPenalityMinStat(poolId);
         res.send(result);
     }
 
@@ -63,7 +72,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with powerplay goals stat
      */
     public async getPowerplayGoalStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByPowerplayGoalStat();
+        console.log("getPowerplayGoalStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByPowerplayGoalStat(poolId);
         res.send(result);
     }
 
@@ -71,7 +82,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with shorthanded goals stat
      */
     public async getShorthandedGoalStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByShorthandedGoalStat();
+        console.log("getShorthandedGoalStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByShorthandedGoalStat(poolId);
         res.send(result);
     }
 
@@ -79,7 +92,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with powerplay points stat
      */
     public async getPowerplayPointStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByPowerplayPointStat();
+        console.log("getPowerplayPointStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByPowerplayPointStat(poolId);
         res.send(result);
     }
 
@@ -87,7 +102,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with shorthanded points stat
      */
     public async getShorthandedPointStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByShorthandedPointStat();
+        console.log("getShorthandedPointStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByShorthandedPointStat(poolId);
         res.send(result);
     }
 
@@ -95,7 +112,9 @@ class ServePlayersStatsController {
      * Serve players stats ordered with hits stat
      */
     public async getHitStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let result = await servePlayersStatsService.getPlayersOrderedByHitStat();
+        console.log("getHitStat endpoint call");
+        let poolId: string = req.params.poolId;
+        let result = await servePlayersStatsService.getPlayersOrderedByHitStat(poolId);
         res.send(result);
     }
 
