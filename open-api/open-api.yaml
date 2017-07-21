@@ -489,6 +489,25 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
+    /v1/pools/{poolId}/currentStat:
+      put:
+        summary: Update important pool current selected by user (admin user only -> futur feature)
+        operationId: updatePoolCurrentStat
+        tags:
+          - Update pool current stat
+        parameters:
+          - in: path
+            name: poolId
+            type: string
+            required: true
+            description: Pool id to get all important stats for this pool
+        responses:
+          '200':
+            description: Success response
+          default:
+            description: Error response
+            schema:
+              $ref: '#/definitions/ErrorResponse'
 definitions:
   GoalStatResult:
     required:

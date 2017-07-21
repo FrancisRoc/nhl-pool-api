@@ -2,6 +2,7 @@ import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IImportantStats } from "../models/pool/importantStats";
+import { PoolStatsSelected } from "../models/pool/poolStatsSelected";
 
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
@@ -36,13 +37,27 @@ export interface IPoolService {
      * @param: poolId: id of pool to save important stats
      * @param: important stats for the pool
      */
-    saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void>
+    saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void>
 
     /**
      * Get pool important stats
      * @param: poolId: id of pool to save important stats
      */
     getImportantStats(poolId: string): Promise<IImportantStats[]>
+
+    /**
+     * Update important stat toggled in pool stats section
+     * @param: poolId: id of pool to update important stats
+     * @param: importantStat: Important stat attributes
+     */
+    updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<void>;
+
+    /**
+     * Update important stat toggled in pool stats section
+     * @param: poolId: id of pool to update important stats
+     * @param: currentStat: Current stat to display when we will revisit pool
+     */
+    updateCurrentStat(poolId: string, currentStat: string): Promise<void>;
 }
 
 class PoolService implements IPoolService {
@@ -85,12 +100,20 @@ class PoolService implements IPoolService {
         await daoPool.updatePoolMembers(poolId, membersInfos);
     }
 
-    public async saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void> {
+    public async saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void> {
         await daoPool.saveImportantStats(poolId, importantStats);
     }
 
     public async getImportantStats(poolId: string): Promise<IImportantStats[]> {
         return await daoPool.getImportantStats(poolId);
+    }
+
+    public async updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<void> {
+        await daoPool.updateImportantStats(poolId, importantStat);
+    }
+
+    public async updateCurrentStat(poolId: string, currentStat: string): Promise<void> {
+        await daoPool.updateCurrentStat(poolId, currentStat);
     }
 }
 export let poolService: PoolService = new PoolService();

@@ -3,6 +3,7 @@ import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { IImportantStats } from "../models/pool/importantStats";
+import { PoolStatsSelected } from "../models/pool/poolStatsSelected";
 
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
@@ -65,7 +66,7 @@ class PoolController {
 
     public async saveImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let poolId: string = req.params["poolId"];
-        let importantStats: IImportantStats[] = req.body;
+        let importantStats: PoolStatsSelected = req.body;
         logger.debug("saveImportantStats endpoint called with: " + util.inspect(importantStats, false, null));
 
         await poolService.saveImportantStats(poolId, importantStats);
@@ -74,12 +75,24 @@ class PoolController {
     }
 
     public async updateImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        /*let poolId: string = req.params["id"];
-        let members: IAccountInfos[] = req.body;
+        let poolId: string = req.params["poolId"];
+        let stats: IImportantStats[] = req.body;
 
-        logger.debug("addMembers endpoint called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
+        logger.debug("updateImportantStats endpoint called with pool id " + poolId + " and important stat: " + util.inspect(stats, false, null));
 
-        await poolService.updateMembers(poolId, members);*/
+        await poolService.updateImportantStats(poolId, stats);
+
+        res.send();
+    }
+
+    public async updateCurrentStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let poolId: string = req.params["poolId"];
+        console.log(util.inspect(req.body.currentStat, false, null));
+        let currentStat: string = req.body.currentStat;
+
+        logger.debug("updateCurrentStat endpoint called with pool id ");
+
+        await poolService.updateCurrentStat(poolId, currentStat);
 
         res.send();
     }

@@ -52,13 +52,27 @@ export interface IDaoPool {
      * @param: poolId: id of pool to save important stats
      * @param: important stats for the pool
      */
-    saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void>
+    saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void>
 
     /**
      * Get pool important stats in database for pool id
      * @param: poolId: id of pool to save important stats
      */
     getImportantStats(poolId: string): Promise<IImportantStats[]>
+
+    /**
+     * Update important stat toggled in pool stats section in database
+     * @param: poolId: id of pool to update important stats
+     * @param: importantStat: Important stat attributes
+     */
+    updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<{}>;
+
+    /**
+     * Update important stat toggled in pool stats section database
+     * @param: poolId: id of pool to update important stats
+     * @param: currentStat: Current stat to display when we will revisit pool
+     */
+    updateCurrentStat(poolId: string, currentStat: string): Promise<{}>;
 }
 
 class DaoPool implements IDaoPool {
@@ -224,15 +238,16 @@ class DaoPool implements IDaoPool {
          });
     }
 
-    public async saveImportantStats(poolId: string, importantStats: IImportantStats[]): Promise<void> {
+    public async saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void> {
         logger.debug("Save pool important stats " + util.inspect(importantStats, false, null) + " in pool " + poolId);
         this.saveImportantStatsQuery(poolId, importantStats);
     }
 
-    private async saveImportantStatsQuery(poolId: string, importantStats: IImportantStats[]): Promise<{}> {
+    private async saveImportantStatsQuery(poolId: string, importantStats: PoolStatsSelected): Promise<{}> {
         let poolStatsSelected: PoolStatsSelected = {
             _id: new ObjectId(poolId),
-            importantStats: importantStats
+            currentStat: importantStats.currentStat,
+            importantStats: importantStats.importantStats
         }
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('PoolsImportantStats').insert(poolStatsSelected, function(err, doc) {
@@ -258,6 +273,30 @@ class DaoPool implements IDaoPool {
                 }
                 logger.debug("get important stats successful: " + util.inspect(doc, false, null));
                 return resolve(doc)
+            });
+         });
+    }
+
+    public async updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { importantStats: importantStat  }}, function(err, doc) {
+                if(err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                //logger.debug("update important stats successful: " + util.inspect(doc, false, null));
+                return resolve()
+            });
+         });
+    }
+
+    public async updateCurrentStat(poolId: string, curStat: string): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { currentStat: curStat }}, function(err, doc) {
+                if(err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                //logger.debug("important stat update current stat successful: " + util.inspect(doc, false, null));
+                return resolve()
             });
          });
     }
