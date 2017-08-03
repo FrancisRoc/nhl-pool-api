@@ -316,3 +316,27 @@ export function createInvalidParameterError(
         .logStackTrace(logStackTrace)
         .build();
 }
+
+/**
+ * Easily creates an internal server error (500)
+ *
+ * @param publicMessage The message to return in the error (will also be logged).
+ * @param details Some additional information about the validation that failed.
+ * @param logLevel The log level to use.
+ * @param logStackTrace Should the stack trace be logged?
+ */
+export function createInternalServerError(
+    publicMessage: string,
+    innerError: Error,
+    details: IApiError[] = [],
+    logLevel: LogLevel = LogLevel.DEBUG,
+    logStackTrace: boolean = false): ApiErrorAndInfo {
+
+    return createError(constants.errors.codes.GENERIC_ERROR, publicMessage)
+        .httpStatus(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+        .publicMessage(publicMessage)
+        .details(details)
+        .logLevel(logLevel)
+        .logStackTrace(logStackTrace)
+        .build();
+}

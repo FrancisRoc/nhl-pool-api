@@ -1,3 +1,4 @@
+import { createInternalServerError } from "../models/core/apiError";
 import { servePlayersStatsService } from "../services/servePlayersStatsService";
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
@@ -22,10 +23,19 @@ class ServePlayersStatsController {
      * Serve players stats ordered with goal stat
      */
     public async getGoalStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        console.log("getGoalStat endpoint call");
-        let poolId: string = req.params.poolId;
-        let result = await servePlayersStatsService.getPlayersOrderedByGoalStat(poolId);
-        res.send(result);
+        try {
+            let poolId: string = req.params.poolId;
+
+            return servePlayersStatsService.getPlayersOrderedByGoalStat(poolId)
+                .then(stats => {
+                    res.status(200).send(stats);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while fetching the application.", error));
+        }
     }
 
     /**
