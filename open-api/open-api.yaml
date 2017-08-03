@@ -303,6 +303,30 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
+    /v1/players/draft/{userId}/{poolId}:
+      get:
+        summary: Get player drafted by user id in pool id
+        operationId: getDraftedPlayers
+        tags:
+          - drafted players
+        parameters:
+          - name: userId
+            in: path
+            required: true
+            description: The id of user who selected player.
+            type: string
+          - name: poolId
+            in: path
+            required: true
+            description: The id of pool to select player.
+            type: string
+        responses:
+          '200':
+            description: Success response
+          default:
+            description: Error response
+            schema:
+              $ref: '#/definitions/ErrorResponse'
     /v1/users/authenticate:
       post:
         summary: authentification to account

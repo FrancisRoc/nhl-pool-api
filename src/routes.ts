@@ -42,6 +42,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
         // have to add this dummy route... Simply remove it!
         //==========================================
         { method: HttpMethods.DELETE, path: "/v1/players/draft/:userId/:poolId/:playerId", handler: draftPlayerController.draft },
+        { method: HttpMethods.GET, path: "/v1/players/draft/:userId/:poolId", handler: draftPlayerController.getDrafted },
 
         { method: HttpMethods.GET, path: "/v1/players/stats/goals/:poolId", handler: servePlayersStatsController.getGoalStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/assists/:poolId", handler: servePlayersStatsController.getAssistStat },

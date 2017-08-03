@@ -27,5 +27,15 @@ class DraftPlayerController {
         res.status(HttpStatusCodes.OK);
         res.send();
     }
+
+    public async getDrafted(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        let userId: string = req.params.userId;
+        let poolId: string = req.params.poolId;
+
+        let result = await draftPlayerService.getDraftedPlayers(userId, poolId);
+
+        res.status(HttpStatusCodes.OK);
+        res.send(result);
+    }
 }
 export let draftPlayerController: DraftPlayerController = new DraftPlayerController();

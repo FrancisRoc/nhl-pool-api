@@ -273,8 +273,6 @@ async function initComponents() {
         fs.mkdirSync(configs.testDataDir);
     }
 
-    dbConnectionService.connect();
-
     //==========================================
     // Manages program interuption
     //==========================================

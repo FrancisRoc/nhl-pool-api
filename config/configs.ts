@@ -62,6 +62,7 @@ export class Configs {
 
     private _dataSourcesMongodbConnectString: string;
     private _dataSourcesMongodbSecret: string;
+    private _dataSourcesMongodbConnectionPoolSize: number;
 
     private _nhlApiNbPlayersLimit: number;
     private _nhlApiResponseEncoding: string;
@@ -154,6 +155,7 @@ export class Configs {
 
         this._dataSourcesMongodbConnectString = <string>config.get("dataSources.mongodb.connectString");
         this._dataSourcesMongodbSecret = <string>config.get("dataSources.mongodb.secret");
+        this._dataSourcesMongodbConnectionPoolSize = <number>config.get("dataSources.mongodb.connectionPoolsize");
 
         this._nhlApiNbPlayersLimit = <number>config.get("nhlApi.nbPlayersLimit");
         this._nhlApiResponseEncoding = <string>config.get("nhlApi.responseEncoding");
@@ -464,6 +466,7 @@ export class Configs {
             "mongodb": {
                 "connectString": this._dataSourcesMongodbConnectString,
                 "secret": this._dataSourcesMongodbSecret,
+                "connectionPoolsize": this._dataSourcesMongodbConnectionPoolSize
             }
         };
     }

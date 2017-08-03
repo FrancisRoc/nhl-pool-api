@@ -10,6 +10,7 @@ import { createDefaultApp } from "./app";
 import { validateApp } from "./utils/appValidator";
 import { utils } from "./utils/utils";
 import { EndpointTypes } from "../config/constants";
+import { dbConnectionService } from "./services/dbConnectionService";
 
 export async function startServer() {
 
@@ -47,6 +48,19 @@ export async function startServer() {
             console.log(`NOTE : You still can run "gulp editor" to serve the Swagger Editor to help you edit the specs file!`);
         }
         return process.exit(-1);
+    }
+
+    //==========================================
+    // Connect to DB
+    //==========================================
+    try {
+        await dbConnectionService.mongoInit();
+    } catch (err) {
+
+        logger.error(JSON.stringify(err));
+        console.log("Server will exit, database connection error.");
+        process.exit(-1);
+        return Promise.reject(null);
     }
 
     //==========================================

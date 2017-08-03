@@ -98,6 +98,7 @@ dataSources:
   mongodb:
     connectString: mongodb://localhost:27017/nhlPoolApp
     secret: "4wEea?/w>4{3+Ye6"
+    connectionPoolsize: 5
 
 #==========================================
 # Acces nhl API
