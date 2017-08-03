@@ -11,18 +11,19 @@ import * as Player from "../models/playerInfoModel/playerInfos";
 import * as HttpStatusCodes from "http-status-codes";
 import * as express from "express";
 
-let logger = createLogger("servePlayersStatsController");
+let logger = createLogger("PlayersController");
 let util = require('util');
 
 /**
  * Players Stats Controller
  */
 @autobind
-class ServePlayersStatsController {
+class PlayersController {
     /**
      * Serve players stats ordered with goal stat
      */
     public async getGoalStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+        
         try {
             let poolId: string = req.params.poolId;
 
@@ -36,16 +37,29 @@ class ServePlayersStatsController {
         } catch (error) {
             next(createInternalServerError("Error while fetching the application.", error));
         }
+
     }
 
     /**
      * Serve players stats ordered with assist stat
      */
     public async getAssistStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        console.log("getAssistStat endpoint call");
-        let poolId: string = req.params.poolId;
-        let result = await servePlayersStatsService.getPlayersOrderedByAssistStat(poolId);
-        res.send(result);
+        
+        try {
+            console.log("getAssistStat endpoint call");
+            let poolId: string = req.params.poolId;
+
+            return servePlayersStatsService.getPlayersOrderedByAssistStat(poolId)
+                .then(stats => {
+                    res.status(200).send(stats);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while fetching the application.", error));
+        }
+        
     }
 
     /**
@@ -139,4 +153,4 @@ class ServePlayersStatsController {
     }
 
 }
-export let servePlayersStatsController: ServePlayersStatsController = new ServePlayersStatsController();
+export let playersController: PlayersController = new PlayersController();

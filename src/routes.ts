@@ -6,7 +6,7 @@
 //==========================================
 
 import { IHandlerRoute, HttpMethods } from "./models/core/route";
-import { servePlayersStatsController } from "./controllers/servePlayersStatsController";
+import { playersController } from "./controllers/playersController";
 import { draftPlayerController } from "./controllers/draftPlayerController";
 import { accountController } from "./controllers/accountController";
 import { poolController } from "./controllers/poolController";
@@ -44,17 +44,17 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.DELETE, path: "/v1/players/draft/:userId/:poolId/:playerId", handler: draftPlayerController.draft },
         { method: HttpMethods.GET, path: "/v1/players/draft/:userId/:poolId", handler: draftPlayerController.getDrafted },
 
-        { method: HttpMethods.GET, path: "/v1/players/stats/goals/:poolId", handler: servePlayersStatsController.getGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/assists/:poolId", handler: servePlayersStatsController.getAssistStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/points/:poolId", handler: servePlayersStatsController.getPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus/:poolId", handler: servePlayersStatsController.getPlusMinusStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin/:poolId", handler: servePlayersStatsController.getPenalityMinStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayGoals/:poolId", handler: servePlayersStatsController.getPowerplayGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals/:poolId", handler: servePlayersStatsController.getShorthandedGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints/:poolId", handler: servePlayersStatsController.getPowerplayPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints/:poolId", handler: servePlayersStatsController.getShorthandedPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/hits/:poolId", handler: servePlayersStatsController.getHitStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: servePlayersStatsController.getPlayerInfos },
+        { method: HttpMethods.GET, path: "/v1/players/stats/goals/:poolId", handler: playersController.getGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/assists/:poolId", handler: playersController.getAssistStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/points/:poolId", handler: playersController.getPointStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus/:poolId", handler: playersController.getPlusMinusStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin/:poolId", handler: playersController.getPenalityMinStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayGoals/:poolId", handler: playersController.getPowerplayGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals/:poolId", handler: playersController.getShorthandedGoalStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints/:poolId", handler: playersController.getPowerplayPointStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints/:poolId", handler: playersController.getShorthandedPointStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/hits/:poolId", handler: playersController.getHitStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: playersController.getPlayerInfos },
 
 
         { method: HttpMethods.POST, path: "/v1/users/authenticate", handler: accountController.authenticate },
