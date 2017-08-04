@@ -16,52 +16,7 @@ export interface IDaoServePlayersStats {
     /**
      * Request to find players stats ordered with goal stat to mongodb
      */
-    getPlayersOrderedByGoalStat(poolId: string): Promise<{}>;
-
-    /**
-     * Request to find players stats ordered with assist stat to mongodb
-     */
-    getPlayersOrderedByAssistStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with point stat to mongodb
-     */
-    getPlayersOrderedByPointStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with +/- stat to mongodb
-     */
-    getPlayersOrderedByPlusMinusStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with penality min stat to mongodb
-     */
-    getPlayersOrderedByPenalityMinStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with powerplay goal stat to mongodb
-     */
-    getPlayersOrderedByPowerplayGoalStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with shorthanded goal stat to mongodb
-     */
-    getPlayersOrderedByShorthandedGoalStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with powerplay point to mongodb
-     */
-    getPlayersOrderedByPowerplayPointStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with shorthanded point stat to mongodb
-     */
-    getPlayersOrderedByShorthandedPointStat(poolId: string): Promise<{}>
-
-    /**
-     * Request to find players stats ordered with hit stat to mongodb
-     */
-    getPlayersOrderedByHitStat(poolId: string): Promise<{}>
+    getPlayersOrderedBy(stat: string, poolId: string): Promise<{}>;
 
     /**
      * Request to find player info from id into mongodb
@@ -74,63 +29,9 @@ export interface IDaoServePlayersStats {
 class DaoServePlayersStats implements IDaoServePlayersStats {
     //TODO Comments
     //TODO Config for connection string
-    public async getPlayersOrderedByGoalStat(poolId: string): Promise<{}> {
+    public async getPlayersOrderedBy(stat: string, poolId: string): Promise<{}> {
         let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByGoalsStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByAssistStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByAssistStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByPointStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByPointsStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByPlusMinusStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByPlusMinusStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByPenalityMinStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByPenalityMinStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByPowerplayGoalStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByPowerplayGoalsStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByShorthandedGoalStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByShorthandedGoalsStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByPowerplayPointStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByPowerplayPointsStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByShorthandedPointStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByShorthandedPointsStatQuery(playersId);
-        return result;
-    }
-
-    public async getPlayersOrderedByHitStat(poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findOrderedByHitsStatQuery(playersId);
+        let result = await this.findStatsOrderedBy(stat, playersId);
         return result;
     }
 
@@ -139,7 +40,7 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
         return result;
     }
 
-    private async getPlayersIds(poolId: string): Promise<{}> {
+    public async getPlayersIds(poolId: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('PlayersPooling').find({ _id: new ObjectId(poolId) }, { _id: 0, playersId: 1 }).toArray(function(err, docs) {
                 resolve(docs[0].playersId);
@@ -147,88 +48,66 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
         });
     }
 
-    private async findOrderedByGoalsStatQuery(playersId: number[]): Promise<{}> {
+    public async findStatsOrderedBy(requestedStat, playersId: number[]): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.goals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
+            switch (requestedStat) {
+                case "goals":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.goals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "assists":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.assists": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "points":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.points": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "plusMinus":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.plusMinus": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "penalityMin":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.penalityMin": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "powerplayGoals":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "shorthandedGoals":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "powerplayPoints":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "shorthandedPoints":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                case "hits":
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.hits": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        resolve(docs);
+                    });
+                    break;
+                default:
+                    break;
+            }
         });
     }
 
-    private async findOrderedByAssistStatQuery(playersId: number[]): Promise<{}> {
-        //console.log(util.inspect(playersId[0], false, null));
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.assists": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByPointsStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.points": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByPlusMinusStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.plusMinus": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByPenalityMinStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.penalityMin": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByPowerplayGoalsStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByShorthandedGoalsStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByPowerplayPointsStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByShorthandedPointsStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findOrderedByHitsStatQuery(playersId: number[]): Promise<{}> {
-        return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.hits": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
-                resolve(docs);
-            });
-        });
-    }
-
-    private async findPlayerInfosQuery(playerId: string, year: number): Promise<{}> {
+    public async findPlayerInfosQuery(playerId: string, year: number): Promise<{}> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('AllStats' + year).find({ "player.ID": playerId }).toArray(function(err, docs) {
 

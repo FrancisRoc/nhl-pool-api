@@ -9,238 +9,28 @@ consumes:
 produces:
   - application/json
 paths:
-    /v1/players/stats/goals/{poolId}:
+    /v1/players/pool/{poolId}/stats/orderedBy/{stat}:
       get:
         summary: Get goals stat of all nhl players
         operationId: goalStat
         tags:
-          - goals
-          - stat
-          - player
+          - Stat ordered by
         parameters:
           - name: poolId
             in: path
             required: true
             description: The id of requested pool player stats.
+            type: string
+          - name: stat
+            in: path
+            required: true
+            description: The stat to order by
             type: string
         responses:
           '200':
             description: Success response
             schema:
               $ref: '#/definitions/GoalStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/assists/{poolId}:
-      get:
-        summary: Get assists stat of all nhl players
-        operationId: assistStat
-        tags:
-          - assists
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/AssistStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/points/{poolId}:
-      get:
-        summary: Get points stat of all nhl players
-        operationId: pointStat
-        tags:
-          - points
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/PointStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/plusMinus/{poolId}:
-      get:
-        summary: Get +/- stat of all nhl players
-        operationId: plusMinusStat
-        tags:
-          - +/-
-          - plusMinus
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/PlusMinusStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/penalityMin/{poolId}:
-      get:
-        summary: Get penality minutes stat of all nhl players
-        operationId: penalityMinStat
-        tags:
-          - PIM
-          - penalityMin
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/PenalityMinStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/powerplayGoals/{poolId}:
-      get:
-        summary: Get powerplay goals stat of all nhl players
-        operationId: powerplayGoalStat
-        tags:
-          - PPG
-          - powerplayGoal
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/PowerplayGoalStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/shorthandedGoals/{poolId}:
-      get:
-        summary: Get shorthanded goals stat of all nhl players
-        operationId: shorthandedGoalStat
-        tags:
-          - SHG
-          - shorthandedGoal
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/ShorthandedGoalStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/powerplayPoints/{poolId}:
-      get:
-        summary: Get powerplay points stat of all nhl players
-        operationId: powerplayPointStat
-        tags:
-          - PPP
-          - powerplayPoint
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/PowerplayPointStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/shorthandedPoints/{poolId}:
-      get:
-        summary: Get shorthanded points stat of all nhl players
-        operationId: shorthandedPointStat
-        tags:
-          - SHP
-          - shorthandedPoint
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/ShorthandedPointStatResult'
-          default:
-            description: Error response
-            schema:
-              $ref: '#/definitions/ErrorResponse'
-    /v1/players/stats/hits/{poolId}:
-      get:
-        summary: Get hits stat of all nhl players
-        operationId: hitStat
-        tags:
-          - hit
-          - stat
-          - player
-        parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
-        responses:
-          '200':
-            description: Success response
-            schema:
-              $ref: '#/definitions/HitStatResult'
           default:
             description: Error response
             schema:

@@ -44,8 +44,8 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.DELETE, path: "/v1/players/draft/:userId/:poolId/:playerId", handler: draftPlayerController.draft },
         { method: HttpMethods.GET, path: "/v1/players/draft/:userId/:poolId", handler: draftPlayerController.getDrafted },
 
-        { method: HttpMethods.GET, path: "/v1/players/stats/goals/:poolId", handler: playersController.getGoalStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/assists/:poolId", handler: playersController.getAssistStat },
+        { method: HttpMethods.GET, path: "/v1/players/pool/:poolId/stats/orderedBy/:stat", handler: playersController.getStats },
+        /*{ method: HttpMethods.GET, path: "/v1/players/stats/assists/:poolId", handler: playersController.getAssistStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/points/:poolId", handler: playersController.getPointStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/plusMinus/:poolId", handler: playersController.getPlusMinusStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/penalityMin/:poolId", handler: playersController.getPenalityMinStat },
@@ -53,7 +53,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedGoals/:poolId", handler: playersController.getShorthandedGoalStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/powerplayPoints/:poolId", handler: playersController.getPowerplayPointStat },
         { method: HttpMethods.GET, path: "/v1/players/stats/shorthandedPoints/:poolId", handler: playersController.getShorthandedPointStat },
-        { method: HttpMethods.GET, path: "/v1/players/stats/hits/:poolId", handler: playersController.getHitStat },
+        { method: HttpMethods.GET, path: "/v1/players/stats/hits/:poolId", handler: playersController.getHitStat },*/
         { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: playersController.getPlayerInfos },
 
 
