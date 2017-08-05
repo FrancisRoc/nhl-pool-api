@@ -1,5 +1,5 @@
 import { createInternalServerError } from "../models/core/apiError";
-import { servePlayersStatsService } from "../services/servePlayersStatsService";
+import { playersService } from "../services/players.service";
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
 import { configs } from "../../config/configs";
@@ -28,7 +28,7 @@ class PlayersController {
             let poolId: string = req.params.poolId;
             let requestedStat: string = req.params.stat;
 
-            return servePlayersStatsService.getPlayersOrderedBy(requestedStat, poolId)
+            return playersService.getPlayersOrderedBy(requestedStat, poolId)
                 .then(stats => {
                     res.status(200).send(stats);
                 })
@@ -36,7 +36,7 @@ class PlayersController {
                     next(error);
                 });
         } catch (error) {
-            next(createInternalServerError("Error while fetching the application.", error));
+            next(createInternalServerError("Error while fetching the stats ordered by.", error));
         }
 
     }
@@ -47,8 +47,23 @@ class PlayersController {
     public async getPlayerInfos(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let playerId = req.params.id;
         let year = req.params.year;
-        let result: Player.PlayerInfo = await servePlayersStatsService.getPlayerInfos(playerId, year);
+        let result: Player.PlayerInfo = await playersService.getPlayerInfos(playerId, year);
         res.send(result);
+
+        try {
+            let playerId = req.params.id;
+            let year = req.params.year;
+
+            return await playersService.getPlayerInfos(playerId, year)
+                .then((playerInfo: Player.PlayerInfo) => {
+                    res.status(200).send(playerInfo);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while fetching the player info.", error));
+        }
     }
 
 }

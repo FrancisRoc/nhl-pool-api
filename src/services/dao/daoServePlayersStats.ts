@@ -14,33 +14,30 @@ let logger = createLogger("daoServePlayersStats");
 
 export interface IDaoServePlayersStats {
     /**
-     * Request to find players stats ordered with goal stat to mongodb
+     * Request to find players stats ordered with wanted
+     * stat to mongodb
+     * @param requestedStat: Stat we want to order stats by
+     * @param playersId: Players undrafted in pool specified
      */
-    getPlayersOrderedBy(stat: string, poolId: string): Promise<{}>;
+    findStatsOrderedBy(requestedStat: string, playersId: number[]): Promise<any>;
 
     /**
-     * Request to find player info from id into mongodb
-     * @param playerId: Id to request this player infos
-     * @param year: Year of the wanted stats
+     * Get all players ids of requested pool
+     * @param poolId: Requested pool to get players
      */
-    getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo>
+    getPoolPlayersIds(poolId: string): Promise<any>;
+
+    /**
+     * Get player detailed informations
+     * @param playerId: Player from who we want stats
+     * @param year: Year of requested stats
+     */
+    findPlayerInfos(playerId: string, year: number): Promise<any>;
 }
 
 class DaoServePlayersStats implements IDaoServePlayersStats {
-    //TODO Comments
-    //TODO Config for connection string
-    public async getPlayersOrderedBy(stat: string, poolId: string): Promise<{}> {
-        let playersId: number[] = <number[]> await this.getPlayersIds(poolId);
-        let result = await this.findStatsOrderedBy(stat, playersId);
-        return result;
-    }
 
-    public async getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo> {
-        let result: Player.PlayerInfo = <Player.PlayerInfo> await this.findPlayerInfosQuery(playerId, year);
-        return result;
-    }
-
-    public async getPlayersIds(poolId: string): Promise<{}> {
+    public async getPoolPlayersIds(poolId: string): Promise<any> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('PlayersPooling').find({ _id: new ObjectId(poolId) }, { _id: 0, playersId: 1 }).toArray(function(err, docs) {
                 resolve(docs[0].playersId);
@@ -48,7 +45,7 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
         });
     }
 
-    public async findStatsOrderedBy(requestedStat, playersId: number[]): Promise<{}> {
+    public async findStatsOrderedBy(requestedStat: string, playersId: number[]): Promise<any> {
         return new Promise(function (resolve, reject) {
             switch (requestedStat) {
                 case "goals":
@@ -107,7 +104,7 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
         });
     }
 
-    public async findPlayerInfosQuery(playerId: string, year: number): Promise<{}> {
+    public async findPlayerInfos(playerId: string, year: number): Promise<any> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('AllStats' + year).find({ "player.ID": playerId }).toArray(function(err, docs) {
 
