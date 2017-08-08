@@ -1,7 +1,7 @@
 import { createInternalServerError } from "../models/core/apiError";
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
-import { daoServePlayersStats } from "./dao/daoServePlayersStats"
+import { playersDao } from "./dao/playersDao"
 import * as Player from "../models/playerInfoModel/playerInfos";
 import * as express from "express";
 
@@ -27,12 +27,12 @@ class PlayersService implements IPlayersService {
 
         let poolPlayersIds: number[];
         try {
-            poolPlayersIds = <number[]> await daoServePlayersStats.getPoolPlayersIds(poolId);
+            poolPlayersIds = <number[]> await playersDao.getPoolPlayersIds(poolId);
         } catch (error) {
             Promise.reject(error);
         }
 
-        return daoServePlayersStats.findStatsOrderedBy(stat, poolPlayersIds)
+        return playersDao.findStatsOrderedBy(stat, poolPlayersIds)
             .then(orderedStats => {
                 return orderedStats;
             })
@@ -43,7 +43,7 @@ class PlayersService implements IPlayersService {
     }
 
     public async getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo> {
-        return daoServePlayersStats.findPlayerInfos(playerId, year)
+        return playersDao.findPlayerInfos(playerId, year)
             .then( (playerInfo: Player.PlayerInfo) => {
                 return playerInfo;
             })

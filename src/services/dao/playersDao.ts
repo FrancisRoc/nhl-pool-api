@@ -10,9 +10,9 @@ const util = require("util");
 import * as Player from "../../models/playerInfoModel/playerInfos";
 import * as express from "express";
 
-let logger = createLogger("daoServePlayersStats");
+let logger = createLogger("playersDao");
 
-export interface IDaoServePlayersStats {
+export interface IPlayersDao {
     /**
      * Request to find players stats ordered with wanted
      * stat to mongodb
@@ -35,11 +35,14 @@ export interface IDaoServePlayersStats {
     findPlayerInfos(playerId: string, year: number): Promise<any>;
 }
 
-class DaoServePlayersStats implements IDaoServePlayersStats {
+class PlayersDao implements IPlayersDao {
 
     public async getPoolPlayersIds(poolId: string): Promise<any> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('PlayersPooling').find({ _id: new ObjectId(poolId) }, { _id: 0, playersId: 1 }).toArray(function(err, docs) {
+                if (err) {
+                    return reject(err);
+                }
                 resolve(docs[0].playersId);
             });
         });
@@ -50,51 +53,81 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
             switch (requestedStat) {
                 case "goals":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.goals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "assists":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.assists": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "points":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.points": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "plusMinus":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.plusMinus": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "penalityMin":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.penalityMin": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "powerplayGoals":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "shorthandedGoals":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "powerplayPoints":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "shorthandedPoints":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
                 case "hits":
                     dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.hits": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function(err, docs) {
+                        if (err) {
+                            reject(err);
+                        }
                         resolve(docs);
                     });
                     break;
@@ -107,10 +140,12 @@ class DaoServePlayersStats implements IDaoServePlayersStats {
     public async findPlayerInfos(playerId: string, year: number): Promise<any> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('AllStats' + year).find({ "player.ID": playerId }).toArray(function(err, docs) {
-
+                if (err) {
+                    reject(err);
+                }
                 resolve(docs);
             });
         });
     }
 }
-export let daoServePlayersStats: DaoServePlayersStats = new DaoServePlayersStats();
+export let playersDao: PlayersDao = new PlayersDao();
