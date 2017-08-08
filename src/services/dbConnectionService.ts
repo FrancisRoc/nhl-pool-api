@@ -3,8 +3,7 @@ import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
 import { utils } from '../utils/utils';
 
-var MongoClient = require("mongodb").MongoClient;
-
+let MongoClient = require("mongodb").MongoClient;
 let logger = createLogger("dbConnectionService");
 
 export interface IDbConnectionService {
@@ -55,7 +54,7 @@ class DbConnectionService implements IDbConnectionService {
         return new Promise<void>((resolve, reject) => {
             let connectString: string = configs.dataSources.mongodb.connectString;
             logger.info('Connecting to mongo at : ' + connectString);
-            MongoClient.connect(connectString, function(error, db) {
+            MongoClient.connect(connectString, function (error, db) {
                 if (error) {
                     logger.error("Connection to mongo db failed:\n" + JSON.stringify(error));
                     reject(error);

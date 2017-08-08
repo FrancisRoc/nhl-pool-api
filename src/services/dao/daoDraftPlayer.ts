@@ -17,7 +17,7 @@ export interface IDaoDraftPlayer {
      * @param poolId: pool in wich user selected player
      * @param playerId: id of the player to draft
      */
-    draftPlayer(userId: string, poolId: string, playerId: string): Promise<void>
+    draftPlayer(userId: string, poolId: string, playerId: string): Promise<void>;
 }
 
 class DaoDraftPlayer implements IDaoDraftPlayer {
@@ -28,7 +28,7 @@ class DaoDraftPlayer implements IDaoDraftPlayer {
 
     private async deletePlayerQuery(poolId: string, playerId: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('PlayersPooling').update( { _id: new ObjectId(poolId) },{ $pull: { "playersId": playerId }}, function (error, response) {
+            dbConnectionService.getConnection().collection('PlayersPooling').update( { _id: new ObjectId(poolId) }, { $pull: { "playersId": playerId } }, function (error, response) {
                 resolve(response);
             });
         });
@@ -40,9 +40,9 @@ class DaoDraftPlayer implements IDaoDraftPlayer {
                 userId: userId,
                 poolId: poolId,
                 playerId: playerId
-            }
+            };
 
-            dbConnectionService.getConnection().collection('Drafed').insert(drafted, function(err, doc) {
+            dbConnectionService.getConnection().collection('Drafed').insert(drafted, function (err, doc) {
                 if (err) {
                     return reject(err);
                 }

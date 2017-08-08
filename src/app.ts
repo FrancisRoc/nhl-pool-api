@@ -15,7 +15,7 @@ import { IHandlerRoute, HttpMethods } from "./models/core/route";
 import { configureOpenApi } from "../open-api/openApiConfigurer";
 import { validateApp } from "./utils/appValidator";
 import { IncomingMessage, ServerResponse, createServer } from "http";
-import { loadPlayersStatsService } from "./services/loadPlayersStatsService"
+import { loadPlayersStatsService } from "./services/loadPlayersStatsService";
 import { dbConnectionService } from "./services/dbConnectionService";
 import * as HttpStatusCodes from "http-status-codes";
 import * as express from "express";
@@ -278,7 +278,7 @@ async function initComponents() {
     //==========================================
     process.on('SIGINT', () => {
         logger.info("SIGINT occured: Releasing Mongo connection");
-        dbConnectionService.release()
+        dbConnectionService.release();
 
         logger.debug("Killing process... Press Enter to continu");
         process.exit(1);

@@ -3,7 +3,7 @@ import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { IImportantStats } from "../models/pool/importantStats";
-import { PoolStatsSelected } from "../models/pool/poolStatsSelected";
+import { IPoolStatsSelected } from "../models/pool/poolStatsSelected";
 
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";
@@ -66,7 +66,7 @@ class PoolController {
 
     public async saveImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let poolId: string = req.params["poolId"];
-        let importantStats: PoolStatsSelected = req.body;
+        let importantStats: IPoolStatsSelected = req.body;
         logger.debug("saveImportantStats endpoint called with: " + util.inspect(importantStats, false, null));
 
         await poolService.saveImportantStats(poolId, importantStats);

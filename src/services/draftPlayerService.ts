@@ -13,14 +13,14 @@ export interface IDraftPlayerService {
      * @param poolId: pool in wich user selected player
      * @param playerId: id of the player to draft
      */
-    draftPlayer(userId: string, poolId: string, playerId: string): Promise<void>
+    draftPlayer(userId: string, poolId: string, playerId: string): Promise<void>;
 
     /**
      * Get players drafted by user
      * @param userId: id of user to add player in drafted list
      * @param poolId: pool in wich user selected player
      */
-    getDraftedPlayers(userId: string, poolId: string): Promise<void>
+    getDraftedPlayers(userId: string, poolId: string): Promise<void>;
 }
 
 class DraftPlayerService implements IDraftPlayerService {

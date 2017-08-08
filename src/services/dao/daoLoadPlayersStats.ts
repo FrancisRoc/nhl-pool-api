@@ -6,9 +6,9 @@ import { LogLevel } from "../../utils/logLevel";
 
 import * as Player from "../../models/playerInfoModel/playerInfos";
 
-var httpTransport = require('https');
-var btoa = require('btoa');
-var util = require('util');
+let httpTransport = require('https');
+let btoa = require('btoa');
+let util = require('util');
 
 const MIN_VALUE = -100;
 
@@ -35,13 +35,13 @@ class DaoPlayersStats implements IDaoPlayersStats {
             port: configs.nhlApi.httpOptions.port,
             //This is what changes the request to a POST request
             method: configs.nhlApi.httpOptions.method,
-            headers: {"Authorization":"Basic " + btoa("frrocc" + ":" + "fr2618nk")}
+            headers: { "Authorization" : "Basic " + btoa("frrocc" + ":" + "fr2618nk") }
         };
         httpOptions.headers['User-Agent'] = 'node ' + process.version;
 
         let responseBufs = [];
         let responseStr = '';
-        var dataObj;
+        let dataObj;
 
         const request = httpTransport.request(httpOptions, (res) => {
             res.on('data', (chunk) => {
@@ -55,10 +55,10 @@ class DaoPlayersStats implements IDaoPlayersStats {
                 responseStr = responseBufs.length > 0 ? Buffer.concat(responseBufs).toString(configs.nhlApi.responseEncoding) : responseStr;
 
                 dataObj = JSON.parse(responseStr);
-                var keyCummPlayersStats = Object.keys(dataObj);
+                let keyCummPlayersStats = Object.keys(dataObj);
 
-                var key = keyCummPlayersStats[0]; // All player stats are under this key
-                var players = dataObj[key]; // here get value "by name" as it expected with objects
+                let key = keyCummPlayersStats[0]; // All player stats are under this key
+                let players = dataObj[key]; // here get value "by name" as it expected with objects
 
                 // Store all players stats in database
                 this.savePlayersStatsInDb(players, year);
@@ -67,7 +67,7 @@ class DaoPlayersStats implements IDaoPlayersStats {
         .setTimeout(0)
         .on('error', (error) => {
         });
-        request.write("")
+        request.write("");
         request.end();
     }
 
@@ -87,7 +87,7 @@ class DaoPlayersStats implements IDaoPlayersStats {
 
         logger.debug(players);
         // Iterate over all players entry
-        for (var i = 0; i < players.playerstatsentry.length; i++) {
+        for (let i = 0; i < players.playerstatsentry.length; i++) {
             this.insertPlayerInfos(players.playerstatsentry[i], year);
         }
     }
@@ -99,12 +99,12 @@ class DaoPlayersStats implements IDaoPlayersStats {
      */
     private insertPlayerInfos(player: any, year: number) {
         let plusMinus: number = Number.MIN_VALUE;
-        if(player.stats.stats.hasOwnProperty('PlusMinus')) {
+        if (player.stats.stats.hasOwnProperty('PlusMinus')) {
             plusMinus = parseInt(player.stats.stats.PlusMinus['#text']);
         }
 
         let hits: number = Number.MIN_VALUE;
-        if(player.stats.stats.hasOwnProperty('Hits')) {
+        if (player.stats.stats.hasOwnProperty('Hits')) {
             hits = parseInt(player.stats.stats.Hits['#text']);
         }
 
@@ -128,7 +128,7 @@ class DaoPlayersStats implements IDaoPlayersStats {
             faceoffPercent = parseFloat(player.stats.stats.FaceoffPercent['#text']);
         }
 
-        let playerInfos: Player.PlayerInfo = {
+        let playerInfos: Player.IPlayerInfo = {
             _id: player._id,
             player: {
                 ID: player.player.ID,
@@ -142,7 +142,7 @@ class DaoPlayersStats implements IDaoPlayersStats {
                 Age: player.player.Age,
                 BirthCity: player.player.BirthCity,
                 BirthCountry: player.player.BirthCountry,
-                IsRookie: (player.player.IsRookie == "true"),
+                IsRookie: (player.player.IsRookie === "true"),
             },
             team: {
                 ID: player.team.ID,
@@ -175,7 +175,7 @@ class DaoPlayersStats implements IDaoPlayersStats {
                 }
             },
             year: year,
-        }
+        };
 
         let db = dbConnectionService.getConnection();
         // Verify connection

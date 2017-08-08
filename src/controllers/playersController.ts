@@ -47,7 +47,7 @@ class PlayersController {
     public async getPlayerInfos(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let playerId = req.params.id;
         let year = req.params.year;
-        let result: Player.PlayerInfo = await playersService.getPlayerInfos(playerId, year);
+        let result: Player.IPlayerInfo = await playersService.getPlayerInfos(playerId, year);
         res.send(result);
 
         try {
@@ -55,7 +55,7 @@ class PlayersController {
             let year = req.params.year;
 
             return await playersService.getPlayerInfos(playerId, year)
-                .then((playerInfo: Player.PlayerInfo) => {
+                .then((playerInfo: Player.IPlayerInfo) => {
                     res.status(200).send(playerInfo);
                 })
                 .catch(error => {

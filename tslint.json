@@ -5,10 +5,6 @@
             true,
             "spaces"
         ],
-        "linebreak-style": [
-            true,
-            "LF"
-        ],
         "no-duplicate-variable": true,
         "no-eval": true,
         "no-internal-module": true,

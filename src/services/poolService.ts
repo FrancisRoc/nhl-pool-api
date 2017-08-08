@@ -2,7 +2,7 @@ import { IAccountInfos } from "../models/user/accountInfosInterface";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IImportantStats } from "../models/pool/importantStats";
-import { PoolStatsSelected } from "../models/pool/poolStatsSelected";
+import { IPoolStatsSelected } from "../models/pool/poolStatsSelected";
 
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
@@ -17,33 +17,33 @@ export interface IPoolService {
      * Create pool
      * @param poolInfos: pool informations (name, members)
      */
-    create(poolInfos: IPoolRequest): Promise<IPoolResponse>
+    create(poolInfos: IPoolRequest): Promise<IPoolResponse>;
 
     /**
      * Get all pools
      * @param: memberId: member to get all pools
      */
-    getAll(memberId: string): Promise<IPoolResponse[]>
+    getAll(memberId: string): Promise<IPoolResponse[]>;
 
     /**
      * Update pool members associated with pool id
      * @param: poolId: id of pool to update members
      * @param: members to add to pool
      */
-    updateMembers(poolId: string, members: IAccountInfos[]): Promise<void>
+    updateMembers(poolId: string, members: IAccountInfos[]): Promise<void>;
 
     /**
      * Save pool important stats
      * @param: poolId: id of pool to save important stats
      * @param: important stats for the pool
      */
-    saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void>
+    saveImportantStats(poolId: string, importantStats: IPoolStatsSelected): Promise<void>;
 
     /**
      * Get pool important stats
      * @param: poolId: id of pool to save important stats
      */
-    getImportantStats(poolId: string): Promise<IImportantStats[]>
+    getImportantStats(poolId: string): Promise<IImportantStats[]>;
 
     /**
      * Update important stat toggled in pool stats section
@@ -71,7 +71,7 @@ class PoolService implements IPoolService {
         let poolWithMembersInfos: IPoolResponse = {
             name: poolInfos.name,
             members: membersInfos
-        }
+        };
 
         let pool: IPoolResponse = <IPoolResponse> await daoPool.create(poolWithMembersInfos);
 
@@ -100,7 +100,7 @@ class PoolService implements IPoolService {
         await daoPool.updatePoolMembers(poolId, membersInfos);
     }
 
-    public async saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void> {
+    public async saveImportantStats(poolId: string, importantStats: IPoolStatsSelected): Promise<void> {
         await daoPool.saveImportantStats(poolId, importantStats);
     }
 

@@ -11,8 +11,9 @@ import { validateApp } from "./utils/appValidator";
 import { utils } from "./utils/utils";
 import { EndpointTypes } from "../config/constants";
 import { dbConnectionService } from "./services/dbConnectionService";
+import * as express from "express";
 
-export async function startServer() {
+export async function startServer(): Promise<express.Express> {
 
     //==========================================
     // Logger with a name related to the current
@@ -94,4 +95,6 @@ export async function startServer() {
             reject(err);
         }
     });
+
+    return Promise.resolve(app);
 }

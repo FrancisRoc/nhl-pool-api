@@ -1,6 +1,6 @@
 import { IImportantStats } from './importantStats';
 
-export interface PoolStatsSelected {
+export interface IPoolStatsSelected {
     _id: string;
     currentStat: string;
     importantStats: IImportantStats[];

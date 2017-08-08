@@ -17,31 +17,31 @@ export interface IDaoAccount {
      * Verify if user has an account with find request in mongo
      * @param username: user identifiant
      */
-    getUser(username: string): Promise<IAccountInfos>
+    getUser(username: string): Promise<IAccountInfos>;
 
     /**
      * Create user account in db
      * @param userInfos: user informations
      */
-    createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto>
+    createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto>;
 
     /**
      * Verify if user has an account with find request in mongo
      * @param username: user identifiant
      * @param password: user password
      */
-    authenticate(username: string, password: string): Promise<{}>
+    authenticate(username: string, password: string): Promise<{}>;
 
     /**
      * Create user account in db
      * @param userInfos: user informations
      */
-    create(userInfos: any): Promise<void>
+    create(userInfos: any): Promise<void>;
 
     /**
      * Get all username stored in database
      */
-    getAll(nameFragment?: string): Promise<AccountInfosDto[]>
+    getAll(nameFragment?: string): Promise<AccountInfosDto[]>;
 }
 
 class DaoAccount implements IDaoAccount {
@@ -120,7 +120,7 @@ class DaoAccount implements IDaoAccount {
             logger.debug("User not found in data. Create new user: " + util.inspect(userInfos, false, null));
 
             // set user object to userParam without the cleartext password
-            var user = _.omit(userInfos, 'password');
+            let user = _.omit(userInfos, 'password');
             // add hashed password to user object
             user.hash = bcrypt.hashSync(userInfos.password, 10);
 
@@ -136,7 +136,7 @@ class DaoAccount implements IDaoAccount {
     public async createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto> {
         logger.debug("Dao create account called");
         let accountInfos: AccountInfosDto = new AccountInfosDto(<IAccountInfos>await this.createAccountQuery(userInfos));
-        return accountInfos
+        return accountInfos;
     }
 
     private async createAccountQuery(userInfos: AccountInfosDto): Promise<{}> {
@@ -174,7 +174,7 @@ class DaoAccount implements IDaoAccount {
 
     private async getAllQuery(): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Users').find({}).toArray(function(error, docs) {
+            dbConnectionService.getConnection().collection('Users').find({}).toArray(function (error, docs) {
                 if (error) {
                     return reject(error);
                 }
@@ -190,7 +190,7 @@ class DaoAccount implements IDaoAccount {
     private async getAllFilteredQuery(nameFragment: string): Promise<{}> {
         logger.debug("getAllFilteredQuery called");
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Users').find({ name: { $regex: new RegExp(nameFragment), $options: 'i' } }).toArray(function(error, docs) {
+            dbConnectionService.getConnection().collection('Users').find({ name: { $regex: new RegExp(nameFragment), $options: 'i' } }).toArray(function (error, docs) {
                 if (error) {
                     return reject(error);
                 }

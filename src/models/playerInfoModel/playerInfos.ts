@@ -1,4 +1,4 @@
-export interface Player {
+export interface IPlayer {
     ID: string;
     LastName: string;
     FirstName: string;
@@ -13,14 +13,14 @@ export interface Player {
     IsRookie: boolean;
 }
 
-export interface Team {
+export interface ITeam {
     ID: string;
     City: string;
     Name: string;
     Abbreviation: string;
 }
 
-export interface PlayerStats {
+export interface IPlayerStats {
     goals: number;
     assists: number;
     points: number;
@@ -42,15 +42,15 @@ export interface PlayerStats {
     faceoffPercent: number;
 }
 
-export interface Stats {
+export interface IStats {
     gamesPlayed: number;
-    stats: PlayerStats;
+    stats: IPlayerStats;
 }
 
-export interface PlayerInfo {
+export interface IPlayerInfo {
     _id: string;
-    player: Player;
-    team: Team;
-    stats: Stats;
+    player: IPlayer;
+    team: ITeam;
+    stats: IStats;
     year: number;
 }

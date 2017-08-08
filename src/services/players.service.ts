@@ -1,7 +1,7 @@
 import { createInternalServerError } from "../models/core/apiError";
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
-import { playersDao } from "./dao/playersDao"
+import { playersDao } from "./dao/playersDao";
 import * as Player from "../models/playerInfoModel/playerInfos";
 import * as express from "express";
 
@@ -18,7 +18,7 @@ export interface IPlayersService {
      * @param playerId: Id to request this player infos
      * @param year: Year of the wanted stats
      */
-    getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo>
+    getPlayerInfos(playerId: string, year: number): Promise<Player.IPlayerInfo>;
 }
 
 class PlayersService implements IPlayersService {
@@ -33,7 +33,7 @@ class PlayersService implements IPlayersService {
         }
 
         return playersDao.findStatsOrderedBy(stat, poolPlayersIds)
-            .then(orderedStats => {
+            .then( (orderedStats: Player.IPlayerInfo) => {
                 return orderedStats;
             })
             .catch(error => {
@@ -42,9 +42,9 @@ class PlayersService implements IPlayersService {
 
     }
 
-    public async getPlayerInfos(playerId: string, year: number): Promise<Player.PlayerInfo> {
+    public async getPlayerInfos(playerId: string, year: number): Promise<Player.IPlayerInfo> {
         return playersDao.findPlayerInfos(playerId, year)
-            .then( (playerInfo: Player.PlayerInfo) => {
+            .then( (playerInfo: Player.IPlayerInfo) => {
                 return playerInfo;
             })
             .catch(error => {

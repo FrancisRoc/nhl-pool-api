@@ -3,7 +3,7 @@ import { IAccountInfos } from "../../models/user/accountInfosInterface";
 import { IPoolRequest } from "../../models/pool/poolRequest";
 import { IPoolResponse } from "../../models/pool/poolResponse";
 import { IImportantStats } from "../../models/pool/importantStats";
-import { PoolStatsSelected } from "../../models/pool/poolStatsSelected";
+import { IPoolStatsSelected } from "../../models/pool/poolStatsSelected";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -18,47 +18,47 @@ export interface IDaoPool {
      * Create pool in mongodb
      * @param poolInfos: pool informations (name, members)
      */
-    create(poolInfos: IPoolResponse): Promise<IPoolResponse>
+    create(poolInfos: IPoolResponse): Promise<IPoolResponse>;
 
     /**
      * Create pool of players id in mongo to be able to make
      * drafting in each pool created
      * @param poolId: pool id to identify collection
      */
-    createPlayerPool(poolId: string): Promise<void>
+    createPlayerPool(poolId: string): Promise<void>;
 
     /**
      * Get all pools stored in database
      * @param: memberId: member to get all pools
      */
-    getAll(memberId: string): Promise<IPoolResponse[]>
+    getAll(memberId: string): Promise<IPoolResponse[]>;
 
     /**
      * Associate all members of a pool to its id
      * @param: poolId: pool id
      * @param: members: members to associate with pool id
      */
-    addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void>
+    addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void>;
 
     /**
      * Add members to pool id
      * @param: poolId: pool id
      * @param: members: members to add to pool
      */
-    updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void>
+    updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void>;
 
     /**
      * Save pool important stats in database
      * @param: poolId: id of pool to save important stats
      * @param: important stats for the pool
      */
-    saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void>
+    saveImportantStats(poolId: string, importantStats: IPoolStatsSelected): Promise<void>;
 
     /**
      * Get pool important stats in database for pool id
      * @param: poolId: id of pool to save important stats
      */
-    getImportantStats(poolId: string): Promise<IImportantStats[]>
+    getImportantStats(poolId: string): Promise<IImportantStats[]>;
 
     /**
      * Update important stat toggled in pool stats section in database
@@ -155,7 +155,7 @@ class DaoPool implements IDaoPool {
         logger.debug("Dao get all pools called with member id: " + memberId);
         let poolsId: any[] = <any[]> await this.getAllQuery(memberId);
 
-        let pools: IPoolResponse[] = []
+        let pools: IPoolResponse[] = [];
         for (let i = 0; i < poolsId.length; i++) {
             let pool: IPoolResponse = <IPoolResponse> await this.getPoolQuery(poolsId[i].poolId);
             pools.push(pool);
@@ -207,7 +207,7 @@ class DaoPool implements IDaoPool {
             let association = {
                 memberId: memberId,
                 poolId: new ObjectId(poolId)
-            }
+            };
 
             dbConnectionService.getConnection().collection('MemberPools').insert(association, function (err, doc) {
                 if (err) {
@@ -228,34 +228,34 @@ class DaoPool implements IDaoPool {
     private async updatePoolMembersQuery(poolId: string, member: IAccountInfos): Promise<{}> {
         logger.debug("Update member " + util.inspect(member, false, null) + " in pool " + poolId);
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member } }, function(err, doc) {
-                if(err) {
+            dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member } }, function (err, doc) {
+                if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 logger.debug("update members successful");
-                return resolve()
+                return resolve();
             });
          });
     }
 
-    public async saveImportantStats(poolId: string, importantStats: PoolStatsSelected): Promise<void> {
+    public async saveImportantStats(poolId: string, importantStats: IPoolStatsSelected): Promise<void> {
         logger.debug("Save pool important stats " + util.inspect(importantStats, false, null) + " in pool " + poolId);
         this.saveImportantStatsQuery(poolId, importantStats);
     }
 
-    private async saveImportantStatsQuery(poolId: string, importantStats: PoolStatsSelected): Promise<{}> {
-        let poolStatsSelected: PoolStatsSelected = {
+    private async saveImportantStatsQuery(poolId: string, importantStats: IPoolStatsSelected): Promise<{}> {
+        let poolStatsSelected: IPoolStatsSelected = {
             _id: new ObjectId(poolId),
             currentStat: importantStats.currentStat,
             importantStats: importantStats.importantStats
-        }
+        };
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('PoolsImportantStats').insert(poolStatsSelected, function(err, doc) {
-                if(err) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').insert(poolStatsSelected, function (err, doc) {
+                if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 logger.debug("save important stats successful");
-                return resolve()
+                return resolve();
             });
          });
     }
@@ -267,36 +267,36 @@ class DaoPool implements IDaoPool {
 
     private async getImportantStatsQuery(poolId: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('PoolsImportantStats').findOne({ _id: new ObjectId(poolId) }, function(err, doc) {
-                if(err) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').findOne({ _id: new ObjectId(poolId) }, function (err, doc) {
+                if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 logger.debug("get important stats successful: " + util.inspect(doc, false, null));
-                return resolve(doc)
+                return resolve(doc);
             });
          });
     }
 
     public async updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { importantStats: importantStat  }}, function(err, doc) {
-                if(err) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { importantStats: importantStat  }}, function (err, doc) {
+                if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 //logger.debug("update important stats successful: " + util.inspect(doc, false, null));
-                return resolve()
+                return resolve();
             });
          });
     }
 
     public async updateCurrentStat(poolId: string, curStat: string): Promise<{}> {
         return new Promise(function (resolve, reject) {
-            dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { currentStat: curStat }}, function(err, doc) {
-                if(err) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { currentStat: curStat }}, function (err, doc) {
+                if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 //logger.debug("important stat update current stat successful: " + util.inspect(doc, false, null));
-                return resolve()
+                return resolve();
             });
          });
     }

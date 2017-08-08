@@ -11,25 +11,25 @@ export interface IAccountService {
      * Verify if user has an account
      * @param username: user identifiant
      */
-    getUser(username: string): Promise<IAccountInfos>
+    getUser(username: string): Promise<IAccountInfos>;
 
     /**
      * Verify if user has an account
      * @param username: user identifiant
      * @param password: user password
      */
-    authenticate(username: string, password: string): Promise<{}>
+    authenticate(username: string, password: string): Promise<{}>;
 
     /**
      * Create user account
      * @param userInfos: user informations
      */
-    create(userInfos: any): Promise<void>
+    create(userInfos: any): Promise<void>;
 
     /**
      * Get all username
      */
-    getAll(nameFragment?: string): Promise<AccountInfosDto[]>
+    getAll(nameFragment?: string): Promise<AccountInfosDto[]>;
 }
 
 class AccountService implements IAccountService {

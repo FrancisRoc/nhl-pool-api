@@ -1,4 +1,4 @@
-import { daoPlayersStats } from "./dao/daoLoadPlayersStats"
+import { daoPlayersStats } from "./dao/daoLoadPlayersStats";
 import { apiPaths } from "../../config/apiPaths";
 import { configs } from "../../config/configs";
 import { createLogger } from "../utils/logger";
