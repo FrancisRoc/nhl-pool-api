@@ -1,7 +1,8 @@
+import { createInternalServerError } from "../models/core/apiError";
 import { poolService } from "../services/poolService";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
-import { IAccountInfos } from "../models/user/accountInfosInterface";
+import { IUser } from "../models/user/user";
 import { IImportantStats } from "../models/pool/importantStats";
 import { IPoolStatsSelected } from "../models/pool/poolStatsSelected";
 
@@ -26,75 +27,133 @@ let util = require('util');
 @autobind
 class PoolController {
     public async create(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        // Create pool informations interface
-        logger.debug("Create pool endpoint called");
-        let poolInfos: IPoolRequest = req.body;
 
-        logger.debug("Pool informations: " + util.inspect(poolInfos, false, null));
-        let poolCreated: IPoolResponse = await poolService.create(poolInfos);
-        res.status(HttpStatusCodes.OK);
-        res.send(poolCreated);
+        try {
+            const pool: IPoolRequest = req.body;
+
+            return poolService.create(pool)
+                .then((createdPool: IPoolResponse) => {
+                    res.status(HttpStatusCodes.OK).send(createdPool);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while creating new pool.", error));
+        }
+
     }
 
     public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let memberId: string = req.params["memberId"];
-        logger.debug("Get all pools for member: " + memberId);
-        let pools: IPoolResponse[] = await poolService.getAll(memberId);
-        res.status(HttpStatusCodes.OK);
-        res.send(pools);
+
+        try {
+            const memberId: string = req.params.memberId;
+
+            return poolService.getAll(memberId)
+                .then((membersPools: IPoolResponse[]) => {
+                    res.status(HttpStatusCodes.OK).send(membersPools);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while getting all pools for a user.", error));
+        }
+
     }
 
     public async updateMembers(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let poolId: string = req.params["id"];
-        let members: IAccountInfos[] = req.body;
 
-        logger.debug("addMembers endpoint called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
+        try {
+            const poolId: string = req.params.id;
+            const members: IUser[] = req.body;
 
-        await poolService.updateMembers(poolId, members);
+            return poolService.updateMembers(poolId, members)
+                .then((/*TODO*//*members*/) => {
+                    res.status(HttpStatusCodes.OK).send(/*members*/);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while updating pool members.", error));
+        }
 
-        res.send();
     }
 
     public async importantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let poolId: string = req.params["poolId"];
-        logger.debug("importantStats endpoint called");
 
-        let result: IImportantStats[] = await poolService.getImportantStats(poolId);
-        //TODO handle errors
-        res.send(result);
+        try {
+            const poolId: string = req.params.poolId;
+
+            return poolService.getImportantStats(poolId)
+                .then((importantStats: IImportantStats[]) => {
+                    res.status(HttpStatusCodes.OK).send(importantStats);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while fetching the pool important stats.", error));
+        }
+
     }
 
     public async saveImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let poolId: string = req.params["poolId"];
-        let importantStats: IPoolStatsSelected = req.body;
-        logger.debug("saveImportantStats endpoint called with: " + util.inspect(importantStats, false, null));
 
-        await poolService.saveImportantStats(poolId, importantStats);
+        try {
+            const poolId: string = req.params.poolId;
+            const importantStats: IPoolStatsSelected = req.body;
 
-        res.send();
+            return poolService.saveImportantStats(poolId, importantStats)
+                .then(() => {
+                    res.status(HttpStatusCodes.OK).send();
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while saving the pool important stats.", error));
+        }
+
     }
 
     public async updateImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let poolId: string = req.params["poolId"];
-        let stats: IImportantStats[] = req.body;
 
-        logger.debug("updateImportantStats endpoint called with pool id " + poolId + " and important stat: " + util.inspect(stats, false, null));
+        try {
+            const poolId: string = req.params.poolId;
+            const stats: IImportantStats[] = req.body;
 
-        await poolService.updateImportantStats(poolId, stats);
+            return poolService.updateImportantStats(poolId, stats)
+                .then((/*TODO*//*importantStats*/) => {
+                    res.status(HttpStatusCodes.OK).send(/*importantStats*/);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while updating the pool important stats.", error));
+        }
 
-        res.send();
     }
 
     public async updateCurrentStat(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let poolId: string = req.params["poolId"];
-        console.log(util.inspect(req.body.currentStat, false, null));
-        let currentStat: string = req.body.currentStat;
 
-        logger.debug("updateCurrentStat endpoint called with pool id ");
+        try {
+            const poolId: string = req.params.poolId;
+            const currentStat: string = req.body.currentStat;
 
-        await poolService.updateCurrentStat(poolId, currentStat);
+            return poolService.updateCurrentStat(poolId, currentStat)
+                .then((/*TODO*//*currentStat: string*/) => {
+                    res.status(HttpStatusCodes.OK).send(/*currentStat*/);
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while updating the pool current stat to sort players by.", error));
+        }
 
-        res.send();
     }
 }
 export let poolController: PoolController = new PoolController();

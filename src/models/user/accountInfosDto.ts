@@ -1,11 +1,11 @@
-import { IAccountInfos } from "./accountInfosInterface";
+import { IUser } from "./user";
 
 export class AccountInfosDto {
     private _id: string;
     private name: string;
     private username: string;
 
-    constructor(accountInfos: IAccountInfos) {
+    constructor(accountInfos: IUser) {
         Object.assign(this, accountInfos);
     }
 

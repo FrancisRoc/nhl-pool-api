@@ -1,4 +1,4 @@
-import { IAccountInfos } from '../user/accountInfosInterface';
+import { IUser } from '../user/user';
 
 /**
  * A Pool informations returned to frontend.
@@ -6,5 +6,5 @@ import { IAccountInfos } from '../user/accountInfosInterface';
 export interface IPoolResponse {
     _id?: string;
     name: string;
-    members: IAccountInfos[];
+    members: IUser[];
 }

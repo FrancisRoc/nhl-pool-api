@@ -1,7 +1,7 @@
 //import { draftPlayerService } from "../services/TODO";
 import { accountService } from "../services/authentification/accountService";
 
-import { IAccountInfos } from "../models/user/accountInfosInterface";
+import { IUser } from "../models/user/user";
 import { AccountInfosDto } from "../models/user/accountInfosDto";
 import { constants, EndpointTypes } from "../../config/constants";
 import { createLogger } from "../utils/logger";

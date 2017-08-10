@@ -1,4 +1,4 @@
-import { IAccountInfos } from "../models/user/accountInfosInterface";
+import { IUser } from "../models/user/user";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IImportantStats } from "../models/pool/importantStats";
@@ -30,7 +30,7 @@ export interface IPoolService {
      * @param: poolId: id of pool to update members
      * @param: members to add to pool
      */
-    updateMembers(poolId: string, members: IAccountInfos[]): Promise<void>;
+    updateMembers(poolId: string, members: IUser[]): Promise<void>;
 
     /**
      * Save pool important stats
@@ -62,9 +62,9 @@ export interface IPoolService {
 
 class PoolService implements IPoolService {
     public async create(poolInfos: IPoolRequest): Promise<IPoolResponse> {
-        let membersInfos: IAccountInfos[] = [];
+        let membersInfos: IUser[] = [];
         for (let i = 0; i < poolInfos.members.length; i++) {
-            let singleMemberInfo: IAccountInfos = await accountService.getUser(poolInfos.members[i]);
+            let singleMemberInfo: IUser = await accountService.getUser(poolInfos.members[i]);
             membersInfos.push(singleMemberInfo);
         }
 
@@ -88,11 +88,11 @@ class PoolService implements IPoolService {
         return await daoPool.getAll(memberId);
     }
 
-    public async updateMembers(poolId: string, members: IAccountInfos[]): Promise<void> {
-        let membersInfos: IAccountInfos[] = [];
+    public async updateMembers(poolId: string, members: IUser[]): Promise<void> {
+        let membersInfos: IUser[] = [];
         for (let i = 0; i < members.length; i++) {
             console.log("TODO REMOVE. MEMBERS: " + util.inspect(members[i], false, null));
-            let singleMemberInfo: IAccountInfos = await accountService.getUser(members[i].username);
+            let singleMemberInfo: IUser = await accountService.getUser(members[i].username);
             membersInfos.push(singleMemberInfo);
         }
 

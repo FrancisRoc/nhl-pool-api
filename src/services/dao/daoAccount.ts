@@ -1,6 +1,6 @@
 import { dbConnectionService } from "../dbConnectionService";
 import { AccountInfosDto } from "../../models/user/accountInfosDto";
-import { IAccountInfos } from "../../models/user/accountInfosInterface";
+import { IUser } from "../../models/user/user";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -17,7 +17,7 @@ export interface IDaoAccount {
      * Verify if user has an account with find request in mongo
      * @param username: user identifiant
      */
-    getUser(username: string): Promise<IAccountInfos>;
+    getUser(username: string): Promise<IUser>;
 
     /**
      * Create user account in db
@@ -45,8 +45,8 @@ export interface IDaoAccount {
 }
 
 class DaoAccount implements IDaoAccount {
-    public async getUser(username: string): Promise<IAccountInfos> {
-        let user: IAccountInfos = <IAccountInfos>await this.verifyUserQuery(username);
+    public async getUser(username: string): Promise<IUser> {
+        let user: IUser = <IUser>await this.verifyUserQuery(username);
         logger.debug("User found: " + util.inspect(user, false, null));
         return user;
     }
@@ -135,7 +135,7 @@ class DaoAccount implements IDaoAccount {
 
     public async createAccount(userInfos: AccountInfosDto): Promise<AccountInfosDto> {
         logger.debug("Dao create account called");
-        let accountInfos: AccountInfosDto = new AccountInfosDto(<IAccountInfos>await this.createAccountQuery(userInfos));
+        let accountInfos: AccountInfosDto = new AccountInfosDto(<IUser>await this.createAccountQuery(userInfos));
         return accountInfos;
     }
 
@@ -157,11 +157,11 @@ class DaoAccount implements IDaoAccount {
     public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
         logger.debug("Dao get all users called");
 
-        let users: IAccountInfos[] = [];
+        let users: IUser[] = [];
         if (nameFragment) {
-            users = <IAccountInfos[]> await this.getAllFilteredQuery(nameFragment);
+            users = <IUser[]> await this.getAllFilteredQuery(nameFragment);
         } else {
-            users = <IAccountInfos[]> await this.getAllQuery();
+            users = <IUser[]> await this.getAllQuery();
         }
 
         let usersDto: AccountInfosDto[] = [];

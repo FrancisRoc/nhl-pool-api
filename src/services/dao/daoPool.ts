@@ -1,5 +1,5 @@
 import { dbConnectionService } from "../dbConnectionService";
-import { IAccountInfos } from "../../models/user/accountInfosInterface";
+import { IUser } from "../../models/user/user";
 import { IPoolRequest } from "../../models/pool/poolRequest";
 import { IPoolResponse } from "../../models/pool/poolResponse";
 import { IImportantStats } from "../../models/pool/importantStats";
@@ -38,14 +38,14 @@ export interface IDaoPool {
      * @param: poolId: pool id
      * @param: members: members to associate with pool id
      */
-    addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void>;
+    addUsersToPool(poolId: string, members: IUser[]): Promise<void>;
 
     /**
      * Add members to pool id
      * @param: poolId: pool id
      * @param: members: members to add to pool
      */
-    updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void>;
+    updatePoolMembers(poolId: string, members: IUser[]): Promise<void>;
 
     /**
      * Save pool important stats in database
@@ -194,7 +194,7 @@ class DaoPool implements IDaoPool {
         });
     }
 
-    public async addUsersToPool(poolId: string, members: IAccountInfos[]): Promise<void> {
+    public async addUsersToPool(poolId: string, members: IUser[]): Promise<void> {
         for (let i = 0; i < members.length; i++) {
             logger.debug("Add member: " + util.inspect(members[i], false, null));
             await this.addUsersToPoolQuery(poolId, members[i]._id);
@@ -218,14 +218,14 @@ class DaoPool implements IDaoPool {
         });
     }
 
-    public async updatePoolMembers(poolId: string, members: IAccountInfos[]): Promise<void> {
+    public async updatePoolMembers(poolId: string, members: IUser[]): Promise<void> {
         logger.debug("Add users to pool dao called with pool id " + poolId + " and members: " + util.inspect(members, false, null));
         for (let i = 0; i < members.length; i++) {
             await this.updatePoolMembersQuery(poolId, members[i]);
         }
     }
 
-    private async updatePoolMembersQuery(poolId: string, member: IAccountInfos): Promise<{}> {
+    private async updatePoolMembersQuery(poolId: string, member: IUser): Promise<{}> {
         logger.debug("Update member " + util.inspect(member, false, null) + " in pool " + poolId);
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member } }, function (err, doc) {

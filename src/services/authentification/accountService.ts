@@ -1,5 +1,5 @@
 import { AccountInfosDto } from "../../models/user/accountInfosDto";
-import { IAccountInfos } from "../../models/user/accountInfosInterface";
+import { IUser } from "../../models/user/user";
 
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
@@ -11,7 +11,7 @@ export interface IAccountService {
      * Verify if user has an account
      * @param username: user identifiant
      */
-    getUser(username: string): Promise<IAccountInfos>;
+    getUser(username: string): Promise<IUser>;
 
     /**
      * Verify if user has an account
@@ -33,7 +33,7 @@ export interface IAccountService {
 }
 
 class AccountService implements IAccountService {
-    public async getUser(username: string): Promise<IAccountInfos> {
+    public async getUser(username: string): Promise<IUser> {
         return daoAccount.getUser(username);
     }
 
