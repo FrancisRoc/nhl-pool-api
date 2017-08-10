@@ -7,7 +7,6 @@
 
 import { IHandlerRoute, HttpMethods } from "./models/core/route";
 import { playersController } from "./controllers/playersController";
-import { draftPlayerController } from "./controllers/draftPlayerController";
 import { accountController } from "./controllers/accountController";
 import { poolController } from "./controllers/poolController";
 import { createLogger } from "./utils/logger";
@@ -41,9 +40,8 @@ export function getAPIRoutes(): IHandlerRoute[] {
         // file is not in sync with the current "routes.ts" file, we
         // have to add this dummy route... Simply remove it!
         //==========================================
-        { method: HttpMethods.DELETE, path: "/v1/players/draft/:userId/:poolId/:playerId", handler: draftPlayerController.draft },
-        { method: HttpMethods.GET, path: "/v1/players/draft/:userId/:poolId", handler: draftPlayerController.getDrafted },
-
+        { method: HttpMethods.DELETE, path: "/v1/players/draft/:userId/:poolId/:playerId", handler: playersController.draft },
+        { method: HttpMethods.GET, path: "/v1/players/draft/:userId/:poolId", handler: playersController.getDrafted },
         { method: HttpMethods.GET, path: "/v1/players/pool/:poolId/stats/orderedBy/:stat", handler: playersController.getStats },
         { method: HttpMethods.GET, path: "/v1/players/stats/player/:id/:year", handler: playersController.getPlayerInfos },
 

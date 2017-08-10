@@ -25,21 +25,21 @@ class PlayersController {
     public async getStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         
         try {
-            let poolId: string = req.params.poolId;
-            let requestedStat: string = req.params.stat;
+            const poolId: string = req.params.poolId;
+            const requestedStat: string = req.params.stat;
 
-            let positions: string = req.query.positions || 'LW,C,RW,D,G';
-            let limit: number = parseInt(req.query.limit) || configs.nhlApi.nbPlayersLimit;
+            const positions: string = req.query.positions || 'LW,C,RW,D,G';
+            const limit: number = parseInt(req.query.limit) || configs.nhlApi.nbPlayersLimit;
 
             return playersService.getPlayersOrderedBy(requestedStat, poolId, positions, limit)
                 .then(stats => {
-                    res.status(200).send(stats);
+                    res.status(HttpStatusCodes.OK).send(stats);
                 })
                 .catch(error => {
                     next(error);
                 });
         } catch (error) {
-            next(createInternalServerError("Error while fetching the stats ordered by.", error));
+            next(createInternalServerError("Error while fetching the stats ordered by specified stat.", error));
         }
 
     }
@@ -50,12 +50,12 @@ class PlayersController {
     public async getPlayerInfos(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 
         try {
-            let playerId = req.params.id;
-            let year = req.params.year;
+            const playerId = req.params.id;
+            const year = req.params.year;
 
             return await playersService.getPlayerInfos(playerId, year)
                 .then((playerInfo: Player.IPlayerInfo) => {
-                    res.status(200).send(playerInfo);
+                    res.status(HttpStatusCodes.OK).send(playerInfo);
                 })
                 .catch(error => {
                     next(error);
@@ -63,7 +63,49 @@ class PlayersController {
         } catch (error) {
             next(createInternalServerError("Error while fetching the player info.", error));
         }
+
     }
 
+    /**
+     * Draft a player for user with userId in pooling with poolId
+     */
+    public async draft(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+
+        try {
+            const userId: string = req.params.userId;
+            const poolId: string = req.params.poolId;
+            const playerId: string = req.params.playerId;
+
+            return await playersService.draftPlayer(userId, poolId, playerId)
+                .then(() => {
+                    res.status(HttpStatusCodes.OK).send();
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while drafting player", error));
+        }
+
+    }
+
+    public async getDrafted(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+
+        try {
+            const userId: string = req.params.userId;
+            const poolId: string = req.params.poolId;
+
+            return await playersService.getDraftedPlayers(userId, poolId)
+                .then(() => {
+                    res.status(HttpStatusCodes.OK).send();
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError(`Error while fetching the drafted players for user specified`, error));
+        }
+
+    }
 }
 export let playersController: PlayersController = new PlayersController();

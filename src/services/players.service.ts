@@ -1,8 +1,9 @@
-import { createInternalServerError } from "../models/core/apiError";
+import { createInternalServerError, createError } from "../models/core/apiError";
 import { createLogger } from "../utils/logger";
 import { LogLevel } from "../utils/logLevel";
 import { playersDao } from "./dao/playersDao";
 import * as Player from "../models/playerInfoModel/playerInfos";
+import * as HttpStatusCodes from "http-status-codes";
 import * as express from "express";
 
 export interface IPlayersService {
@@ -21,6 +22,23 @@ export interface IPlayersService {
      * @param year: Year of the wanted stats
      */
     getPlayerInfos(playerId: string, year: number): Promise<Player.IPlayerInfo>;
+
+    /**
+     * Draft player by its id.
+     * 1) Delete from database
+     * 2) Insert in user drafted players
+     * @param userId: id of user to add player in drafted list
+     * @param poolId: pool in wich user selected player
+     * @param playerId: id of the player to draft
+     */
+    draftPlayer(userId: string, poolId: string, playerId: string): Promise<void>;
+
+    /**
+     * Get players drafted by user
+     * @param userId: id of user to add player in drafted list
+     * @param poolId: pool in wich user selected player
+     */
+    getDraftedPlayers(userId: string, poolId: string): Promise<void>;
 }
 
 class PlayersService implements IPlayersService {
@@ -57,6 +75,29 @@ class PlayersService implements IPlayersService {
                 return Promise.reject(createInternalServerError("Error while fetching the player info for specific year.", error));
             });
         
+    }
+
+    public async draftPlayer(userId: string, poolId: string, playerId: string): Promise<void> {
+        
+        try {
+            await playersDao.deletePlayerInPool(poolId, playerId);
+        } catch (error) {
+            Promise.reject(error);
+        }
+
+        try {
+            await playersDao.addPlayerToUserDraftedList(userId, poolId, playerId);
+        } catch (error) {
+            Promise.reject(error);
+        }
+    }
+
+    public async getDraftedPlayers(userId: string, poolId: string): Promise<void> {
+        throw createError("NOT IMPLEMNTED YET!", "This function getApplicationPrice has not been implemented yet.")
+            .httpStatus(HttpStatusCodes.NOT_IMPLEMENTED)
+            .publicMessage("This function getApplicationPrice has not been implemented yet.")
+            .logLevel(LogLevel.INFO)
+            .build();
     }
 }
 export let playersService: PlayersService = new PlayersService();

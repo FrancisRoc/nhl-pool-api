@@ -2,6 +2,7 @@ import { dbConnectionService } from "../dbConnectionService";
 import { createLogger } from "../../utils/logger";
 import { LogLevel } from "../../utils/logLevel";
 import { configs } from "../../../config/configs";
+import { IDrafted } from "../../models/draft/drafted";
 
 let MongoClient = require("mongodb").MongoClient;
 let ObjectId = require('mongodb').ObjectId;
@@ -35,6 +36,21 @@ export interface IPlayersDao {
      * @param year: Year of requested stats
      */
     findPlayerInfos(playerId: string, year: number): Promise<any>;
+
+    /**
+     * Delete player in pooling for pool id
+     * @param poolId: Pool pooling in wich we want to draft (remove) player
+     * @param playerId: Player to remove in pooling
+     */
+    deletePlayerInPool(poolId: string, playerId: string): Promise<any>;
+
+    /**
+     * Add a player to the user drafted list for specific pool
+     * @param: userId: User to add player to drafted list for pool specified
+     * @param: poolId: Pool to associate drafted player for this user
+     * @param: playerId: Player to draft in specific pool for user identified
+     */
+    addPlayerToUserDraftedList(userId: string, poolId: string, playerId: string): Promise<any>;
 }
 
 class PlayersDao implements IPlayersDao {
@@ -146,6 +162,34 @@ class PlayersDao implements IPlayersDao {
                     reject(err);
                 }
                 resolve(docs);
+            });
+        });
+    }
+
+    public async deletePlayerInPool(poolId: string, playerId: string): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PlayersPooling').update( { _id: new ObjectId(poolId) }, { $pull: { "playersId": playerId } }, function (err, response) {
+                if (err) {
+                    reject(err);
+                }
+                resolve(response);
+            });
+        });
+    }
+
+    public async addPlayerToUserDraftedList(userId: string, poolId: string, playerId: string): Promise<{}> {
+        return new Promise(function (resolve, reject) {
+            let drafted: IDrafted = {
+                userId: userId,
+                poolId: poolId,
+                playerId: playerId
+            };
+
+            dbConnectionService.getConnection().collection('Drafed').insert(drafted, function (err, doc) {
+                if (err) {
+                    reject(err);
+                }
+                resolve();
             });
         });
     }

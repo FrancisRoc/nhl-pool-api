@@ -333,3 +333,9 @@ describe(`Scenario #3 - Request players stats ordered by points.`, function () {
         }
     });
 });
+
+// TODO test all other stats order by
+
+// TODO test draft player endpoint
+
+// TODO test get drafted players endpoint
