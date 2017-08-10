@@ -10,8 +10,10 @@ export interface IPlayersService {
      * Request to find players stats ordered with goal stat to mongodb
      * @param stat: Statistic by wich we want to order by
      * @param poolId: Pool of players we want to order by stat and return
+     * @param positions: Positions we want want to fetch stats
+     * @param limit: Number of players we want to fetch
      */
-    getPlayersOrderedBy(stat: string, poolId: string): Promise<any>;
+    getPlayersOrderedBy(stat: string, poolId: string, positions: string, limit: number): Promise<any>;
 
     /**
      * Request to find players hit stat to mongodb
@@ -23,7 +25,7 @@ export interface IPlayersService {
 
 class PlayersService implements IPlayersService {
 
-    public async getPlayersOrderedBy(stat: string, poolId: string): Promise<any> {
+    public async getPlayersOrderedBy(stat: string, poolId: string, positions: string, limit: number): Promise<any> {
 
         let poolPlayersIds: number[];
         try {
@@ -32,7 +34,11 @@ class PlayersService implements IPlayersService {
             Promise.reject(error);
         }
 
-        return playersDao.findStatsOrderedBy(stat, poolPlayersIds)
+        // Parse positions string to make array
+        let positionsToFetch: string[];
+        positionsToFetch = positions.split(',');
+
+        return playersDao.findStatsOrderedBy(stat, poolPlayersIds, positionsToFetch, limit)
             .then( (orderedStats: Player.IPlayerInfo) => {
                 return orderedStats;
             })

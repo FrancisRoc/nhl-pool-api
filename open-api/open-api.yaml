@@ -16,21 +16,19 @@ paths:
         tags:
           - Stat ordered by
         parameters:
-          - name: poolId
-            in: path
-            required: true
-            description: The id of requested pool player stats.
-            type: string
           - name: stat
             in: path
             required: true
             description: The stat to order by
             type: string
+          - $ref: '#/parameters/PoolId'
+          - $ref: '#/parameters/Positions'
+          - $ref: '#/parameters/Limit'
         responses:
           '200':
             description: Success response
             schema:
-              $ref: '#/definitions/GoalStatResult'
+              $ref: '#/definitions/Player'
           default:
             description: Error response
             schema:
@@ -58,7 +56,7 @@ paths:
           '200':
             description: Success response
             schema:
-              $ref: '#/definitions/PlayerInfosResult'
+              $ref: '#/definitions/Player'
           default:
             description: Error response
             schema:
@@ -322,238 +320,127 @@ paths:
             description: Error response
             schema:
               $ref: '#/definitions/ErrorResponse'
+parameters:
+  PoolId:
+    name: poolId
+    in: path
+    required: true
+    description: The id of requested pool player stats.
+    type: string
+  Limit:
+    name: limit
+    in: query
+    description: Maximum elements asked. ex. limit=10 (return only 10 players)
+    required: false
+    type: integer
+  Positions:
+    name: positions
+    in: query
+    required: false
+    description: The positions filters for players stats. ex. positions=C,LW,RW (return only left wingers, rigth wingers and centers)
+    type: string
 definitions:
-  GoalStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - goals
+  Player:
+    type: object
+    description: >-
+      Represent player with all stats
     properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
+      _id:
+        $ref: '#/definitions/ObjectId'
+      player:
+        $ref: '#/definitions/PlayerInfos'
       team:
+        $ref: '#/definitions/PlayerTeam'        
+      stats:
+        type: object
+        properties:
+          gamesPlayed:
+            type: number
+          stats:
+            $ref: '#/definitions/PlayerStats'                    
+  PlayerInfos:
+    type: object
+    properties:
+      ID:
         type: string
-      gamesPlayed:
-        type: number
+      LastName:
+        type: string
+      FirstName:
+        type: string
+      JerseyNumber:
+        type: string
+      Position:
+        type: string
+      Height:
+        type: string
+      Weight:
+        type: string
+      BirthDate:
+        type: string
+      Age:
+        type: string
+      BirthCity:
+        type: string
+      BirthCountry:
+        type: string
+      IsRookie:
+        type: string
+  PlayerTeam:
+    type: object
+    properties:
+      ID:
+        type: string
+      City:
+        type: string
+      Name:
+        type: string
+      Abbreviation:
+        type: string
+  PlayerStats:
+    type: object
+    properties:
       goals:
-        type: number
-  AssistStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - assists
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
         type: number
       assists:
         type: number
-  PointStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - points
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
-        type: number
       points:
         type: number
-  PlusMinusStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - plusMinus
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
+      hatTricks:
         type: number
       plusMinus:
         type: number
-  PenalityMinStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - penalityMin
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
+      shots:
+        type: number
+      shotPercentage:
         type: number
       penalityMin:
         type: number
-  PowerplayGoalStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - powerplayGoals
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
-        type: number
       powerplayGoals:
         type: number
-  ShorthandedGoalStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - shorthandedGoals
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
-        type: number
-      shorthandedGoals:
-        type: number
-  PowerplayPointStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - powerplayPoints
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
+      powerplayAssists:
         type: number
       powerplayPoints:
         type: number
-  ShorthandedPointStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - shorthandedPoints
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
+      shorthandedGoals:
+        type: number
+      shorthandedAssists:
         type: number
       shorthandedPoints:
         type: number
-  HitStatResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - hits
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
+      gameWinningGoals:
+        type: number
+      gameTyingGoals:
         type: number
       hits:
         type: number
-  PlayerInfosResult:
-    required:
-      - id
-      - lastName
-      - firstName
-      - team
-      - gamesPlayed
-      - hits
-    properties:
-      id:
-        type: string
-      lastName:
-        type: string
-      firstName:
-        type: string
-      team:
-        type: string
-      gamesPlayed:
+      faceoff:
         type: number
-      hits:
+      faceoffPercent:
         type: number
+  ObjectId:
+    type: string
+    description: ObjectId mongodb.
+    example: 507f191e810c19729de860ea
   ErrorResponse:
     required:
       - error

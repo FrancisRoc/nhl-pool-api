@@ -18,8 +18,10 @@ export interface IPlayersDao {
      * stat to mongodb
      * @param requestedStat: Stat we want to order stats by
      * @param playersId: Players undrafted in pool specified
+     * @param positions: Positions we want want to fetch stats
+     * @param limit: Number of players we want to fetch
      */
-    findStatsOrderedBy(requestedStat: string, playersId: number[]): Promise<any>;
+    findStatsOrderedBy(requestedStat: string, playersId: number[], positions: string[], limit: number): Promise<any>;
 
     /**
      * Get all players ids of requested pool
@@ -48,11 +50,11 @@ class PlayersDao implements IPlayersDao {
         });
     }
 
-    public async findStatsOrderedBy(requestedStat: string, playersId: number[]): Promise<any> {
+    public async findStatsOrderedBy(requestedStat: string, playersId: number[], positions: string[], limit: number): Promise<any> {
         return new Promise(function (resolve, reject) {
             switch (requestedStat) {
                 case "goals":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.goals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.goals": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -60,7 +62,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "assists":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.assists": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.assists": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -68,7 +70,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "points":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.points": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.points": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -76,7 +78,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "plusMinus":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.plusMinus": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.plusMinus": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -84,7 +86,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "penalityMin":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.penalityMin": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.penalityMin": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -92,7 +94,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "powerplayGoals":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.powerplayGoals": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -100,7 +102,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "shorthandedGoals":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedGoals": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.shorthandedGoals": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -108,7 +110,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "powerplayPoints":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.powerplayPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.powerplayPoints": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -116,7 +118,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "shorthandedPoints":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.shorthandedPoints": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.shorthandedPoints": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }
@@ -124,7 +126,7 @@ class PlayersDao implements IPlayersDao {
                     });
                     break;
                 case "hits":
-                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId } }).sort({ "stats.stats.hits": -1 }).limit(configs.nhlApi.nbPlayersLimit).toArray(function (err, docs) {
+                    dbConnectionService.getConnection().collection('AllStats2017').find({ "player.ID": { $in: playersId }, "player.Position": { $in: positions } }).sort({ "stats.stats.hits": -1 }).limit(limit).toArray(function (err, docs) {
                         if (err) {
                             reject(err);
                         }

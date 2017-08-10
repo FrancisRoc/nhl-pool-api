@@ -28,7 +28,10 @@ class PlayersController {
             let poolId: string = req.params.poolId;
             let requestedStat: string = req.params.stat;
 
-            return playersService.getPlayersOrderedBy(requestedStat, poolId)
+            let positions: string = req.query.positions || 'LW,C,RW,D,G';
+            let limit: number = parseInt(req.query.limit) || configs.nhlApi.nbPlayersLimit;
+
+            return playersService.getPlayersOrderedBy(requestedStat, poolId, positions, limit)
                 .then(stats => {
                     res.status(200).send(stats);
                 })
@@ -45,10 +48,6 @@ class PlayersController {
      * Serve individual player stat
      */
     public async getPlayerInfos(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        let playerId = req.params.id;
-        let year = req.params.year;
-        let result: Player.IPlayerInfo = await playersService.getPlayerInfos(playerId, year);
-        res.send(result);
 
         try {
             let playerId = req.params.id;
