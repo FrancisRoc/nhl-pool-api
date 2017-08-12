@@ -38,9 +38,7 @@ paths:
         summary: Get player info of player player with requested id
         operationId: player
         tags:
-          - infos
-          - allStats
-          - player
+          - Player stats
         parameters:
           - name: id
             in: path
@@ -66,8 +64,7 @@ paths:
         summary: Delete player with id in nhlPooling collection
         operationId: deletePlayerById
         tags:
-          - delete
-          - player
+          - Draft player
         parameters:
           - name: userId
             in: path
@@ -96,7 +93,7 @@ paths:
         summary: Get player drafted by user id in pool id
         operationId: getDraftedPlayers
         tags:
-          - drafted players
+          - Drafted players
         parameters:
           - name: userId
             in: path
@@ -120,7 +117,7 @@ paths:
         summary: authentification to account
         operationId: authentification
         tags:
-          - authentification
+          - Authentification
         parameters:
           - name: authorization
             in: header
@@ -139,7 +136,7 @@ paths:
               $ref: '#/definitions/ErrorResponse'
     /v1/users/register:
       post:
-        summary: register new user
+        summary: Register new user
         operationId: register
         tags:
           - register
@@ -155,7 +152,7 @@ paths:
         summary: get all users
         operationId: getAll
         tags:
-          - getAllUsers
+          - Get all users
         responses:
           '200':
             description: Success response
@@ -165,7 +162,7 @@ paths:
               $ref: '#/definitions/ErrorResponse'
     /v1/users/current:
       get:
-        summary: get current user
+        summary: Get current user
         operationId: getCurrent
         tags:
           - getCurrentUser
@@ -178,7 +175,7 @@ paths:
               $ref: '#/definitions/ErrorResponse'
     /v1/users/{id}:
       delete:
-        summary: delete user
+        summary: Delete user
         operationId: deleteUser
         tags:
           - deleteUser
@@ -197,13 +194,30 @@ paths:
               $ref: '#/definitions/ErrorResponse'
     /v1/pools/create:
       post:
-        summary: create new pool
+        summary: Create new pool
         operationId: createPool
         tags:
           - create pool
         responses:
           '200':
             description: Success response
+          default:
+            description: Error response
+            schema:
+              $ref: '#/definitions/ErrorResponse'
+    /v1/pools/{poolId}:
+      delete:
+        summary: Delete pool
+        operationId: deletePool
+        tags:
+          - Delete pool
+        parameters:
+          - $ref: '#/parameters/PoolId'
+        responses:
+          '200':
+            description: Success response
+            schema:
+              $ref: '#/definitions/Pool'
           default:
             description: Error response
             schema:
@@ -437,6 +451,26 @@ definitions:
         type: number
       faceoffPercent:
         type: number
+  Pool:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      members:
+        type: array
+        items:
+          $ref: '#/definitions/Member'
+  Member:
+    type: object
+    properties:
+      _id: 
+        type: string
+      name: 
+        type: string
+      username:
+        type: string
   ObjectId:
     type: string
     description: ObjectId mongodb.

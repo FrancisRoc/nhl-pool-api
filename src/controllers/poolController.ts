@@ -1,4 +1,4 @@
-import { createInternalServerError } from "../models/core/apiError";
+import { createInternalServerError, createError } from "../models/core/apiError";
 import { poolService } from "../services/pool.service";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
@@ -44,7 +44,15 @@ class PoolController {
 
     }
 
-    // TODO implement endpoint to delete pool
+    public async _delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
+
+        throw createError("NOT IMPLEMNTED YET!", "This function getApplicationPrice has not been implemented yet.")
+            .httpStatus(HttpStatusCodes.NOT_IMPLEMENTED)
+            .publicMessage("This function getApplicationPrice has not been implemented yet.")
+            .logLevel(LogLevel.INFO)
+            .build();
+
+    }
 
     public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 

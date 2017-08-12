@@ -10,10 +10,10 @@ import { LogLevel } from "../../utils/logLevel";
 import { configs } from "../../../config/configs";
 
 let util = require("util");
-let logger = createLogger("daoPool");
+let logger = createLogger("poolDao");
 let ObjectId = require('mongodb').ObjectId;
 
-export interface IDaoPool {
+export interface IPoolDao {
     /**
      * Verify if pool already exist to avoid duplicata
      * @param poolName: pool unique name 
@@ -93,7 +93,7 @@ export interface IDaoPool {
     updateCurrentStat(poolId: string, currentStat: string): Promise<any>;
 }
 
-class DaoPool implements IDaoPool {
+class PoolDao implements IPoolDao {
 
     public async verifyExistingPool(poolName: string): Promise<any> {
         return new Promise(function (resolve, reject) {
@@ -259,4 +259,4 @@ class DaoPool implements IDaoPool {
          });
     }
 }
-export let daoPool: IDaoPool = new DaoPool();
+export let poolDao: IPoolDao = new PoolDao();

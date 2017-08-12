@@ -53,6 +53,7 @@ export function getAPIRoutes(): IHandlerRoute[] {
         { method: HttpMethods.DELETE, path: "/v1/users/:id", handler: accountController._delete },
 
         { method: HttpMethods.POST, path: "/v1/pools/create", handler: poolController.create },
+        { method: HttpMethods.DELETE, path: "/v1/pools/:poolId", handler: poolController._delete },
         { method: HttpMethods.GET, path: "/v1/pools/:poolId/stats", handler: poolController.importantStats },
         { method: HttpMethods.POST, path: "/v1/pools/:poolId/stats", handler: poolController.saveImportantStats },
         { method: HttpMethods.PUT, path: "/v1/pools/:poolId/stats", handler: poolController.updateImportantStats },

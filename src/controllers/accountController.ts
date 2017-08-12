@@ -1,4 +1,4 @@
-//import { draftPlayerService } from "../services/TODO";
+import { createInternalServerError, createError } from "../models/core/apiError";
 import { accountService } from "../services/authentification/accountService";
 
 import { IUser } from "../models/user/user";
@@ -56,13 +56,19 @@ class AccountController {
     }
 
     public async getCurrent(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        //TODO?
-        res.send();
+        throw createError("NOT IMPLEMNTED YET!", "This function getApplicationPrice has not been implemented yet.")
+            .httpStatus(HttpStatusCodes.NOT_IMPLEMENTED)
+            .publicMessage("This function getApplicationPrice has not been implemented yet.")
+            .logLevel(LogLevel.INFO)
+            .build();
     }
 
     public async _delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
-        //TODO?
-        res.send();
+        throw createError("NOT IMPLEMNTED YET!", "This function getApplicationPrice has not been implemented yet.")
+            .httpStatus(HttpStatusCodes.NOT_IMPLEMENTED)
+            .publicMessage("This function getApplicationPrice has not been implemented yet.")
+            .logLevel(LogLevel.INFO)
+            .build();
     }
 }
 export let accountController: AccountController = new AccountController();
