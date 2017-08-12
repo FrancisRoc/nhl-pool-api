@@ -1,5 +1,5 @@
 import { createInternalServerError } from "../models/core/apiError";
-import { poolService } from "../services/poolService";
+import { poolService } from "../services/pool.service";
 import { IPoolRequest } from "../models/pool/poolRequest";
 import { IPoolResponse } from "../models/pool/poolResponse";
 import { IUser } from "../models/user/user";
@@ -44,6 +44,8 @@ class PoolController {
 
     }
 
+    // TODO implement endpoint to delete pool
+
     public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 
         try {
@@ -81,6 +83,8 @@ class PoolController {
 
     }
 
+    // TODO implement endpoint to remove member
+
     public async importantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 
         try {
@@ -117,6 +121,8 @@ class PoolController {
         }
 
     }
+
+    // TODO return value when update
 
     public async updateImportantStats(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 

@@ -334,7 +334,305 @@ describe(`Scenario #3 - Request players stats ordered by points.`, function () {
     });
 });
 
-// TODO test all other stats order by
+//===========================================
+// Scénario 4:
+//  - Request players stats ordered by +/-
+//==========================================
+describe(`Scenario #4 - Request players stats ordered by plusMinus.`, function () {
+
+    it(`SOB1985 Get players with all stats ordered by descending plusMinus for all position (default) and default limit (${configs.nhlApi.nbPlayersLimit})`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/plusMinus`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(configs.nhlApi.nbPlayersLimit, "Limit returned players");
+
+        // Verify if players are sorted by plusMinus
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.plusMinus, 'number', "plusMinus type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['LW', 'C', 'RW', 'D', 'G']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.plusMinus).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.plusMinus);
+        }
+    });
+
+    it(`SOB1986 Get players with all stats ordered by descending plusMinus for all position (default) and limit of 51)`, async function () {
+        let poolId: string = TestData.pools[0]._id;
+        let limit: number = 51;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/plusMinus?limit=${limit}`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(limit, "Limit returned players");
+
+        // Verify if players are sorted by plusMinus
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.plusMinus, 'number', "plusMinus type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['LW', 'C', 'RW', 'D', 'G']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.plusMinus).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.plusMinus);
+        }
+    });
+
+    it(`SOB1987 Get players with all stats ordered by descending plusMinus for positions C, RW, LW and default limit (${configs.nhlApi.nbPlayersLimit})`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/plusMinus?positions=c,RW,LW`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(configs.nhlApi.nbPlayersLimit, "Limit returned players");
+
+        // Verify if players are sorted by plusMinus
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.plusMinus, 'number', "Goal type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['C', 'RW', 'LW']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.plusMinus).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.plusMinus);
+        }
+    });
+
+    it(`SOB1988 Get players with all stats ordered by descending plusMinus for positions D and limit 101`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+        let limit: number = 101;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/plusMinus?positions=D&limit=${limit}`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(limit, "Limit returned players");
+
+        // Verify if players are sorted by plusMinus
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.plusMinus, 'number', "plusMinus type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['D']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.plusMinus).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.plusMinus);
+        }
+    });
+});
+
+//===========================================
+// Scénario 5:
+//  - Request players stats ordered by PIM
+//==========================================
+describe(`Scenario #5 - Request players stats ordered by penalityMin.`, function () {
+
+    it(`SOB1989 Get players with all stats ordered by descending penalityMin for all position (default) and default limit (${configs.nhlApi.nbPlayersLimit})`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/penalityMin`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(configs.nhlApi.nbPlayersLimit, "Limit returned players");
+
+        // Verify if players are sorted by penalityMin
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.penalityMin, 'number', "penalityMin type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['LW', 'C', 'RW', 'D', 'G']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.penalityMin).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.penalityMin);
+        }
+    });
+
+    it(`SOB1990 Get players with all stats ordered by descending penalityMin for all position (default) and limit of 17)`, async function () {
+        let poolId: string = TestData.pools[0]._id;
+        let limit: number = 17;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/penalityMin?limit=${limit}`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(limit, "Limit returned players");
+
+        // Verify if players are sorted by penalityMin
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.penalityMin, 'number', "penalityMin type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['LW', 'C', 'RW', 'D', 'G']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.penalityMin).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.penalityMin);
+        }
+    });
+
+    it(`SOB1991 Get players with all stats ordered by descending penalityMin for positions C, RW, LW and default limit (${configs.nhlApi.nbPlayersLimit})`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/penalityMin?positions=c,RW,LW`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(configs.nhlApi.nbPlayersLimit, "Limit returned players");
+
+        // Verify if players are sorted by penalityMin
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.penalityMin, 'number', "Goal type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['C', 'RW', 'LW']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.penalityMin).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.penalityMin);
+        }
+    });
+
+    it(`SOB1992 Get players with all stats ordered by descending penalityMin for positions D and limit 84`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+        let limit: number = 101;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/penalityMin?positions=D&limit=${limit}`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(limit, "Limit returned players");
+
+        // Verify if players are sorted by penalityMin
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.penalityMin, 'number', "penalityMin type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['D']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.penalityMin).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.penalityMin);
+        }
+    });
+});
+
+//===========================================
+// Scénario 6:
+//  - Request players stats ordered by HITS
+//==========================================
+describe(`Scenario #6 - Request players stats ordered by hits.`, function () {
+
+    it(`SOB1993 Get players with all stats ordered by descending hits for all position (default) and default limit (${configs.nhlApi.nbPlayersLimit})`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/hits`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(configs.nhlApi.nbPlayersLimit, "Limit returned players");
+
+        // Verify if players are sorted by hits
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.hits, 'number', "hits type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['LW', 'C', 'RW', 'D', 'G']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.hits).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.hits);
+        }
+    });
+
+    it(`SOB1994 Get players with all stats ordered by descending hits for all position (default) and limit of 17)`, async function () {
+        let poolId: string = TestData.pools[0]._id;
+        let limit: number = 17;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/hits?limit=${limit}`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(limit, "Limit returned players");
+
+        // Verify if players are sorted by hits
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.hits, 'number', "hits type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['LW', 'C', 'RW', 'D', 'G']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.hits).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.hits);
+        }
+    });
+
+    it(`SOB1995 Get players with all stats ordered by descending hits for positions C, RW, LW and default limit (${configs.nhlApi.nbPlayersLimit})`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/hits?positions=c,RW,LW`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(configs.nhlApi.nbPlayersLimit, "Limit returned players");
+
+        // Verify if players are sorted by hits
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.hits, 'number', "hits type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['C', 'RW', 'LW']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.hits).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.hits);
+        }
+    });
+
+    it(`SOB1996 Get players with all stats ordered by descending hits for positions D and limit 84`, async function () {
+
+        let poolId: string = TestData.pools[0]._id;
+        let limit: number = 101;
+
+        let getUrl = `/api${configs.api.domainPath}/v1/players/pool/${poolId}/stats/orderedBy/hits?positions=D&limit=${limit}`;
+
+        let response = await request(testApp).get(getUrl).send();
+
+        assert.strictEqual(response.status, 200);
+        assert.isNotNull(response.body);
+
+        let orderedPlayersStatsResp = <Player.IPlayerInfo[]>response.body;
+
+        expect(orderedPlayersStatsResp.length).to.be.lte(limit, "Limit returned players");
+
+        // Verify if players are sorted by hits
+        assert.typeOf(orderedPlayersStatsResp[0].stats.stats.hits, 'number', "hits type should be number");
+        for (let i = 0; i < orderedPlayersStatsResp.length - 1; i ++) { // Don't compare last player
+            expect(['D']).to.contains(orderedPlayersStatsResp[i].player.Position);
+            expect(orderedPlayersStatsResp[i].stats.stats.hits).to.be.gte(orderedPlayersStatsResp[i + 1].stats.stats.hits);
+        }
+    });
+});
 
 // TODO test draft player endpoint
 
