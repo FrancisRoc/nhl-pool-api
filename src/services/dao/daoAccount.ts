@@ -41,7 +41,7 @@ export interface IDaoAccount {
     /**
      * Get all username stored in database
      */
-    getAll(nameFragment?: string): Promise<AccountInfosDto[]>;
+    getAll(nameFragment?: string): Promise<IUser[]>;
 }
 
 class DaoAccount implements IDaoAccount {
@@ -154,7 +154,7 @@ class DaoAccount implements IDaoAccount {
         });
     }
 
-    public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
+    public async getAll(nameFragment?: string): Promise<IUser[]> {
         logger.debug("Dao get all users called");
 
         let users: IUser[] = [];
@@ -164,12 +164,7 @@ class DaoAccount implements IDaoAccount {
             users = <IUser[]> await this.getAllQuery();
         }
 
-        let usersDto: AccountInfosDto[] = [];
-        for (let i = 0; i < users.length; i++) {
-            usersDto.push(new AccountInfosDto(users[i]));
-        }
-
-        return usersDto;
+        return users;
     }
 
     private async getAllQuery(): Promise<{}> {

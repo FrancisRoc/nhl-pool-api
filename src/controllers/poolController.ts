@@ -46,11 +46,19 @@ class PoolController {
 
     public async _delete(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
 
-        throw createError("NOT IMPLEMNTED YET!", "This function getApplicationPrice has not been implemented yet.")
-            .httpStatus(HttpStatusCodes.NOT_IMPLEMENTED)
-            .publicMessage("This function getApplicationPrice has not been implemented yet.")
-            .logLevel(LogLevel.INFO)
-            .build();
+        try {
+            const poolId: string = req.params.poolId;
+
+            return poolService._delete(poolId)
+                .then(() => {
+                    res.status(200).send();
+                })
+                .catch(error => {
+                    next(error);
+                });
+        } catch (error) {
+            next(createInternalServerError("Error while deleting pool.", error));
+        }
 
     }
 

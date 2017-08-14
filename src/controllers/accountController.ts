@@ -45,7 +45,7 @@ class AccountController {
 
     public async getAll(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         let nameFragment = req.query["name"];
-        let users: AccountInfosDto[];
+        let users: IUser[];
         if (nameFragment) {
             users = await accountService.getAll(nameFragment);
         } else {

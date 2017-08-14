@@ -133,7 +133,35 @@ class PoolService implements IPoolService {
     }
 
     public async _delete(poolId: string): Promise<IPoolResponse> {
-        return null;
+        try {
+            await poolDao.removePoolDraftedPlayers(poolId);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+
+        try {
+            await poolDao.removePoolMembers(poolId);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+
+        try {
+            await poolDao.deletePlayersPooling(poolId);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+
+        try {
+            await poolDao.deletePool(poolId);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+
+        try {
+            await poolDao.deletePoolImportantStats(poolId);
+        } catch (error) {
+            return Promise.reject(error);
+        }
     }
 
     public async getAll(memberId: string): Promise<IPoolResponse[]> {

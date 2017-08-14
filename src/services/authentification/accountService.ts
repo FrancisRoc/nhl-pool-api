@@ -29,7 +29,7 @@ export interface IAccountService {
     /**
      * Get all username
      */
-    getAll(nameFragment?: string): Promise<AccountInfosDto[]>;
+    getAll(nameFragment?: string): Promise<IUser[]>;
 }
 
 class AccountService implements IAccountService {
@@ -45,7 +45,7 @@ class AccountService implements IAccountService {
         return daoAccount.create(userInfos);
     }
 
-    public async getAll(nameFragment?: string): Promise<AccountInfosDto[]> {
+    public async getAll(nameFragment?: string): Promise<IUser[]> {
         return daoAccount.getAll(nameFragment);
     }
 }

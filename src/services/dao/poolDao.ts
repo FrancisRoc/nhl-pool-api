@@ -24,7 +24,13 @@ export interface IPoolDao {
      * Create pool in mongodb
      * @param poolInfos: pool informations (name, members)
      */
-    createPool(poolInfos: IPoolResponse): Promise<IPoolResponse>;
+    createPool(poolInfos: IPoolResponse): Promise<any>;
+
+    /**
+     * Delete pool and it's members
+     * @param poolId: pool to delete
+     */
+    deletePool(poolId: string): Promise<any>;
 
     /**
      * Create pool of players id in mongo to be able to make
@@ -35,6 +41,12 @@ export interface IPoolDao {
     createPlayersPool(poolId: string, playersIds: string[]): Promise<void>;
 
     /**
+     * Delete players pooling where players are drafted
+     * @param poolId: pool identifier
+     */
+    deletePlayersPooling(poolId: string): Promise<any>;
+
+    /**
      * Get list of all players id
      */
     getPlayersIds(): Promise<any>;
@@ -43,7 +55,7 @@ export interface IPoolDao {
      * Get all pools stored in database
      * @param: memberId: member to get all pools
      */
-    getAllPools(memberId: string): Promise<IPoolResponse[]>;
+    getAllPools(memberId: string): Promise<any>;
 
     /**
      * Get pool informations associated to poolId
@@ -59,11 +71,23 @@ export interface IPoolDao {
     addUserToPool(poolId: string, memberId: string): Promise<void>;
 
     /**
+     * Undo all pool users association in memberPools collection
+     * @param poolId: poolId to delete association with memberIds
+     */
+    removePoolMembers(poolId: string): Promise<any>;
+
+    /**
      * Add members to pool id
      * @param: poolId: pool id
      * @param: member: user to add to pool
      */
     addPoolMember(poolId: string, member: IUser): Promise<any>;
+
+    /**
+     * Remove all players drafted in pool that is being delete
+     * @param poolId: poolId associated with drafted player to delete
+     */
+    removePoolDraftedPlayers(poolId: string): Promise<any>;
 
     /**
      * Save pool important stats in database
@@ -84,6 +108,12 @@ export interface IPoolDao {
      * @param: importantStat: Important stat attributes
      */
     updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<any>;
+
+    /**
+     * Delete important stats associated with pool id we are deleting
+     * @param poolId: id of pool to delete important stats
+     */
+    deletePoolImportantStats(poolId: string): Promise<any>;
 
     /**
      * Update important stat toggled in pool stats section database
@@ -114,13 +144,22 @@ class PoolDao implements IPoolDao {
 
     public async createPool(poolInfos: IPoolResponse): Promise<any> {
         return new Promise(function (resolve, reject) {
-            logger.debug("Create new pool: " + util.inspect(poolInfos, false, null));
-
             dbConnectionService.getConnection().collection('Pools').insert(poolInfos, function (err, doc) {
                 if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 return resolve(doc.ops[0]);
+            });
+        });
+    }
+
+    public async deletePool(poolId: string): Promise<any> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('Pools').remove({ _id: new ObjectId(poolId) }, function (err, doc) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                return resolve(doc);
             });
         });
     }
@@ -149,6 +188,17 @@ class PoolDao implements IPoolDao {
                 if (doc) {
                     return resolve();
                 }
+            });
+        });
+    }
+
+    public async deletePlayersPooling(poolId: string): Promise<any> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PlayersPooling').remove({ _id: new ObjectId(poolId) }, function (error, doc) {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(doc);
             });
         });
     }
@@ -199,9 +249,31 @@ class PoolDao implements IPoolDao {
         });
     }
 
+    public async removePoolMembers(poolId: string): Promise<any> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('MemberPools').remove({ poolId: new ObjectId(poolId) }, function (err, doc) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                return resolve();
+            });
+        });
+    }
+
     public async addPoolMember(poolId: string, member: IUser): Promise<any> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('Pools').update({ _id: new ObjectId(poolId) }, { $addToSet: { members: member } }, function (err, doc) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                return resolve();
+            });
+         });
+    }
+
+    public async removePoolDraftedPlayers(poolId: string): Promise<any> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('Drafed').remove({ poolId: poolId }, function (err, doc) {
                 if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
@@ -237,13 +309,24 @@ class PoolDao implements IPoolDao {
          });
     }
 
-    public async updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<{}> {
+    public async updateImportantStats(poolId: string, importantStat: IImportantStats[]): Promise<any> {
         return new Promise(function (resolve, reject) {
             dbConnectionService.getConnection().collection('PoolsImportantStats').update({ _id: new ObjectId(poolId) }, { $set: { importantStats: importantStat  }}, function (err, doc) {
                 if (err) {
                     return reject(err.name + ': ' + err.message);
                 }
                 return resolve();
+            });
+         });
+    }
+
+    public async deletePoolImportantStats(poolId: string): Promise<any> {
+        return new Promise(function (resolve, reject) {
+            dbConnectionService.getConnection().collection('PoolsImportantStats').remove({ _id: new ObjectId(poolId) }, function (err, doc) {
+                if (err) {
+                    return reject(err.name + ': ' + err.message);
+                }
+                return resolve(doc);
             });
          });
     }
